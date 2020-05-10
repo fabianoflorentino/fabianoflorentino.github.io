@@ -1,0 +1,660 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>container on Fabiano Florentino</title>
+    <link>https://fabianoflorentino.codar.info/tags/container/</link>
+    <description>Recent content in container on Fabiano Florentino</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt-br</language>
+    <lastBuildDate>Sat, 21 Mar 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://fabianoflorentino.codar.info/tags/container/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Entregando VM&#39;s no VMware vCenter/vSphere com o Jenkins</title>
+      <link>https://fabianoflorentino.codar.info/posts/2021-03-21-jenkins/</link>
+      <pubDate>Sat, 21 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.codar.info/posts/2021-03-21-jenkins/</guid>
+      <description>&lt;p&gt;Olá pessoal, depois de muito tempo estou de volta!&lt;/p&gt;
+&lt;p&gt;No meu primeiro artigo, expliquei e demonstrei como criar máquinas no vCenter/vSphere
+usando terraform, e que tal entregar essas máquinas virtuais dentro de um pipeline como se
+fosse um aplicativo?&lt;/p&gt;
+&lt;p&gt;Não é de hoje que tudo está se convergindo para Cloud Computing e de fato esse parece ser o futuro.
+Mas ainda temos o meio do caminho, muitas empresas utilizam parte da sua infraestrutura em datacenters,
+migrando e ou utilizando esse dois mundo em uma abordagem de Cloud Hibrida que acaba fazendo parte do
+negócio.&lt;/p&gt;
+&lt;p&gt;Bom deixando a história de lado bora colocar a mão na massa!&lt;/p&gt;
+&lt;p&gt;Nesse artigo vou utilizar o Jenkins para criar o pipeline de entrega dessas máquinas virtuais.
+Porque o Jenkins? Ele ainda é um dos serviços de CI/CD mais conhecidos, acredito que todo mundo que usa
+uma solução mais moderna, tenha pelo menos passado por ele, acho que ainda é valido conhece-lo. Existem
+grandes empresas que o utilizam e muito bem, com abordagens bem bacanas. o iFood é uma dessas empresas.
+No TDC do ano passado o pessoal demonstrou um uso de caso que inclusive inspirou esse artigo.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.eventials.com/Globalcode/https-www-eventials-com-globalcode-tdc-sp-2019-stadium-sexta-2&#34;&gt;IaaC - Autonomia, rastreabilidade, agilidade com Terraform e Pipeline - Diego Ragazzi / Smailli Moraes&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;jenkins&#34;&gt;&lt;strong&gt;Jenkins&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Para esse artigo vamos usar uma versão em container do Jenkins.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;docker pull jenkins/jenkins
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;../../images/img29.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Junto do Jenkins precisamos de instalar terraform&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;docker run -it -d --name jenkins -p 8080:8080 -p 50000:50000 jenkins/jenkins
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;docker exec -it jenkins mkdir /var/jenkins_home/extras
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;docker cp terraform jenkins:/var/jenkins_home/extras/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;docker exec -it jenkins /var/jenkins_home/extras/terraform --version
+Terraform v0.12.24
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;../../images/img30.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Vamos pegar a senha inicial para inicializar o jenkins&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;docker exec -it jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Abaixo segue o setup inicial do Jenkins até sua tela inicial.&lt;/p&gt;
+&lt;h3 id=&#34;unlock-jenkins&#34;&gt;&lt;strong&gt;Unlock Jenkins&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img31.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;customize-jenkins&#34;&gt;&lt;strong&gt;Customize Jenkins&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img32.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;getting-started&#34;&gt;&lt;strong&gt;Getting Started&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img33.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;create-first-admin-user&#34;&gt;&lt;strong&gt;Create First Admin User&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img34.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;instance-configuration&#34;&gt;&lt;strong&gt;Instance Configuration&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img35.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;jenkins-is-ready&#34;&gt;&lt;strong&gt;Jenkins is Ready!&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img36.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;jenkins-dashboard&#34;&gt;&lt;strong&gt;Jenkins Dashboard&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img37.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;job&#34;&gt;&lt;strong&gt;JOB&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Aqui a mágica acontece, vamos criar o pipeline para fazer o deploy da nossa VM.&lt;/p&gt;
+&lt;h3 id=&#34;novo-job&#34;&gt;&lt;strong&gt;Novo job&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img38.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img39.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Não vou entrar no detalhe de cada parametro do pipeline, vou direto a criação do pipeline.
+Com calma, leia cada parametro entenda se faz sentido para o seu uso.&lt;/p&gt;
+&lt;p&gt;Selecione a opção &lt;code&gt;Este build é parametrizado&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img40.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;h4 id=&#34;parametros&#34;&gt;&lt;strong&gt;Parametros&lt;/strong&gt;&lt;/h4&gt;
+&lt;p&gt;Para esse exemplo temos parametros iniciais para criar uma máquina virtual.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Nome da máquina&lt;/li&gt;
+&lt;li&gt;Quantidade de máquinas&lt;/li&gt;
+&lt;li&gt;Número de processadores&lt;/li&gt;
+&lt;li&gt;Número de memória&lt;/li&gt;
+&lt;li&gt;Tamanho do disco para instalação do SO.
+&lt;strong&gt;OBS:&lt;/strong&gt; Para esse exemplo, estou usando o tamanho de 50 (50GB) por conta da customização do disco
+feita no kickstart da imagem.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img41.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img42.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img43.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img44.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img45.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img57.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;h4 id=&#34;pipeline&#34;&gt;&lt;strong&gt;Pipeline&lt;/strong&gt;&lt;/h4&gt;
+&lt;p&gt;Ainda no job, vamos configurar o projeto que ira fazer o deploy da(s) máquinas virtuais.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Definição: Pipeline script from SCM&lt;/li&gt;
+&lt;li&gt;SCM: Git&lt;/li&gt;
+&lt;li&gt;Repositories&lt;/li&gt;
+&lt;li&gt;Branches to build&lt;/li&gt;
+&lt;li&gt;Script Path&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img46.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Em destaque temos o parametro &lt;code&gt;Script Path&lt;/code&gt; onde se encontra o arquivo &lt;code&gt;Jenkinsfile&lt;/code&gt;, ele
+quem ira fazer todo o processo de deploy.&lt;/p&gt;
+&lt;p&gt;Nesse exemplo existem duas variáveis &lt;code&gt;PROVIDER_USR&lt;/code&gt; e &lt;code&gt;PROVIDER_PSW&lt;/code&gt;, que são as informações que o terraform irá usar no módulo provider para acessar o vSphere/vCenter.&lt;/p&gt;
+&lt;p&gt;Bom, vou tomar que você tenha um breve entendimento de segurança e entenda que estamos fazendo um exemplo e que estamos em um ambiente controlado, &lt;code&gt;POR FAVOR, NÃO USE ISSO EM PRODUÇÃO&lt;/code&gt; estude uma
+forma mais segura ok?&lt;/p&gt;
+&lt;p&gt;No próprio jenkins existe uma forma de você gerenciar arquivos de credenciais e senhas. Vamos utilizar a opção de texto secreto &lt;code&gt;Secret text&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img47.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img48.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img49.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img50.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img51.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img52.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img53.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img54.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img55.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Junto com a configuração de credencial do jenkins, no Jenkinsfile é preciso usar a seguinte função.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-groovy&#34; data-lang=&#34;groovy&#34;&gt;withCredentials([string(credentialsId: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;PROVIDER_USR&amp;#39;&lt;/span&gt;, variable: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;PROVIDER_USR&amp;#39;&lt;/span&gt;), string(credentialsId: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;PROVIDER_PSW&amp;#39;&lt;/span&gt;, variable: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;PROVIDER_PSW&amp;#39;&lt;/span&gt;)])
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Essa função cria uma mascara aos caracteres no log do JOB em execução.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img56.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Eis a mágica! :^D&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-groovy&#34; data-lang=&#34;groovy&#34;&gt;pipeline {
+	agent {
+        any {}
+	}
+	stages {
+		stage (&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;Inicializando o Terraform&amp;#39;&lt;/span&gt;) {
+			steps {
+				script {
+                    withCredentials([string(credentialsId: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;PROVIDER_USR&amp;#39;&lt;/span&gt;, variable: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;PROVIDER_USR&amp;#39;&lt;/span&gt;), string(credentialsId: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;PROVIDER_PSW&amp;#39;&lt;/span&gt;, variable: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;PROVIDER_PSW&amp;#39;&lt;/span&gt;)]) {
+                        sh &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;export TF_VAR_provider_user=${env.PROVIDER_USR} \
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;                        &amp;amp;&amp;amp; export TF_VAR_provider_password=${env.PROVIDER_PSW} \
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;                        &amp;amp;&amp;amp; export TF_VAR_name_new_vm=${env.NAME_NEW_VM} \
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;                        &amp;amp;&amp;amp; export TF_VAR_vm_count=${env.VM_COUNT} \
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;                        &amp;amp;&amp;amp; export TF_VAR_num_cpus=${env.NUM_CPUS} \
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;                        &amp;amp;&amp;amp; export TF_VAR_num_mem=${env.NUM_MEM} \
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;                        &amp;amp;&amp;amp; export TF_VAR_size_disk=${env.SIZE_DISK} \
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;                        &amp;amp;&amp;amp; /var/jenkins_home/extras/terraform init \
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;    					&amp;amp;&amp;amp; /var/jenkins_home/extras/terraform plan -out deploy.tfplan&amp;#34;&lt;/span&gt;
+                    }
+				}
+			}
+		}
+        stage (&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;Construindo Maquina Virtual&amp;#39;&lt;/span&gt;) {
+            steps {
+                script {
+                   &lt;span style=&#34;font-weight:bold&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;${env.TF_STATE}&amp;#34;&lt;/span&gt; == &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;APPLY&amp;#34;&lt;/span&gt;) {
+                        timeout(time: 3, unit: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;MINUTES&amp;#34;&lt;/span&gt;) {
+                            input(id: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;chooseOptions&amp;#39;&lt;/span&gt;, message: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;Criar a maquina virtual?&amp;#39;&lt;/span&gt;, ok: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;Confirmar&amp;#39;&lt;/span&gt;)
+                            script {
+                                sh &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;/var/jenkins_home/extras/terraform apply deploy.tfplan&amp;#39;&lt;/span&gt;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        stage (&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;Destruindo Maquina Virtual&amp;#39;&lt;/span&gt;) {
+            steps {
+                script {
+                   &lt;span style=&#34;font-weight:bold&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;${env.TF_STATE}&amp;#34;&lt;/span&gt; == &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;DESTROY&amp;#34;&lt;/span&gt;) {
+                        timeout(time: 3, unit: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;MINUTES&amp;#34;&lt;/span&gt;) {
+                            input(id: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;chooseOptions&amp;#39;&lt;/span&gt;, message: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;Destruir a maquina virtual?&amp;#39;&lt;/span&gt;, ok: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;Confirmar&amp;#39;&lt;/span&gt;)
+                            script {
+                                withCredentials([string(credentialsId: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;PROVIDER_USR&amp;#39;&lt;/span&gt;, variable: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;PROVIDER_USR&amp;#39;&lt;/span&gt;), string(credentialsId: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;PROVIDER_PSW&amp;#39;&lt;/span&gt;, variable: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;PROVIDER_PSW&amp;#39;&lt;/span&gt;)]) {
+                                    sh &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;export TF_VAR_provider_user=${env.PROVIDER_USR} \
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;                                    &amp;amp;&amp;amp; export TF_VAR_provider_password=${env.PROVIDER_PSW} \
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;                                    &amp;amp;&amp;amp; export TF_VAR_name_new_vm=${env.NAME_NEW_VM} \
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;                                    &amp;amp;&amp;amp; export TF_VAR_vm_count=${env.VM_COUNT} \
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;                                    &amp;amp;&amp;amp; export TF_VAR_num_cpus=${env.NUM_CPUS} \
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;                                    &amp;amp;&amp;amp; export TF_VAR_num_mem=${env.NUM_MEM} \
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;                                    &amp;amp;&amp;amp; export TF_VAR_size_disk=${env.SIZE_DISK} \
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;                					&amp;amp;&amp;amp; /var/jenkins_home/extras/terraform destroy -auto-approve&amp;#34;&lt;/span&gt;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+	}
+	post {
+        success {
+          slackSend (
+              color: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;#088A29&amp;#39;&lt;/span&gt;,
+              message: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;:white_check_mark: SUCCESSFUL: Job &amp;#39;${env.JOB_NAME} [${env.BUILD_NUMBER}]&amp;#39; (${env.BUILD_URL})&amp;#34;&lt;/span&gt;)
+        }
+
+        failure {
+          slackSend (
+              color: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;#DF0101&amp;#39;&lt;/span&gt;,
+              message: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;:rotating_light: FAILED: Job &amp;#39;${env.JOB_NAME} [${env.BUILD_NUMBER}]&amp;#39; (${env.BUILD_URL})&amp;#34;&lt;/span&gt;)
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;construindo-e-ou-destruindo-sua-vm&#34;&gt;&lt;strong&gt;Construindo e ou Destruindo sua VM&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Depois de realizar todas as configurações, vamos criar e ou destruir nossas máquinas virtuais.&lt;/p&gt;
+&lt;p&gt;No projeto, vamos contruir &lt;code&gt;APPLY&lt;/code&gt; com parametros.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img58.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Confirme a criação ou destruição do ambiente.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img59.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img60.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Você também pode destruir(remover) as máquinas executando novamente o projeto selecionando o
+&lt;code&gt;DESTROY&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img61.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Uma perfumaria que pode ser feita é o alerta no slack :D&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img63.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;demo&#34;&gt;&lt;strong&gt;Demo&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://youtu.be/SQTXTZx1e7s&#34; title=&#34;Entregando VM&#39;s no VMware vCenter/vSphere com o Jenkins&#34;&gt;&lt;img src=&#34;https://img.youtube.com/vi/SQTXTZx1e7s/0.jpg&#34; alt=&#34;&lt;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;conclusão&#34;&gt;&lt;strong&gt;Conclusão&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;A alguns anos atrás acredito que para a maioria dos Sysadmin&amp;rsquo;s(Ops), SRE&amp;rsquo;s, DevOps Engineer, não importa
+o nome do cargo, criar um fluxo (pipeline) de entrega de infraestrutura seria inimaginavel. Esse foi uma pequena desmonstração do que pode ser feito, uma forte recomendação é ler a documentação do módulo &lt;a href=&#34;https://www.terraform.io/docs/providers/vsphere/index.html&#34;&gt;vSphere&lt;/a&gt; do terraform e conhecer outras configurações que podem ser aplicadas na sua infraestrutura.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Projeto:&lt;/strong&gt; &lt;a href=&#34;https://github.com/fabianoflorentino/terraform-deploy-vm&#34;&gt;https://github.com/fabianoflorentino/terraform-deploy-vm&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Criando um ambiente de desenvolvimento para o Ansible</title>
+      <link>https://fabianoflorentino.codar.info/posts/2020-01-14-ansible_02/</link>
+      <pubDate>Tue, 14 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.codar.info/posts/2020-01-14-ansible_02/</guid>
+      <description>&lt;p&gt;A alguns dias atrás nosso mestre &lt;a href=&#34;https://gomex.me&#34;&gt;@gomex&lt;/a&gt; abriu uma thread no twitter sobre como é
+estar desenvolvendo infraestrutura hoje em dia pelo time de Ops &lt;a href=&#34;https://twitter.com/gomex/status/1215774716138573824?s=21&#34;&gt;Link&lt;/a&gt; e como isso é libertador, e de fato, é uma sensação sem igual para um Sysadmin.&lt;/p&gt;
+&lt;p&gt;Como várias pessoas comentaram eu também não pude deixar de participar. :D,&lt;/p&gt;
+&lt;p&gt;Na ocasião por coincidência estava desenvolvendo uma imagem de container docker para o ansible!&lt;/p&gt;
+&lt;p&gt;Mas por quê?&lt;/p&gt;
+&lt;p&gt;A ideia e criar um ambiente centralizado com o ansible instalado sem a necessidade de &amp;ldquo;sujar&amp;rdquo; o seu sistema operacional corrente com várias ferramentas que usamos durante o desenvolvimento de módulos, roles, tasks e tudo que permeia o desenvolvimento.&lt;/p&gt;
+&lt;p&gt;Nesse artigo vou escrever/descrever uma necessidade própria, então tome esse artigo como um guia e adapte para sua necessidade beleza?! :D&lt;/p&gt;
+&lt;p&gt;Vamos criar uma estrutura de arquivos e diretórios para desenvolver o projeto.&lt;/p&gt;
+&lt;p&gt;Crie um diretório qualquer e dentro desse diretório monte a estrutura de arquivos e diretórios proposto abaixo.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;mkdir new_hosts
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;No final teremos algo assim.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;new_hosts master 3d ➜ tree -L 5
+.
+├── Dockerfile
+├── Makefile
+├── ansible.cfg
+├── inventory
+│   ├── group_vars
+│   │   └── all.yaml
+│   └── invetory.ini
+├── requirements.txt
+├── roles
+│   └── common
+│       ├── handlers
+│       │   └── main.yaml
+│       ├── tasks
+│       │   └── main.yaml
+│       └── templates
+│           ├── 11-hardening.conf.j2
+│           └── ntp.conf.j2
+├── setup.yaml
+└── ssh-keys
+    └── ssh-keygen.sh
+
+8 directories, 12 files
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;requisitos&#34;&gt;Requisitos&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Máquina Virtual
+&lt;ul&gt;
+&lt;li&gt;Ubuntu Server&lt;/li&gt;
+&lt;li&gt;SSH&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;dockerfile&#34;&gt;&lt;strong&gt;Dockerfile&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Com o dockerfile vamos construir a imagem docker com o ansible instalado para centralizar a execução e desenvolvimento do projeto de automação.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-dockerfile&#34; data-lang=&#34;dockerfile&#34;&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;FROM&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt; python:3.7-alpine&lt;/span&gt;&lt;span style=&#34;&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;&#34;&gt;&lt;/span&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;COPY&lt;/span&gt; requirements.txt .&lt;span style=&#34;&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;&#34;&gt;&lt;/span&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;RUN&lt;/span&gt; apk add vim make sshpass openssh gcc g++ libffi-dev openssl openssl-dev &lt;span style=&#34;font-weight:bold;font-style:italic&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;font-weight:bold;font-style:italic&#34;&gt;&lt;/span&gt;  &amp;amp;&amp;amp; adduser --disabled-password --gecos &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt; ansible &lt;span style=&#34;font-weight:bold;font-style:italic&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;font-weight:bold;font-style:italic&#34;&gt;&lt;/span&gt;  &amp;amp;&amp;amp; pip install -r requirements.txt&lt;span style=&#34;&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;&#34;&gt;&lt;/span&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;USER&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt; ansible&lt;/span&gt;&lt;span style=&#34;&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;&#34;&gt;&lt;/span&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;WORKDIR&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt; /ansible&lt;/span&gt;&lt;span style=&#34;&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;&#34;&gt;&lt;/span&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;ENTRYPOINT&lt;/span&gt; [ &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;sh&amp;#34;&lt;/span&gt; ]&lt;span style=&#34;&#34;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;makefile&#34;&gt;&lt;strong&gt;Makefile&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Com o &lt;a href=&#34;https://www.gnu.org/software/make/manual/make.html&#34;&gt;make&lt;/a&gt; criamos uma forma de centralizar e automatizar os comandos que utilizamos repetidas vezes ao longo do desenvolvimento.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-makefile&#34; data-lang=&#34;makefile&#34;&gt;.PHONY: help
+.DEFAULT_GOAL := help
+
+help:
+	@grep -E &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;^[0-9a-zA-Z_-]+:.*?## .*$$&amp;#39;&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;$(&lt;/span&gt;MAKEFILE_LIST&lt;span style=&#34;font-weight:bold&#34;&gt;)&lt;/span&gt; | awk &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;BEGIN {FS = &amp;#34;:.*?## &amp;#34;}; {printf &amp;#34;\033[36m%-25s\033[0m %s\n&amp;#34;, $$1, $$2, $$3, $$4, $$5}&amp;#39;&lt;/span&gt;
+
+build: &lt;span style=&#34;font-style:italic&#34;&gt;## Make image for use terraform
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;	@docker build --no-cache -t fabianoflorentino/ansible .
+
+run: &lt;span style=&#34;font-style:italic&#34;&gt;## Start Terraform
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;	@docker run -it --name ansible -v &lt;span style=&#34;font-weight:bold;font-style:italic&#34;&gt;${&lt;/span&gt;PWD&lt;span style=&#34;font-weight:bold;font-style:italic&#34;&gt;}&lt;/span&gt;:/ansible --entrypoint &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt; fabianoflorentino/ansible sh
+
+rm: &lt;span style=&#34;font-style:italic&#34;&gt;## Remove container
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;	@docker container rm -f ansible
+
+rmi: &lt;span style=&#34;font-style:italic&#34;&gt;## Remove untagged images
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;	@docker rmi -f &lt;span style=&#34;font-weight:bold&#34;&gt;$(&lt;/span&gt;docker images | grep &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;^&amp;lt;none&amp;gt;&amp;#34;&lt;/span&gt; |cut -d&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt; -f50&lt;span style=&#34;font-weight:bold&#34;&gt;)&lt;/span&gt;
+
+ansible-test: &lt;span style=&#34;font-style:italic&#34;&gt;## Test of ansible roles to apply
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;	@ansible-playbook -i inventory/invetory.ini -u supervisor -b -e ssh_connection_user=supervisor setup.yaml -C
+
+ansible-run: &lt;span style=&#34;font-style:italic&#34;&gt;## Test of ansible roles to apply
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;	@ansible-playbook -i inventory/invetory.ini -u supervisor -b -e ssh_connection_user=supervisor setup.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;ansiblecfg&#34;&gt;&lt;strong&gt;ansible.cfg&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Nesse arquivo determinamos alguns parametros para melhorar a execução do ansible.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;[defaults]&lt;/span&gt;
+gathering = &lt;span style=&#34;font-style:italic&#34;&gt;smart&lt;/span&gt;
+forks               = &lt;span style=&#34;font-style:italic&#34;&gt;5&lt;/span&gt;
+callback_whitelist  = &lt;span style=&#34;font-style:italic&#34;&gt;timer, mail, profile_tasks&lt;/span&gt;
+host_key_checking   = &lt;span style=&#34;font-style:italic&#34;&gt;False&lt;/span&gt;
+fact_caching_connection = &lt;span style=&#34;font-style:italic&#34;&gt;/tmp/facts_cache&lt;/span&gt;
+fact_caching = &lt;span style=&#34;font-style:italic&#34;&gt;jsonfile&lt;/span&gt;
+fact_caching_timeout = &lt;span style=&#34;font-style:italic&#34;&gt;7200&lt;/span&gt;
+gather_subset=&lt;span style=&#34;font-style:italic&#34;&gt;!hardware&lt;/span&gt;
+
+error_on_missing_handler = &lt;span style=&#34;font-style:italic&#34;&gt;True&lt;/span&gt;
+sudo_flags = &lt;span style=&#34;font-style:italic&#34;&gt;-H -S -n&lt;/span&gt;
+
+&lt;span style=&#34;font-weight:bold&#34;&gt;[ssh_connection]&lt;/span&gt;
+ssh_args     = &lt;span style=&#34;font-style:italic&#34;&gt;-C -o ControlMaster=auto -o ControlPersist=18000&lt;/span&gt;
+control_path = &lt;span style=&#34;font-style:italic&#34;&gt;%(directory)s/ansible-ssh-%%h-%%p-%%r&lt;/span&gt;
+pipelining   = &lt;span style=&#34;font-style:italic&#34;&gt;True&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;inventory&#34;&gt;&lt;strong&gt;inventory&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Diretório onde configuramos os hosts que serão gerenciados pelo ansible.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;mkdir -p inventory/group_vars
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;├── inventory
+│   ├── group_vars
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;allyaml&#34;&gt;&lt;strong&gt;all.yaml&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;Aqui determinamos algumas variáveis que será utilizada pelo group de hosts &lt;strong&gt;[all]&lt;/strong&gt; que fica no arquivo &lt;strong&gt;inventory.ini&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;vim inventory/group_vars/all.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;├── inventory
+│   ├── group_vars
+│   │   └── all.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;---
+&lt;span style=&#34;font-weight:bold&#34;&gt;packages&lt;/span&gt;:
+  &lt;span style=&#34;font-weight:bold&#34;&gt;to_install&lt;/span&gt;:
+    - vim
+    - tree
+    - netcat
+    - tcpdump
+    - nmap
+    - ntp
+  &lt;span style=&#34;font-weight:bold&#34;&gt;to_remove&lt;/span&gt;:
+    &lt;span style=&#34;font-style:italic&#34;&gt;-
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;services:&lt;/span&gt;
+  &lt;span style=&#34;font-weight:bold&#34;&gt;to_enable&lt;/span&gt;:
+    - ntp
+  &lt;span style=&#34;font-weight:bold&#34;&gt;to_disable&lt;/span&gt;:
+
+&lt;span style=&#34;font-weight:bold&#34;&gt;ntp_servers&lt;/span&gt;:
+  - &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;server 0.br.pool.ntp.org&amp;#34;&lt;/span&gt;
+  - &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;server 1.br.pool.ntp.org&amp;#34;&lt;/span&gt;
+  - &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;server 2.br.pool.ntp.org&amp;#34;&lt;/span&gt;
+  - &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;server 3.br.pool.ntp.org&amp;#34;&lt;/span&gt;
+
+&lt;span style=&#34;font-weight:bold&#34;&gt;hardening&lt;/span&gt;:
+  &lt;span style=&#34;font-weight:bold&#34;&gt;net_ipv6_conf_all_disable_ipv6&lt;/span&gt;: 1
+  &lt;span style=&#34;font-weight:bold&#34;&gt;net_ipv6_conf_default_disable_ipv6&lt;/span&gt;: 1
+  &lt;span style=&#34;font-weight:bold&#34;&gt;net_ipv6_conf_lo_disable_ipv6&lt;/span&gt;: 1
+  &lt;span style=&#34;font-weight:bold&#34;&gt;net_ipv4_conf_all_accept_source_route&lt;/span&gt;: 0
+  &lt;span style=&#34;font-weight:bold&#34;&gt;ipv4_conf_all_forwarding&lt;/span&gt;: 0
+  &lt;span style=&#34;font-weight:bold&#34;&gt;net_ipv4_conf_all_accept_redirects&lt;/span&gt;: 0
+  &lt;span style=&#34;font-weight:bold&#34;&gt;net_ipv4_conf_all_secure_redirects&lt;/span&gt;: 0
+  &lt;span style=&#34;font-weight:bold&#34;&gt;net_ipv4_conf_all_send_redirects&lt;/span&gt;: 0
+  &lt;span style=&#34;font-weight:bold&#34;&gt;net_ipv4_conf_all_rp_filter&lt;/span&gt;: 0
+  &lt;span style=&#34;font-weight:bold&#34;&gt;net_ipv4_icmp_echo_ignore_all&lt;/span&gt;: 0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;inventoryini&#34;&gt;&lt;strong&gt;inventory.ini&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;Arquivo com os hosts e grupo de hosts que o ansible irá gerenciar.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;vim invetory/inventory.ini
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;├── inventory
+│   └── invetory.ini
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-ini&#34; data-lang=&#34;ini&#34;&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;[all]&lt;/span&gt;
+
+vm-1 ansible_host=&lt;span style=&#34;font-style:italic&#34;&gt;192.168.7.100&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;requirementstxt&#34;&gt;&lt;strong&gt;requirements.txt&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;Lista com os módulos que serão instalados junto com o ansible para o funcionamento adequado.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-txt&#34; data-lang=&#34;txt&#34;&gt;# Note: this requirements.txt file is used to specify what dependencies are
+# needed to make the package run rather than for deployment of a tested set of
+# packages.  Thus, this should be the loosest set possible (only required
+# packages, not optional ones, and with the widest range of versions that could
+# be suitable)
+crypto
+cryptography
+ansible
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;roles&#34;&gt;&lt;strong&gt;roles&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Diretório com o conjunto de roles/tasks que o ansible irá aplicar nos hosts gerenciados.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;├── roles
+│   └── common
+│       ├── handlers
+│       │   └── main.yaml
+│       ├── tasks
+│       │   └── main.yaml
+│       └── templates
+│           ├── 11-hardening.conf.j2
+│           └── ntp.conf.j2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;mkdir -p roles/common/{tasks,handlers,templates}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;O diretório &lt;strong&gt;common&lt;/strong&gt; é a role e conjunto de tasks que iremos utilizar para executar o projeto no host(vm) de desenvolvimento.&lt;/p&gt;
+&lt;h3 id=&#34;tasks---mainyaml&#34;&gt;&lt;strong&gt;tasks - main.yaml&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;Conjunto de tasks que será executada nos hosts gerenciados pelo ansible.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&amp;ldquo;Update System&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;Install Essential Packages&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;Enable Essential Services&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;Configure NTP service&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;Hardening - Kernel Parameters&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;vim roles/common/tasks/main.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;├── roles
+│   └── common
+│       ├── tasks
+│       │   └── main.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;---
+- &lt;span style=&#34;font-weight:bold&#34;&gt;name&lt;/span&gt;: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Update System&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;font-weight:bold&#34;&gt;package&lt;/span&gt;:
+    &lt;span style=&#34;font-weight:bold&#34;&gt;state&lt;/span&gt;: latest
+    &lt;span style=&#34;font-weight:bold&#34;&gt;name&lt;/span&gt;: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;*&amp;#34;&lt;/span&gt;
+
+- &lt;span style=&#34;font-weight:bold&#34;&gt;name&lt;/span&gt;: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Install Essential Packages&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;font-weight:bold&#34;&gt;apt&lt;/span&gt;:
+    &lt;span style=&#34;font-weight:bold&#34;&gt;state&lt;/span&gt;: present
+    &lt;span style=&#34;font-weight:bold&#34;&gt;name&lt;/span&gt;: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;{{ item }}&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;font-weight:bold&#34;&gt;loop&lt;/span&gt;: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;{{ packages.to_install }}&amp;#34;&lt;/span&gt;
+
+- &lt;span style=&#34;font-weight:bold&#34;&gt;name&lt;/span&gt;: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Enable Essential Services&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;font-weight:bold&#34;&gt;apt&lt;/span&gt;:
+    &lt;span style=&#34;font-weight:bold&#34;&gt;state&lt;/span&gt;: present
+    &lt;span style=&#34;font-weight:bold&#34;&gt;name&lt;/span&gt;: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;{{ item }}&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;font-weight:bold&#34;&gt;loop&lt;/span&gt;: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;{{ services.to_enable }}&amp;#34;&lt;/span&gt;
+
+- &lt;span style=&#34;font-weight:bold&#34;&gt;name&lt;/span&gt;: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Configure NTP service&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;font-weight:bold&#34;&gt;template&lt;/span&gt;:
+    &lt;span style=&#34;font-weight:bold&#34;&gt;src&lt;/span&gt;: ntp.conf.j2
+    &lt;span style=&#34;font-weight:bold&#34;&gt;dest&lt;/span&gt;: /etc/ntp.conf
+    &lt;span style=&#34;font-weight:bold&#34;&gt;owner&lt;/span&gt;: root
+    &lt;span style=&#34;font-weight:bold&#34;&gt;mode&lt;/span&gt;: 0644
+  &lt;span style=&#34;font-weight:bold&#34;&gt;notify&lt;/span&gt;: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Restart NTP service&amp;#34;&lt;/span&gt;
+
+- &lt;span style=&#34;font-weight:bold&#34;&gt;name&lt;/span&gt;: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Hardening - Kernel Parameters&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;font-weight:bold&#34;&gt;template&lt;/span&gt;:
+    &lt;span style=&#34;font-weight:bold&#34;&gt;src&lt;/span&gt;: 11-hardening.conf.j2
+    &lt;span style=&#34;font-weight:bold&#34;&gt;dest&lt;/span&gt;: /etc/sysctl.d/11-hardening.conf
+    &lt;span style=&#34;font-weight:bold&#34;&gt;owner&lt;/span&gt;: root
+    &lt;span style=&#34;font-weight:bold&#34;&gt;group&lt;/span&gt;: root
+    &lt;span style=&#34;font-weight:bold&#34;&gt;mode&lt;/span&gt;: 0644
+  &lt;span style=&#34;font-weight:bold&#34;&gt;notify&lt;/span&gt;: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Apply Kernel Parameters&amp;#34;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;templates&#34;&gt;&lt;strong&gt;templates&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;Arquivos templates com variáveis para criar os arquivos de configuração dinamicamente.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;├── roles
+│   └── common
+│       └── templates
+│           ├── 11-hardening.conf.j2
+│           └── ntp.conf.j2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;vim roles/common/templates/11-hardening.conf.j2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;h3 id=&#34;11-hardeningconf&#34;&gt;&lt;strong&gt;11-hardening.conf&lt;/strong&gt;&lt;/h3&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;{% highlight jinja %}
+{% raw %}&lt;/p&gt;
+&lt;h1 id=&#34;-ansible_managed-&#34;&gt;{{ ansible_managed }}&lt;/h1&gt;
+&lt;p&gt;ipv4.conf.all.forwarding = {{ hardening.ipv4_conf_all_forwarding}}
+net.ipv4.conf.all.accept_source_route = {{ hardening.net_ipv4_conf_all_accept_source_route}}
+net.ipv4.conf.all.accept_redirects = {{ hardening.net_ipv4_conf_all_accept_redirects }}
+net.ipv4.conf.all.secure_redirects = {{ hardening.net_ipv4_conf_all_secure_redirects }}
+net.ipv4.conf.all.send_redirects = {{ hardening.net_ipv4_conf_all_send_redirects }}
+net.ipv4.conf.all.rp_filter = {{ hardening.net_ipv4_conf_all_rp_filter }}
+net.ipv4.icmp_echo_ignore_all = {{ hardening.net_ipv4_icmp_echo_ignore_all }}
+net.ipv6.conf.all.disable_ipv6 = {{ hardening.net_ipv6_conf_all_disable_ipv6 }}
+net.ipv6.conf.default.disable_ipv6 = {{ hardening.net_ipv6_conf_default_disable_ipv6}}
+net.ipv6.conf.lo.disable_ipv6 = {{ hardening.net_ipv6_conf_lo_disable_ipv6 }}&lt;/p&gt;
+&lt;p&gt;{% endraw %}
+{% endhighlight %}&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;h3 id=&#34;ntpconf&#34;&gt;&lt;strong&gt;ntp.conf&lt;/strong&gt;&lt;/h3&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;vim roles/common/templates/ntp.conf.j2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;{% highlight jinja %}
+{% raw %}&lt;/p&gt;
+&lt;h1 id=&#34;heading&#34;&gt;&lt;/h1&gt;
+&lt;h1 id=&#34;-ansible_managed--1&#34;&gt;{{ ansible_managed }}&lt;/h1&gt;
+&lt;h1 id=&#34;heading-1&#34;&gt;&lt;/h1&gt;
+&lt;h1 id=&#34;for-more-information-about-this-file-see-the-man-pages&#34;&gt;For more information about this file, see the man pages&lt;/h1&gt;
+&lt;h1 id=&#34;ntpconf5-ntp_acc5-ntp_auth5-ntp_clock5-ntp_misc5-ntp_mon5&#34;&gt;ntp.conf(5), ntp_acc(5), ntp_auth(5), ntp_clock(5), ntp_misc(5), ntp_mon(5).&lt;/h1&gt;
+&lt;p&gt;driftfile /var/lib/ntp/drift&lt;/p&gt;
+&lt;h1 id=&#34;permit-time-synchronization-with-our-time-source-but-do-not&#34;&gt;Permit time synchronization with our time source, but do not&lt;/h1&gt;
+&lt;h1 id=&#34;permit-the-source-to-query-or-modify-the-service-on-this-system&#34;&gt;permit the source to query or modify the service on this system.&lt;/h1&gt;
+&lt;p&gt;restrict default nomodify notrap nopeer noquery&lt;/p&gt;
+&lt;h1 id=&#34;permit-all-access-over-the-loopback-interface--this-could&#34;&gt;Permit all access over the loopback interface.  This could&lt;/h1&gt;
+&lt;h1 id=&#34;be-tightened-as-well-but-to-do-so-would-effect-some-of&#34;&gt;be tightened as well, but to do so would effect some of&lt;/h1&gt;
+&lt;h1 id=&#34;the-administrative-functions&#34;&gt;the administrative functions.&lt;/h1&gt;
+&lt;p&gt;restrict 127.0.0.1
+restrict ::1&lt;/p&gt;
+&lt;h1 id=&#34;hosts-on-local-network-are-less-restricted&#34;&gt;Hosts on local network are less restricted.&lt;/h1&gt;
+&lt;p&gt;#restrict 192.168.1.0 netmask 255.255.255.0 nomodify notrap&lt;/p&gt;
+&lt;h1 id=&#34;use-public-servers-from-the-poolntporg-project&#34;&gt;Use public servers from the pool.ntp.org project.&lt;/h1&gt;
+&lt;h1 id=&#34;please-consider-joining-the-pool-httpwwwpoolntporgjoinhtml&#34;&gt;Please consider joining the pool (&lt;a href=&#34;http://www.pool.ntp.org/join.html)&#34;&gt;http://www.pool.ntp.org/join.html)&lt;/a&gt;.&lt;/h1&gt;
+&lt;p&gt;{% for server in ntp_servers %}
+{{ server }}
+{% endfor %}&lt;/p&gt;
+&lt;p&gt;logfile /var/log/ntp.log&lt;/p&gt;
+&lt;p&gt;#broadcast 192.168.1.255 autokey        # broadcast server
+#broadcastclient                        # broadcast client
+#broadcast 224.0.1.1 autokey            # multicast server
+#multicastclient 224.0.1.1              # multicast client
+#manycastserver 239.255.254.254         # manycast server
+#manycastclient 239.255.254.254 autokey # manycast client&lt;/p&gt;
+&lt;h1 id=&#34;enable-public-key-cryptography&#34;&gt;Enable public key cryptography.&lt;/h1&gt;
+&lt;p&gt;#crypto&lt;/p&gt;
+&lt;p&gt;includefile /etc/ntp/crypto/pw&lt;/p&gt;
+&lt;h1 id=&#34;key-file-containing-the-keys-and-key-identifiers-used-when-operating&#34;&gt;Key file containing the keys and key identifiers used when operating&lt;/h1&gt;
+&lt;h1 id=&#34;with-symmetric-key-cryptography&#34;&gt;with symmetric key cryptography.&lt;/h1&gt;
+&lt;p&gt;keys /etc/ntp/keys&lt;/p&gt;
+&lt;h1 id=&#34;specify-the-key-identifiers-which-are-trusted&#34;&gt;Specify the key identifiers which are trusted.&lt;/h1&gt;
+&lt;p&gt;#trustedkey 4 8 42&lt;/p&gt;
+&lt;h1 id=&#34;specify-the-key-identifier-to-use-with-the-ntpdc-utility&#34;&gt;Specify the key identifier to use with the ntpdc utility.&lt;/h1&gt;
+&lt;p&gt;#requestkey 8&lt;/p&gt;
+&lt;h1 id=&#34;specify-the-key-identifier-to-use-with-the-ntpq-utility&#34;&gt;Specify the key identifier to use with the ntpq utility.&lt;/h1&gt;
+&lt;p&gt;#controlkey 8&lt;/p&gt;
+&lt;h1 id=&#34;enable-writing-of-statistics-records&#34;&gt;Enable writing of statistics records.&lt;/h1&gt;
+&lt;p&gt;#statistics clockstats cryptostats loopstats peerstats&lt;/p&gt;
+&lt;h1 id=&#34;disable-the-monitoring-facility-to-prevent-amplification-attacks-using-ntpdc&#34;&gt;Disable the monitoring facility to prevent amplification attacks using ntpdc&lt;/h1&gt;
+&lt;h1 id=&#34;monlist-command-when-default-restrict-does-not-include-the-noquery-flag-see&#34;&gt;monlist command when default restrict does not include the noquery flag. See&lt;/h1&gt;
+&lt;h1 id=&#34;cve-2013-5211-for-more-details&#34;&gt;CVE-2013-5211 for more details.&lt;/h1&gt;
+&lt;h1 id=&#34;note-monitoring-will-not-be-disabled-with-the-limited-restriction-flag&#34;&gt;Note: Monitoring will not be disabled with the limited restriction flag.&lt;/h1&gt;
+&lt;p&gt;disable monitor&lt;/p&gt;
+&lt;p&gt;{% endraw %}
+{% endhighlight %}&lt;/p&gt;
+&lt;h3 id=&#34;handlers&#34;&gt;&lt;strong&gt;handlers&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;Tarefas configuradas para serem re-executadas caso tenha alguma alteração nas configurações das tasks.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;├── roles
+│   └── common
+│       ├── handlers
+│       │   └── main.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;vim roles/common/handlers/main.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;---
+- &lt;span style=&#34;font-weight:bold&#34;&gt;name&lt;/span&gt;: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Restart NTP service&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;font-weight:bold&#34;&gt;systemd&lt;/span&gt;:
+    &lt;span style=&#34;font-weight:bold&#34;&gt;name&lt;/span&gt;: ntp
+    &lt;span style=&#34;font-weight:bold&#34;&gt;state&lt;/span&gt;: restarted
+    &lt;span style=&#34;font-weight:bold&#34;&gt;enabled&lt;/span&gt;: &lt;span style=&#34;font-weight:bold&#34;&gt;true&lt;/span&gt;
+
+- &lt;span style=&#34;font-weight:bold&#34;&gt;name&lt;/span&gt;: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Apply Kernel Parameters&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;font-weight:bold&#34;&gt;shell&lt;/span&gt;: &lt;span style=&#34;font-style:italic&#34;&gt;|
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;    sysctl --system&lt;/span&gt;
+  &lt;span style=&#34;font-weight:bold&#34;&gt;register&lt;/span&gt;: kernel_parameters
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;setupyaml&#34;&gt;&lt;strong&gt;setup.yaml&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;Playbook que executa o conjuntos de roles que será aplicado nos hosts(vm&amp;rsquo;s) gerenciados pelo ansible.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;new_hosts master 3d ➜ tree -L 5
+.
+├── setup.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;vim new_hosts/setup.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;---
+- &lt;span style=&#34;font-weight:bold&#34;&gt;name&lt;/span&gt;: &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Prepare new Server&amp;#34;&lt;/span&gt;
+  &lt;span style=&#34;font-weight:bold&#34;&gt;hosts&lt;/span&gt;:
+    - all
+  &lt;span style=&#34;font-weight:bold&#34;&gt;roles&lt;/span&gt;:
+    - {&lt;span style=&#34;font-weight:bold&#34;&gt;role: common, tags&lt;/span&gt;: common}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;ssh-keys&#34;&gt;&lt;strong&gt;ssh-keys&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;O ansible faz o gerenciamentos dos hosts através de comunicação ssh para todos os sistemas que o suportam.&lt;/p&gt;
+&lt;p&gt;A título de curiosidade no windows ele cria uma comunicação do tipo &lt;a href=&#34;https://pt.wikipedia.org/wiki/Chamada_de_procedimento_remoto&#34;&gt;RPC(Chamada de Procedimento Remoto)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Criei esse script para gerar o par de chaves ssh que o ansible irá utilizar no container para gerenciar os hosts de destino.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;new_hosts master 3d ➜ tree -L 5
+.
+└── ssh-keys
+    └── ssh-keygen.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;vim ssh-keys/ssh-keygen.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;&#34;&gt;#!/usr/bin/env sh
+&lt;/span&gt;&lt;span style=&#34;&#34;&gt;&lt;/span&gt;
+mkdir /home/ansible/.ssh
+
+ssh-keygen -t rsa -N &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt; -f ./ssh-keys/ansible -C ansible@dev
+
+cp -rf ./ssh-keys/ansible /home/ansible/.ssh/id_rsa
+cp -rf ./ssh-keys/ansible.pub /home/ansible/.ssh/id_rsa.pub
+
+chmod 400 /home/ansible/.ssh/id_rsa
+chmod 644 /home/ansible/.ssh/id_rsa.pub
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Ufa!&lt;/p&gt;
+&lt;p&gt;Depois de montar toda a nossa estrutura, acredito que temos algo assim&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;.
+├── Dockerfile
+├── Makefile
+├── ansible.cfg
+├── inventory
+│   ├── group_vars
+│   │   └── all.yaml
+│   └── invetory.ini
+├── requirements.txt
+├── roles
+│   └── common
+│       ├── handlers
+│       │   └── main.yaml
+│       ├── tasks
+│       │   └── main.yaml
+│       └── templates
+│           ├── 11-hardening.conf.j2
+│           └── ntp.conf.j2
+├── setup.yaml
+└── ssh-keys
+    └── ssh-keygen.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;build&#34;&gt;&lt;strong&gt;Build&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;No mesmo nível onde está o nosso dockerfile vamos construir a imagem com o ansible instalado.&lt;/p&gt;
+&lt;p&gt;Lembra do Makefile? então, vamos utilizar bastente ele agora.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;make help
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;../../images/img20.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;make build
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Esse commando está fazendo o mesmo que:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;docker build --no-cache -t fabianoflorentino/ansible .
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Melhor né? :D, automação da automação!&lt;/p&gt;
+&lt;p&gt;e assim para todos os comandos que iremos utilizar, para verificar a sintaxe dos comandos volta lá no arquivo Makefile e veja o que cada comando está executando beleza? :D&lt;/p&gt;
+&lt;p&gt;No final se tudo ocorreu bem teremos a seguinte mensagem:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;Successfully built 3894bf22ae0d
+Successfully tagged fabianoflorentino/ansible:latest
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;../../images/img21.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;ansible&#34;&gt;&lt;strong&gt;Ansible&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Com a imagem pronta vamos iniciar o container para utilizamos o ansible de forma isolada em um container mas interagindo com o nosso projeto.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;make run
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;../../images/img22.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Como de dentro do container estamos conseguindo acessar os arquivos do projeto?&lt;/p&gt;
+&lt;p&gt;A forma como estamos executando o container. Na execução estamos montando o diretório corrente dentro do container e acessamos o container através do shell sh.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;docker run -it --name ansible -v &lt;span style=&#34;font-weight:bold;font-style:italic&#34;&gt;${&lt;/span&gt;PWD&lt;span style=&#34;font-weight:bold;font-style:italic&#34;&gt;}&lt;/span&gt;:/ansible --entrypoint &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt; fabianoflorentino/ansible sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;ssh&#34;&gt;&lt;strong&gt;SSH&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;De dentro do container execute o script que cria o par de chaves ssh para comunicação com os hosts.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;sh ssh-keys/ssh-keygen.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;../../images/img23.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Transfira a chave ssh publica para o(s) host(s) que serão gerenciados.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;ssh-copy-id -i /home/ansible/.ssh/id_rsa.pub supervisor@192.168.7.100
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;../../images/img24.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Teste a comunicação com o(s) host(s)&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;ansible -i inventory/invetory.ini all -u supervisor -b -m ping
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;../../images/img25.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;deploy-da-vm&#34;&gt;&lt;strong&gt;Deploy da VM&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Com a comunicação estabelecida podemos aplicar a(s) roles que foi desenvolvida nesse projeto no caso a role &lt;strong&gt;common&lt;/strong&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;make ansible-test
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Esse comando irá fazer o teste de execução das tasks.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;../../images/img26.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;O que estiver em amarelo o ansible irá executar a alteração o que estiver em verde é porque a ação esperada já foi executada ou está de acordo com a task.&lt;/p&gt;
+&lt;p&gt;Feito o teste, podemos aplicar realmente as alterações no host(s)&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;make ansible-run
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;../../images/img27.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;idempotência&#34;&gt;&lt;strong&gt;Idempotência&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Uma boa prática é sempre buscar &lt;a href=&#34;https://pt.wikipedia.org/wiki/Idempot%C3%AAncia&#34;&gt;Idempotência&lt;/a&gt; na execução da sua gerencia de configuração, uma vez aplicada aquele conjunto de configuração ele só poderá ser modificado caso aja modificação no código do seu projeto, do contrário não importa quantas vezes você executar o ansible, ele sempre terá que aplicar as mesmas configurações previamente configuradas.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;make ansible-run
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;../../images/img28.png&#34; alt=&#34;&lt;&gt;&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;demo&#34;&gt;&lt;strong&gt;Demo&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://youtu.be/knIVwuF16zI&#34; title=&#34;Criando um ambiente de desenvolvimento para o Ansible&#34;&gt;&lt;img src=&#34;https://img.youtube.com/vi/knIVwuF16zI/0.jpg&#34; alt=&#34;&lt;&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;conclusão&#34;&gt;&lt;strong&gt;Conclusão&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Como mencionanei no começo do artigo o &lt;a href=&#34;https://gomex.me&#34;&gt;@gomex&lt;/a&gt; iniciou um thread muito bacana sobre como nós antigos Sysadmin(Ops) agora SRE&amp;rsquo;s, DevOps Engineer, Eng. DevOps e afins não importa o nome, temos a satisfação de estar entregando infraestrutura como código, criando ambiente de desenvolvimento como o citado ao longo desse artigo.&lt;/p&gt;
+&lt;p&gt;É muito legal ver uma área admirada por muitos no mundo de tecnologia se transformar radicalmente. Bom,espero ajudar bastante gente com esse artigo.&lt;/p&gt;
+&lt;p&gt;Ah! ia me esquecendo, parte do que demonstrei aqui com o Makefile aprendi pertubando muito o &lt;a href=&#34;http://igordcsouza.github.io/&#34;&gt;@igorsouza&lt;/a&gt; vlw d++ mano :D!&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Projeto:&lt;/strong&gt; &lt;a href=&#34;http://bit.ly/2Ns2ZRs&#34;&gt;http://bit.ly/2Ns2ZRs&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

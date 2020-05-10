@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Fabiano Florentino</title>
+    <link>https://fabianoflorentino.codar.info/tags/</link>
+    <description>Recent content in Tags on Fabiano Florentino</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt-br</language>
+    <lastBuildDate>Wed, 22 Apr 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://fabianoflorentino.codar.info/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>sobre min</title>
+      <link>https://fabianoflorentino.codar.info/tags/sobre-min/</link>
+      <pubDate>Wed, 22 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.codar.info/tags/sobre-min/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>automação</title>
+      <link>https://fabianoflorentino.codar.info/tags/automa%C3%A7%C3%A3o/</link>
+      <pubDate>Sat, 21 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.codar.info/tags/automa%C3%A7%C3%A3o/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>container</title>
+      <link>https://fabianoflorentino.codar.info/tags/container/</link>
+      <pubDate>Sat, 21 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.codar.info/tags/container/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jenkins</title>
+      <link>https://fabianoflorentino.codar.info/tags/jenkins/</link>
+      <pubDate>Sat, 21 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.codar.info/tags/jenkins/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>terraform</title>
+      <link>https://fabianoflorentino.codar.info/tags/terraform/</link>
+      <pubDate>Sat, 21 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.codar.info/tags/terraform/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ansible</title>
+      <link>https://fabianoflorentino.codar.info/tags/ansible/</link>
+      <pubDate>Tue, 14 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.codar.info/tags/ansible/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>desenvolvimento</title>
+      <link>https://fabianoflorentino.codar.info/tags/desenvolvimento/</link>
+      <pubDate>Tue, 14 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.codar.info/tags/desenvolvimento/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

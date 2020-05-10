@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+
+    <meta name="author" content="Fabiano Florentino">
+    <meta name="description" content="A alguns dias atrás nosso mestre @gomex abriu uma thread no twitter sobre como é estar desenvolvendo infraestrutura hoje em dia pelo time de Ops Link e como isso é libertador, e de fato, é uma sensação sem igual para um Sysadmin.
+Como várias pessoas comentaram eu também não pude deixar de participar. :D,
+Na ocasião por coincidência estava desenvolvendo uma imagem de container docker para o ansible!
+Mas por quê?">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Criando um ambiente de desenvolvimento para o Ansible"/>
+<meta name="twitter:description" content="A alguns dias atrás nosso mestre @gomex abriu uma thread no twitter sobre como é estar desenvolvendo infraestrutura hoje em dia pelo time de Ops Link e como isso é libertador, e de fato, é uma sensação sem igual para um Sysadmin.
+Como várias pessoas comentaram eu também não pude deixar de participar. :D,
+Na ocasião por coincidência estava desenvolvendo uma imagem de container docker para o ansible!
+Mas por quê?"/>
+
+    <meta property="og:title" content="Criando um ambiente de desenvolvimento para o Ansible" />
+<meta property="og:description" content="A alguns dias atrás nosso mestre @gomex abriu uma thread no twitter sobre como é estar desenvolvendo infraestrutura hoje em dia pelo time de Ops Link e como isso é libertador, e de fato, é uma sensação sem igual para um Sysadmin.
+Como várias pessoas comentaram eu também não pude deixar de participar. :D,
+Na ocasião por coincidência estava desenvolvendo uma imagem de container docker para o ansible!
+Mas por quê?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fabianoflorentino.codar.info/posts/2020-01-14-ansible_02/" />
+<meta property="article:published_time" content="2020-01-14T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-01-14T00:00:00+00:00" />
+
+
+    
+      <base href="https://fabianoflorentino.codar.info/posts/2020-01-14-ansible_02/">
+    
+    <title>
+  Criando um ambiente de desenvolvimento para o Ansible · Fabiano Florentino
+</title>
+
+    
+      <link rel="canonical" href="https://fabianoflorentino.codar.info/posts/2020-01-14-ansible_02/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://fabianoflorentino.codar.info/css/coder.min.a4f332213a21ce8eb521670c614470c58923aaaf385e2a73982c31dd7642decb.css" integrity="sha256-pPMyITohzo61IWcMYURwxYkjqq84XipzmCwx3XZC3ss=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+      <link rel="stylesheet" href="https://fabianoflorentino.codar.info/css/custom.css" />
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://fabianoflorentino.codar.info/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://fabianoflorentino.codar.info/img/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.70.0" />
+  </head>
+
+  
+  
+  <body class="colorscheme-light">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://fabianoflorentino.codar.info/">
+      Fabiano Florentino
+    </a>
+    
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://fabianoflorentino.codar.info/posts/">Artigos</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://fabianoflorentino.codar.info/about/">Sobre</a>
+          </li>
+        
+      
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Criando um ambiente de desenvolvimento para o Ansible</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2020-01-14T00:00:00Z'>
+                January 14, 2020
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              10-minute read
+            </span>
+          </div>
+          <div class="categories">
+  <i class="fas fa-folder"></i>
+    <a href="https://fabianoflorentino.codar.info/categories/automa%C3%A7%C3%A3o/">automação</a>
+      <span class="separator">•</span>
+    <a href="https://fabianoflorentino.codar.info/categories/ansible/">ansible</a>
+      <span class="separator">•</span>
+    <a href="https://fabianoflorentino.codar.info/categories/desenvolvimento/">desenvolvimento</a>
+      <span class="separator">•</span>
+    <a href="https://fabianoflorentino.codar.info/categories/container/">container</a></div>
+
+          <div class="tags">
+  <i class="fas fa-tag"></i>
+    <a href="https://fabianoflorentino.codar.info/tags/automa%C3%A7%C3%A3o/">automação</a>
+      <span class="separator">•</span>
+    <a href="https://fabianoflorentino.codar.info/tags/ansible/">ansible</a>
+      <span class="separator">•</span>
+    <a href="https://fabianoflorentino.codar.info/tags/desenvolvimento/">desenvolvimento</a>
+      <span class="separator">•</span>
+    <a href="https://fabianoflorentino.codar.info/tags/container/">container</a></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+        <p>A alguns dias atrás nosso mestre <a href="https://gomex.me">@gomex</a> abriu uma thread no twitter sobre como é
+estar desenvolvendo infraestrutura hoje em dia pelo time de Ops <a href="https://twitter.com/gomex/status/1215774716138573824?s=21">Link</a> e como isso é libertador, e de fato, é uma sensação sem igual para um Sysadmin.</p>
+<p>Como várias pessoas comentaram eu também não pude deixar de participar. :D,</p>
+<p>Na ocasião por coincidência estava desenvolvendo uma imagem de container docker para o ansible!</p>
+<p>Mas por quê?</p>
+<p>A ideia e criar um ambiente centralizado com o ansible instalado sem a necessidade de &ldquo;sujar&rdquo; o seu sistema operacional corrente com várias ferramentas que usamos durante o desenvolvimento de módulos, roles, tasks e tudo que permeia o desenvolvimento.</p>
+<p>Nesse artigo vou escrever/descrever uma necessidade própria, então tome esse artigo como um guia e adapte para sua necessidade beleza?! :D</p>
+<p>Vamos criar uma estrutura de arquivos e diretórios para desenvolver o projeto.</p>
+<p>Crie um diretório qualquer e dentro desse diretório monte a estrutura de arquivos e diretórios proposto abaixo.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir new_hosts
+</code></pre></div><p>No final teremos algo assim.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">new_hosts master 3d ➜ tree -L 5
+.
+├── Dockerfile
+├── Makefile
+├── ansible.cfg
+├── inventory
+│   ├── group_vars
+│   │   └── all.yaml
+│   └── invetory.ini
+├── requirements.txt
+├── roles
+│   └── common
+│       ├── handlers
+│       │   └── main.yaml
+│       ├── tasks
+│       │   └── main.yaml
+│       └── templates
+│           ├── 11-hardening.conf.j2
+│           └── ntp.conf.j2
+├── setup.yaml
+└── ssh-keys
+    └── ssh-keygen.sh
+
+8 directories, 12 files
+</code></pre></div><h2 id="requisitos">Requisitos</h2>
+<ul>
+<li>Máquina Virtual
+<ul>
+<li>Ubuntu Server</li>
+<li>SSH</li>
+</ul>
+</li>
+</ul>
+<h2 id="dockerfile"><strong>Dockerfile</strong></h2>
+<p>Com o dockerfile vamos construir a imagem docker com o ansible instalado para centralizar a execução e desenvolvimento do projeto de automação.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-dockerfile" data-lang="dockerfile"><span style="font-weight:bold">FROM</span><span style="font-style:italic"> python:3.7-alpine</span><span style="">
+</span><span style="">
+</span><span style=""></span><span style="font-weight:bold">COPY</span> requirements.txt .<span style="">
+</span><span style="">
+</span><span style=""></span><span style="font-weight:bold">RUN</span> apk add vim make sshpass openssh gcc g++ libffi-dev openssl openssl-dev <span style="font-weight:bold;font-style:italic">\
+</span><span style="font-weight:bold;font-style:italic"></span>  &amp;&amp; adduser --disabled-password --gecos <span style="font-style:italic">&#34;&#34;</span> ansible <span style="font-weight:bold;font-style:italic">\
+</span><span style="font-weight:bold;font-style:italic"></span>  &amp;&amp; pip install -r requirements.txt<span style="">
+</span><span style="">
+</span><span style=""></span><span style="font-weight:bold">USER</span><span style="font-style:italic"> ansible</span><span style="">
+</span><span style="">
+</span><span style=""></span><span style="font-weight:bold">WORKDIR</span><span style="font-style:italic"> /ansible</span><span style="">
+</span><span style="">
+</span><span style=""></span><span style="font-weight:bold">ENTRYPOINT</span> [ <span style="font-style:italic">&#34;sh&#34;</span> ]<span style="">
+</span></code></pre></div><h2 id="makefile"><strong>Makefile</strong></h2>
+<p>Com o <a href="https://www.gnu.org/software/make/manual/make.html">make</a> criamos uma forma de centralizar e automatizar os comandos que utilizamos repetidas vezes ao longo do desenvolvimento.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile">.PHONY: help
+.DEFAULT_GOAL := help
+
+help:
+	@grep -E <span style="font-style:italic">&#39;^[0-9a-zA-Z_-]+:.*?## .*$$&#39;</span> <span style="font-weight:bold">$(</span>MAKEFILE_LIST<span style="font-weight:bold">)</span> | awk <span style="font-style:italic">&#39;BEGIN {FS = &#34;:.*?## &#34;}; {printf &#34;\033[36m%-25s\033[0m %s\n&#34;, $$1, $$2, $$3, $$4, $$5}&#39;</span>
+
+build: <span style="font-style:italic">## Make image for use terraform
+</span><span style="font-style:italic"></span>	@docker build --no-cache -t fabianoflorentino/ansible .
+
+run: <span style="font-style:italic">## Start Terraform
+</span><span style="font-style:italic"></span>	@docker run -it --name ansible -v <span style="font-weight:bold;font-style:italic">${</span>PWD<span style="font-weight:bold;font-style:italic">}</span>:/ansible --entrypoint <span style="font-style:italic">&#34;&#34;</span> fabianoflorentino/ansible sh
+
+rm: <span style="font-style:italic">## Remove container
+</span><span style="font-style:italic"></span>	@docker container rm -f ansible
+
+rmi: <span style="font-style:italic">## Remove untagged images
+</span><span style="font-style:italic"></span>	@docker rmi -f <span style="font-weight:bold">$(</span>docker images | grep <span style="font-style:italic">&#34;^&lt;none&gt;&#34;</span> |cut -d<span style="font-style:italic">&#34; &#34;</span> -f50<span style="font-weight:bold">)</span>
+
+ansible-test: <span style="font-style:italic">## Test of ansible roles to apply
+</span><span style="font-style:italic"></span>	@ansible-playbook -i inventory/invetory.ini -u supervisor -b -e ssh_connection_user=supervisor setup.yaml -C
+
+ansible-run: <span style="font-style:italic">## Test of ansible roles to apply
+</span><span style="font-style:italic"></span>	@ansible-playbook -i inventory/invetory.ini -u supervisor -b -e ssh_connection_user=supervisor setup.yaml
+</code></pre></div><h2 id="ansiblecfg"><strong>ansible.cfg</strong></h2>
+<p>Nesse arquivo determinamos alguns parametros para melhorar a execução do ansible.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="font-weight:bold">[defaults]</span>
+gathering = <span style="font-style:italic">smart</span>
+forks               = <span style="font-style:italic">5</span>
+callback_whitelist  = <span style="font-style:italic">timer, mail, profile_tasks</span>
+host_key_checking   = <span style="font-style:italic">False</span>
+fact_caching_connection = <span style="font-style:italic">/tmp/facts_cache</span>
+fact_caching = <span style="font-style:italic">jsonfile</span>
+fact_caching_timeout = <span style="font-style:italic">7200</span>
+gather_subset=<span style="font-style:italic">!hardware</span>
+
+error_on_missing_handler = <span style="font-style:italic">True</span>
+sudo_flags = <span style="font-style:italic">-H -S -n</span>
+
+<span style="font-weight:bold">[ssh_connection]</span>
+ssh_args     = <span style="font-style:italic">-C -o ControlMaster=auto -o ControlPersist=18000</span>
+control_path = <span style="font-style:italic">%(directory)s/ansible-ssh-%%h-%%p-%%r</span>
+pipelining   = <span style="font-style:italic">True</span>
+</code></pre></div><h2 id="inventory"><strong>inventory</strong></h2>
+<p>Diretório onde configuramos os hosts que serão gerenciados pelo ansible.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir -p inventory/group_vars
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">├── inventory
+│   ├── group_vars
+</code></pre></div><h3 id="allyaml"><strong>all.yaml</strong></h3>
+<p>Aqui determinamos algumas variáveis que será utilizada pelo group de hosts <strong>[all]</strong> que fica no arquivo <strong>inventory.ini</strong></p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim inventory/group_vars/all.yaml
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">├── inventory
+│   ├── group_vars
+│   │   └── all.yaml
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">---
+<span style="font-weight:bold">packages</span>:
+  <span style="font-weight:bold">to_install</span>:
+    - vim
+    - tree
+    - netcat
+    - tcpdump
+    - nmap
+    - ntp
+  <span style="font-weight:bold">to_remove</span>:
+    <span style="font-style:italic">-
+</span><span style="font-style:italic">
+</span><span style="font-style:italic">services:</span>
+  <span style="font-weight:bold">to_enable</span>:
+    - ntp
+  <span style="font-weight:bold">to_disable</span>:
+
+<span style="font-weight:bold">ntp_servers</span>:
+  - <span style="font-style:italic">&#34;server 0.br.pool.ntp.org&#34;</span>
+  - <span style="font-style:italic">&#34;server 1.br.pool.ntp.org&#34;</span>
+  - <span style="font-style:italic">&#34;server 2.br.pool.ntp.org&#34;</span>
+  - <span style="font-style:italic">&#34;server 3.br.pool.ntp.org&#34;</span>
+
+<span style="font-weight:bold">hardening</span>:
+  <span style="font-weight:bold">net_ipv6_conf_all_disable_ipv6</span>: 1
+  <span style="font-weight:bold">net_ipv6_conf_default_disable_ipv6</span>: 1
+  <span style="font-weight:bold">net_ipv6_conf_lo_disable_ipv6</span>: 1
+  <span style="font-weight:bold">net_ipv4_conf_all_accept_source_route</span>: 0
+  <span style="font-weight:bold">ipv4_conf_all_forwarding</span>: 0
+  <span style="font-weight:bold">net_ipv4_conf_all_accept_redirects</span>: 0
+  <span style="font-weight:bold">net_ipv4_conf_all_secure_redirects</span>: 0
+  <span style="font-weight:bold">net_ipv4_conf_all_send_redirects</span>: 0
+  <span style="font-weight:bold">net_ipv4_conf_all_rp_filter</span>: 0
+  <span style="font-weight:bold">net_ipv4_icmp_echo_ignore_all</span>: 0
+</code></pre></div><h3 id="inventoryini"><strong>inventory.ini</strong></h3>
+<p>Arquivo com os hosts e grupo de hosts que o ansible irá gerenciar.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim invetory/inventory.ini
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">├── inventory
+│   └── invetory.ini
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="font-weight:bold">[all]</span>
+
+vm-1 ansible_host=<span style="font-style:italic">192.168.7.100</span>
+</code></pre></div><h3 id="requirementstxt"><strong>requirements.txt</strong></h3>
+<p>Lista com os módulos que serão instalados junto com o ansible para o funcionamento adequado.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt"># Note: this requirements.txt file is used to specify what dependencies are
+# needed to make the package run rather than for deployment of a tested set of
+# packages.  Thus, this should be the loosest set possible (only required
+# packages, not optional ones, and with the widest range of versions that could
+# be suitable)
+crypto
+cryptography
+ansible
+</code></pre></div><h2 id="roles"><strong>roles</strong></h2>
+<p>Diretório com o conjunto de roles/tasks que o ansible irá aplicar nos hosts gerenciados.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">├── roles
+│   └── common
+│       ├── handlers
+│       │   └── main.yaml
+│       ├── tasks
+│       │   └── main.yaml
+│       └── templates
+│           ├── 11-hardening.conf.j2
+│           └── ntp.conf.j2
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir -p roles/common/{tasks,handlers,templates}
+</code></pre></div><p>O diretório <strong>common</strong> é a role e conjunto de tasks que iremos utilizar para executar o projeto no host(vm) de desenvolvimento.</p>
+<h3 id="tasks---mainyaml"><strong>tasks - main.yaml</strong></h3>
+<p>Conjunto de tasks que será executada nos hosts gerenciados pelo ansible.</p>
+<ul>
+<li>&ldquo;Update System&rdquo;</li>
+<li>&ldquo;Install Essential Packages&rdquo;</li>
+<li>&ldquo;Enable Essential Services&rdquo;</li>
+<li>&ldquo;Configure NTP service&rdquo;</li>
+<li>&ldquo;Hardening - Kernel Parameters&rdquo;</li>
+</ul>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim roles/common/tasks/main.yaml
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">├── roles
+│   └── common
+│       ├── tasks
+│       │   └── main.yaml
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">---
+- <span style="font-weight:bold">name</span>: <span style="font-style:italic">&#34;Update System&#34;</span>
+  <span style="font-weight:bold">package</span>:
+    <span style="font-weight:bold">state</span>: latest
+    <span style="font-weight:bold">name</span>: <span style="font-style:italic">&#34;*&#34;</span>
+
+- <span style="font-weight:bold">name</span>: <span style="font-style:italic">&#34;Install Essential Packages&#34;</span>
+  <span style="font-weight:bold">apt</span>:
+    <span style="font-weight:bold">state</span>: present
+    <span style="font-weight:bold">name</span>: <span style="font-style:italic">&#34;{{ item }}&#34;</span>
+  <span style="font-weight:bold">loop</span>: <span style="font-style:italic">&#34;{{ packages.to_install }}&#34;</span>
+
+- <span style="font-weight:bold">name</span>: <span style="font-style:italic">&#34;Enable Essential Services&#34;</span>
+  <span style="font-weight:bold">apt</span>:
+    <span style="font-weight:bold">state</span>: present
+    <span style="font-weight:bold">name</span>: <span style="font-style:italic">&#34;{{ item }}&#34;</span>
+  <span style="font-weight:bold">loop</span>: <span style="font-style:italic">&#34;{{ services.to_enable }}&#34;</span>
+
+- <span style="font-weight:bold">name</span>: <span style="font-style:italic">&#34;Configure NTP service&#34;</span>
+  <span style="font-weight:bold">template</span>:
+    <span style="font-weight:bold">src</span>: ntp.conf.j2
+    <span style="font-weight:bold">dest</span>: /etc/ntp.conf
+    <span style="font-weight:bold">owner</span>: root
+    <span style="font-weight:bold">mode</span>: 0644
+  <span style="font-weight:bold">notify</span>: <span style="font-style:italic">&#34;Restart NTP service&#34;</span>
+
+- <span style="font-weight:bold">name</span>: <span style="font-style:italic">&#34;Hardening - Kernel Parameters&#34;</span>
+  <span style="font-weight:bold">template</span>:
+    <span style="font-weight:bold">src</span>: 11-hardening.conf.j2
+    <span style="font-weight:bold">dest</span>: /etc/sysctl.d/11-hardening.conf
+    <span style="font-weight:bold">owner</span>: root
+    <span style="font-weight:bold">group</span>: root
+    <span style="font-weight:bold">mode</span>: 0644
+  <span style="font-weight:bold">notify</span>: <span style="font-style:italic">&#34;Apply Kernel Parameters&#34;</span>
+</code></pre></div><h3 id="templates"><strong>templates</strong></h3>
+<p>Arquivos templates com variáveis para criar os arquivos de configuração dinamicamente.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">├── roles
+│   └── common
+│       └── templates
+│           ├── 11-hardening.conf.j2
+│           └── ntp.conf.j2
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim roles/common/templates/11-hardening.conf.j2
+</code></pre></div><ul>
+<li>
+<h3 id="11-hardeningconf"><strong>11-hardening.conf</strong></h3>
+</li>
+</ul>
+<p>{% highlight jinja %}
+{% raw %}</p>
+<h1 id="-ansible_managed-">{{ ansible_managed }}</h1>
+<p>ipv4.conf.all.forwarding = {{ hardening.ipv4_conf_all_forwarding}}
+net.ipv4.conf.all.accept_source_route = {{ hardening.net_ipv4_conf_all_accept_source_route}}
+net.ipv4.conf.all.accept_redirects = {{ hardening.net_ipv4_conf_all_accept_redirects }}
+net.ipv4.conf.all.secure_redirects = {{ hardening.net_ipv4_conf_all_secure_redirects }}
+net.ipv4.conf.all.send_redirects = {{ hardening.net_ipv4_conf_all_send_redirects }}
+net.ipv4.conf.all.rp_filter = {{ hardening.net_ipv4_conf_all_rp_filter }}
+net.ipv4.icmp_echo_ignore_all = {{ hardening.net_ipv4_icmp_echo_ignore_all }}
+net.ipv6.conf.all.disable_ipv6 = {{ hardening.net_ipv6_conf_all_disable_ipv6 }}
+net.ipv6.conf.default.disable_ipv6 = {{ hardening.net_ipv6_conf_default_disable_ipv6}}
+net.ipv6.conf.lo.disable_ipv6 = {{ hardening.net_ipv6_conf_lo_disable_ipv6 }}</p>
+<p>{% endraw %}
+{% endhighlight %}</p>
+<ul>
+<li>
+<h3 id="ntpconf"><strong>ntp.conf</strong></h3>
+</li>
+</ul>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim roles/common/templates/ntp.conf.j2
+</code></pre></div><p>{% highlight jinja %}
+{% raw %}</p>
+<h1 id="heading"></h1>
+<h1 id="-ansible_managed--1">{{ ansible_managed }}</h1>
+<h1 id="heading-1"></h1>
+<h1 id="for-more-information-about-this-file-see-the-man-pages">For more information about this file, see the man pages</h1>
+<h1 id="ntpconf5-ntp_acc5-ntp_auth5-ntp_clock5-ntp_misc5-ntp_mon5">ntp.conf(5), ntp_acc(5), ntp_auth(5), ntp_clock(5), ntp_misc(5), ntp_mon(5).</h1>
+<p>driftfile /var/lib/ntp/drift</p>
+<h1 id="permit-time-synchronization-with-our-time-source-but-do-not">Permit time synchronization with our time source, but do not</h1>
+<h1 id="permit-the-source-to-query-or-modify-the-service-on-this-system">permit the source to query or modify the service on this system.</h1>
+<p>restrict default nomodify notrap nopeer noquery</p>
+<h1 id="permit-all-access-over-the-loopback-interface--this-could">Permit all access over the loopback interface.  This could</h1>
+<h1 id="be-tightened-as-well-but-to-do-so-would-effect-some-of">be tightened as well, but to do so would effect some of</h1>
+<h1 id="the-administrative-functions">the administrative functions.</h1>
+<p>restrict 127.0.0.1
+restrict ::1</p>
+<h1 id="hosts-on-local-network-are-less-restricted">Hosts on local network are less restricted.</h1>
+<p>#restrict 192.168.1.0 netmask 255.255.255.0 nomodify notrap</p>
+<h1 id="use-public-servers-from-the-poolntporg-project">Use public servers from the pool.ntp.org project.</h1>
+<h1 id="please-consider-joining-the-pool-httpwwwpoolntporgjoinhtml">Please consider joining the pool (<a href="http://www.pool.ntp.org/join.html)">http://www.pool.ntp.org/join.html)</a>.</h1>
+<p>{% for server in ntp_servers %}
+{{ server }}
+{% endfor %}</p>
+<p>logfile /var/log/ntp.log</p>
+<p>#broadcast 192.168.1.255 autokey        # broadcast server
+#broadcastclient                        # broadcast client
+#broadcast 224.0.1.1 autokey            # multicast server
+#multicastclient 224.0.1.1              # multicast client
+#manycastserver 239.255.254.254         # manycast server
+#manycastclient 239.255.254.254 autokey # manycast client</p>
+<h1 id="enable-public-key-cryptography">Enable public key cryptography.</h1>
+<p>#crypto</p>
+<p>includefile /etc/ntp/crypto/pw</p>
+<h1 id="key-file-containing-the-keys-and-key-identifiers-used-when-operating">Key file containing the keys and key identifiers used when operating</h1>
+<h1 id="with-symmetric-key-cryptography">with symmetric key cryptography.</h1>
+<p>keys /etc/ntp/keys</p>
+<h1 id="specify-the-key-identifiers-which-are-trusted">Specify the key identifiers which are trusted.</h1>
+<p>#trustedkey 4 8 42</p>
+<h1 id="specify-the-key-identifier-to-use-with-the-ntpdc-utility">Specify the key identifier to use with the ntpdc utility.</h1>
+<p>#requestkey 8</p>
+<h1 id="specify-the-key-identifier-to-use-with-the-ntpq-utility">Specify the key identifier to use with the ntpq utility.</h1>
+<p>#controlkey 8</p>
+<h1 id="enable-writing-of-statistics-records">Enable writing of statistics records.</h1>
+<p>#statistics clockstats cryptostats loopstats peerstats</p>
+<h1 id="disable-the-monitoring-facility-to-prevent-amplification-attacks-using-ntpdc">Disable the monitoring facility to prevent amplification attacks using ntpdc</h1>
+<h1 id="monlist-command-when-default-restrict-does-not-include-the-noquery-flag-see">monlist command when default restrict does not include the noquery flag. See</h1>
+<h1 id="cve-2013-5211-for-more-details">CVE-2013-5211 for more details.</h1>
+<h1 id="note-monitoring-will-not-be-disabled-with-the-limited-restriction-flag">Note: Monitoring will not be disabled with the limited restriction flag.</h1>
+<p>disable monitor</p>
+<p>{% endraw %}
+{% endhighlight %}</p>
+<h3 id="handlers"><strong>handlers</strong></h3>
+<p>Tarefas configuradas para serem re-executadas caso tenha alguma alteração nas configurações das tasks.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">├── roles
+│   └── common
+│       ├── handlers
+│       │   └── main.yaml
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim roles/common/handlers/main.yaml
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">---
+- <span style="font-weight:bold">name</span>: <span style="font-style:italic">&#34;Restart NTP service&#34;</span>
+  <span style="font-weight:bold">systemd</span>:
+    <span style="font-weight:bold">name</span>: ntp
+    <span style="font-weight:bold">state</span>: restarted
+    <span style="font-weight:bold">enabled</span>: <span style="font-weight:bold">true</span>
+
+- <span style="font-weight:bold">name</span>: <span style="font-style:italic">&#34;Apply Kernel Parameters&#34;</span>
+  <span style="font-weight:bold">shell</span>: <span style="font-style:italic">|
+</span><span style="font-style:italic">    sysctl --system</span>
+  <span style="font-weight:bold">register</span>: kernel_parameters
+</code></pre></div><h3 id="setupyaml"><strong>setup.yaml</strong></h3>
+<p>Playbook que executa o conjuntos de roles que será aplicado nos hosts(vm&rsquo;s) gerenciados pelo ansible.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">new_hosts master 3d ➜ tree -L 5
+.
+├── setup.yaml
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim new_hosts/setup.yaml
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">---
+- <span style="font-weight:bold">name</span>: <span style="font-style:italic">&#34;Prepare new Server&#34;</span>
+  <span style="font-weight:bold">hosts</span>:
+    - all
+  <span style="font-weight:bold">roles</span>:
+    - {<span style="font-weight:bold">role: common, tags</span>: common}
+</code></pre></div><h3 id="ssh-keys"><strong>ssh-keys</strong></h3>
+<p>O ansible faz o gerenciamentos dos hosts através de comunicação ssh para todos os sistemas que o suportam.</p>
+<p>A título de curiosidade no windows ele cria uma comunicação do tipo <a href="https://pt.wikipedia.org/wiki/Chamada_de_procedimento_remoto">RPC(Chamada de Procedimento Remoto)</a></p>
+<p>Criei esse script para gerar o par de chaves ssh que o ansible irá utilizar no container para gerenciar os hosts de destino.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">new_hosts master 3d ➜ tree -L 5
+.
+└── ssh-keys
+    └── ssh-keygen.sh
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim ssh-keys/ssh-keygen.sh
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh"><span style="">#!/usr/bin/env sh
+</span><span style=""></span>
+mkdir /home/ansible/.ssh
+
+ssh-keygen -t rsa -N <span style="font-style:italic">&#39;&#39;</span> -f ./ssh-keys/ansible -C ansible@dev
+
+cp -rf ./ssh-keys/ansible /home/ansible/.ssh/id_rsa
+cp -rf ./ssh-keys/ansible.pub /home/ansible/.ssh/id_rsa.pub
+
+chmod 400 /home/ansible/.ssh/id_rsa
+chmod 644 /home/ansible/.ssh/id_rsa.pub
+</code></pre></div><p>Ufa!</p>
+<p>Depois de montar toda a nossa estrutura, acredito que temos algo assim</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">.
+├── Dockerfile
+├── Makefile
+├── ansible.cfg
+├── inventory
+│   ├── group_vars
+│   │   └── all.yaml
+│   └── invetory.ini
+├── requirements.txt
+├── roles
+│   └── common
+│       ├── handlers
+│       │   └── main.yaml
+│       ├── tasks
+│       │   └── main.yaml
+│       └── templates
+│           ├── 11-hardening.conf.j2
+│           └── ntp.conf.j2
+├── setup.yaml
+└── ssh-keys
+    └── ssh-keygen.sh
+</code></pre></div><h2 id="build"><strong>Build</strong></h2>
+<p>No mesmo nível onde está o nosso dockerfile vamos construir a imagem com o ansible instalado.</p>
+<p>Lembra do Makefile? então, vamos utilizar bastente ele agora.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">make help
+</code></pre></div><p><img src="../../images/img20.png" alt="<>"></p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">make build
+</code></pre></div><p>Esse commando está fazendo o mesmo que:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker build --no-cache -t fabianoflorentino/ansible .
+</code></pre></div><p>Melhor né? :D, automação da automação!</p>
+<p>e assim para todos os comandos que iremos utilizar, para verificar a sintaxe dos comandos volta lá no arquivo Makefile e veja o que cada comando está executando beleza? :D</p>
+<p>No final se tudo ocorreu bem teremos a seguinte mensagem:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Successfully built 3894bf22ae0d
+Successfully tagged fabianoflorentino/ansible:latest
+</code></pre></div><p><img src="../../images/img21.png" alt="<>"></p>
+<h2 id="ansible"><strong>Ansible</strong></h2>
+<p>Com a imagem pronta vamos iniciar o container para utilizamos o ansible de forma isolada em um container mas interagindo com o nosso projeto.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">make run
+</code></pre></div><p><img src="../../images/img22.png" alt="<>"></p>
+<p>Como de dentro do container estamos conseguindo acessar os arquivos do projeto?</p>
+<p>A forma como estamos executando o container. Na execução estamos montando o diretório corrente dentro do container e acessamos o container através do shell sh.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker run -it --name ansible -v <span style="font-weight:bold;font-style:italic">${</span>PWD<span style="font-weight:bold;font-style:italic">}</span>:/ansible --entrypoint <span style="font-style:italic">&#34;&#34;</span> fabianoflorentino/ansible sh
+</code></pre></div><h2 id="ssh"><strong>SSH</strong></h2>
+<p>De dentro do container execute o script que cria o par de chaves ssh para comunicação com os hosts.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sh ssh-keys/ssh-keygen.sh
+</code></pre></div><p><img src="../../images/img23.png" alt="<>"></p>
+<p>Transfira a chave ssh publica para o(s) host(s) que serão gerenciados.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ssh-copy-id -i /home/ansible/.ssh/id_rsa.pub supervisor@192.168.7.100
+</code></pre></div><p><img src="../../images/img24.png" alt="<>"></p>
+<p>Teste a comunicação com o(s) host(s)</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ansible -i inventory/invetory.ini all -u supervisor -b -m ping
+</code></pre></div><p><img src="../../images/img25.png" alt="<>"></p>
+<h2 id="deploy-da-vm"><strong>Deploy da VM</strong></h2>
+<p>Com a comunicação estabelecida podemos aplicar a(s) roles que foi desenvolvida nesse projeto no caso a role <strong>common</strong>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">make ansible-test
+</code></pre></div><p>Esse comando irá fazer o teste de execução das tasks.</p>
+<p><img src="../../images/img26.png" alt="<>"></p>
+<p>O que estiver em amarelo o ansible irá executar a alteração o que estiver em verde é porque a ação esperada já foi executada ou está de acordo com a task.</p>
+<p>Feito o teste, podemos aplicar realmente as alterações no host(s)</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">make ansible-run
+</code></pre></div><p><img src="../../images/img27.png" alt="<>"></p>
+<h2 id="idempotência"><strong>Idempotência</strong></h2>
+<p>Uma boa prática é sempre buscar <a href="https://pt.wikipedia.org/wiki/Idempot%C3%AAncia">Idempotência</a> na execução da sua gerencia de configuração, uma vez aplicada aquele conjunto de configuração ele só poderá ser modificado caso aja modificação no código do seu projeto, do contrário não importa quantas vezes você executar o ansible, ele sempre terá que aplicar as mesmas configurações previamente configuradas.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">make ansible-run
+</code></pre></div><p><img src="../../images/img28.png" alt="<>"></p>
+<h2 id="demo"><strong>Demo</strong></h2>
+<p><a href="https://youtu.be/knIVwuF16zI" title="Criando um ambiente de desenvolvimento para o Ansible"><img src="https://img.youtube.com/vi/knIVwuF16zI/0.jpg" alt="<"></a></p>
+<h2 id="conclusão"><strong>Conclusão</strong></h2>
+<p>Como mencionanei no começo do artigo o <a href="https://gomex.me">@gomex</a> iniciou um thread muito bacana sobre como nós antigos Sysadmin(Ops) agora SRE&rsquo;s, DevOps Engineer, Eng. DevOps e afins não importa o nome, temos a satisfação de estar entregando infraestrutura como código, criando ambiente de desenvolvimento como o citado ao longo desse artigo.</p>
+<p>É muito legal ver uma área admirada por muitos no mundo de tecnologia se transformar radicalmente. Bom,espero ajudar bastante gente com esse artigo.</p>
+<p>Ah! ia me esquecendo, parte do que demonstrei aqui com o Makefile aprendi pertubando muito o <a href="http://igordcsouza.github.io/">@igorsouza</a> vlw d++ mano :D!</p>
+<p><strong>Projeto:</strong> <a href="http://bit.ly/2Ns2ZRs">http://bit.ly/2Ns2ZRs</a></p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "florentino-codar-info" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script type="text/javascript" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/startup.js" id="MathJax-script"></script>
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [
+          ['$', '$'], ['\\(', '\\)']
+        ],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        
+      
+      
+        
+        
+        
+        
+      
+      
+        
+        
+      
+      
+    </section>
+  </footer>
+
+
+    </main>
+
+    
+
+    
+
+    
+
+  </body>
+
+</html>

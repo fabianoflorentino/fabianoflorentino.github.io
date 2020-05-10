@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>sobre min on Fabiano Florentino</title>
+    <link>https://fabianoflorentino.codar.info/categories/sobre-min/</link>
+    <description>Recent content in sobre min on Fabiano Florentino</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>pt-br</language>
+    <lastBuildDate>Wed, 22 Apr 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://fabianoflorentino.codar.info/categories/sobre-min/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Meu Tool set de Ferramentas</title>
+      <link>https://fabianoflorentino.codar.info/posts/2020-04-22-tool-set/</link>
+      <pubDate>Wed, 22 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.codar.info/posts/2020-04-22-tool-set/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://images6.alphacoders.com/359/359600.jpg&#34; alt=&#34;img&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Bom seguindo a turma que criou essa série de posts sobre a caixa de ferramentas usadas no nosso dia a dia
+vou segui a partir do &lt;strong&gt;&lt;a href=&#34;https://www.nanoshots.com.br/2020/04/minha-caixa-de-ferramentas-abril2020.html&#34;&gt;Mateus Fidelis&lt;/a&gt;&lt;/strong&gt;
+que também veio do &lt;strong&gt;&lt;a href=&#34;https://igordcsouza.github.io/2020-04-16-my-tool-kit-first-tri-2020/&#34;&gt;Igor Souza&lt;/a&gt;&lt;/strong&gt; e também do
+&lt;strong&gt;&lt;a href=&#34;https://gutocarvalho.net/blog/meu-toolkit-2020/&#34;&gt;Guto Carvalho&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Meu setup é único não distingui de pessoal/trabalho então bora lá!&lt;/p&gt;
+&lt;h2 id=&#34;notebook&#34;&gt;&lt;strong&gt;Notebook&lt;/strong&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;macOS Catalina 10.15.14
+&lt;ul&gt;
+&lt;li&gt;Browsers
+&lt;ul&gt;
+&lt;li&gt;Google Chrome
+&lt;ul&gt;
+&lt;li&gt;Cisco Webex Extension&lt;/li&gt;
+&lt;li&gt;Grammarly for Chrome&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Microsoft Edge
+&lt;ul&gt;
+&lt;li&gt;Cisco Webex Extension&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Firefox (Sem Extensões)&lt;/li&gt;
+&lt;li&gt;Safari (Sem Extensões)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Terminal
+&lt;ul&gt;
+&lt;li&gt;iTerm2
+&lt;ul&gt;
+&lt;li&gt;Bash&lt;/li&gt;
+&lt;li&gt;Zsh
+&lt;ul&gt;
+&lt;li&gt;Oh My Zsh
+&lt;ul&gt;
+&lt;li&gt;Plugins
+&lt;ul&gt;
+&lt;li&gt;Git&lt;/li&gt;
+&lt;li&gt;Docker&lt;/li&gt;
+&lt;li&gt;Ruby&lt;/li&gt;
+&lt;li&gt;Python&lt;/li&gt;
+&lt;li&gt;zsh-autosuggestions&lt;/li&gt;
+&lt;li&gt;zsh-syntax-highlighting&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Theme
+&lt;ul&gt;
+&lt;li&gt;hyperzsh&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;SSH&lt;/li&gt;
+&lt;li&gt;Git&lt;/li&gt;
+&lt;li&gt;Vim
+&lt;ul&gt;
+&lt;li&gt;syntax on&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Powershell&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Gerenciador de pacotes
+&lt;ul&gt;
+&lt;li&gt;Homebrew&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Editores
+&lt;ul&gt;
+&lt;li&gt;VSCode
+&lt;ul&gt;
+&lt;li&gt;Docker&lt;/li&gt;
+&lt;li&gt;YAML&lt;/li&gt;
+&lt;li&gt;Terraform&lt;/li&gt;
+&lt;li&gt;Ansible&lt;/li&gt;
+&lt;li&gt;Gitlens&lt;/li&gt;
+&lt;li&gt;Powershell&lt;/li&gt;
+&lt;li&gt;Beautify&lt;/li&gt;
+&lt;li&gt;Bookmarks&lt;/li&gt;
+&lt;li&gt;Git History&lt;/li&gt;
+&lt;li&gt;Go&lt;/li&gt;
+&lt;li&gt;Jinja&lt;/li&gt;
+&lt;li&gt;Markdownlint&lt;/li&gt;
+&lt;li&gt;Material Icon Theme&lt;/li&gt;
+&lt;li&gt;Pyright&lt;/li&gt;
+&lt;li&gt;Python Docstring Formatter&lt;/li&gt;
+&lt;li&gt;SQLite&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;TexEdit&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;IM
+&lt;ul&gt;
+&lt;li&gt;Slack&lt;/li&gt;
+&lt;li&gt;Telegram&lt;/li&gt;
+&lt;li&gt;Whatsapp&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Vídeo Conferência
+&lt;ul&gt;
+&lt;li&gt;Cisco Webex&lt;/li&gt;
+&lt;li&gt;Zoom&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Redes Sociais
+&lt;ul&gt;
+&lt;li&gt;Twitter&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Chaveiro de senhas
+&lt;ul&gt;
+&lt;li&gt;MacPass fork by Keepass2&lt;/li&gt;
+&lt;li&gt;1Password&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Conexão Remota
+&lt;ul&gt;
+&lt;li&gt;SSH&lt;/li&gt;
+&lt;li&gt;Microsoft Remote Desktop&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;VPN
+&lt;ul&gt;
+&lt;li&gt;Cisco Anny Connection&lt;/li&gt;
+&lt;li&gt;Proxifier&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Cloud Storage
+&lt;ul&gt;
+&lt;li&gt;Box&lt;/li&gt;
+&lt;li&gt;Onedrive&lt;/li&gt;
+&lt;li&gt;Google Drive&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Virtualizadores
+&lt;ul&gt;
+&lt;li&gt;VMware Fusion&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Automação
+&lt;ul&gt;
+&lt;li&gt;Ansible&lt;/li&gt;
+&lt;li&gt;Terraform&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Containers
+&lt;ul&gt;
+&lt;li&gt;Docker&lt;/li&gt;
+&lt;li&gt;Docker Compose&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Office
+&lt;ul&gt;
+&lt;li&gt;Office 365&lt;/li&gt;
+&lt;li&gt;Grammarly&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;API
+&lt;ul&gt;
+&lt;li&gt;Postman&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;hardware&#34;&gt;&lt;strong&gt;Hardware&lt;/strong&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;MacBook Pro (15-inch, 2019)
+&lt;ul&gt;
+&lt;li&gt;Processor 2,3 GHz 8-Core Intel Core i9&lt;/li&gt;
+&lt;li&gt;Memory 16 GB 2400 MHz DDR4&lt;/li&gt;
+&lt;li&gt;500 GB Flash Storage&lt;/li&gt;
+&lt;li&gt;Graphics Radeon Pro 560X 4 GB / Intel UHD Graphics 630 1536 MB&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Monitor DELL P2719H Display&lt;/li&gt;
+&lt;li&gt;Monitor de som EDIFIER R1010BT&lt;/li&gt;
+&lt;li&gt;Mouse Pad Gamer Mapa Mundo Mundi Speed Grande 70x35cm&lt;/li&gt;
+&lt;li&gt;Magic Mouse / Magic Keyboard Bluetooth
+&lt;ul&gt;
+&lt;li&gt;6x Pilhas Recarregavies Sony Cyber Energy c/ Carregador 2 e 4 Slots&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Xiaomi Mi 9T 64GB
+&lt;ul&gt;
+&lt;li&gt;Bateria Pineng 10000mAh&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Rede
+&lt;ul&gt;
+&lt;li&gt;Desktop Network 200Mbits&lt;/li&gt;
+&lt;li&gt;Xiaomi Mi Router 4 Gigabit Dual Band 2.4GHz / 5GHz&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;nuvem-pessoal&#34;&gt;&lt;strong&gt;Nuvem Pessoal&lt;/strong&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Netflix&lt;/li&gt;
+&lt;li&gt;Amazon Prime&lt;/li&gt;
+&lt;li&gt;Spotify&lt;/li&gt;
+&lt;li&gt;Microsoft GamePass&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;trabalho-e-projetos-pessoais&#34;&gt;&lt;strong&gt;Trabalho e Projetos Pessoais&lt;/strong&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Linux (CentOS / Ubuntu)&lt;/li&gt;
+&lt;li&gt;Windows (Server 2012 R2)&lt;/li&gt;
+&lt;li&gt;Automação
+&lt;ul&gt;
+&lt;li&gt;Ansible&lt;/li&gt;
+&lt;li&gt;Terraform&lt;/li&gt;
+&lt;li&gt;Make&lt;/li&gt;
+&lt;li&gt;Rundeck&lt;/li&gt;
+&lt;li&gt;cURL&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Linguagens
+&lt;ul&gt;
+&lt;li&gt;Python&lt;/li&gt;
+&lt;li&gt;ShellScript&lt;/li&gt;
+&lt;li&gt;JSON&lt;/li&gt;
+&lt;li&gt;Yaml&lt;/li&gt;
+&lt;li&gt;HCL&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Containers
+&lt;ul&gt;
+&lt;li&gt;Kubernetes&lt;/li&gt;
+&lt;li&gt;Docker Swarm&lt;/li&gt;
+&lt;li&gt;IKS (IBM Kubernetes Services)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Monitoração
+&lt;ul&gt;
+&lt;li&gt;Zabbix&lt;/li&gt;
+&lt;li&gt;Grafana&lt;/li&gt;
+&lt;li&gt;Prometheus&lt;/li&gt;
+&lt;li&gt;ELK&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Gerenciamento de código
+&lt;ul&gt;
+&lt;li&gt;Gihub&lt;/li&gt;
+&lt;li&gt;Github Desktop&lt;/li&gt;
+&lt;li&gt;Jenkins&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Ferramentas de console
+&lt;ul&gt;
+&lt;li&gt;| (pipe)&lt;/li&gt;
+&lt;li&gt;tcpdump&lt;/li&gt;
+&lt;li&gt;netcat&lt;/li&gt;
+&lt;li&gt;telnet&lt;/li&gt;
+&lt;li&gt;net-tools (netstat, route)&lt;/li&gt;
+&lt;li&gt;nmap&lt;/li&gt;
+&lt;li&gt;ifconfig&lt;/li&gt;
+&lt;li&gt;route&lt;/li&gt;
+&lt;li&gt;traceroute&lt;/li&gt;
+&lt;li&gt;htop, iotop&lt;/li&gt;
+&lt;li&gt;tmux&lt;/li&gt;
+&lt;li&gt;wget, curl&lt;/li&gt;
+&lt;li&gt;rsync&lt;/li&gt;
+&lt;li&gt;cat, grep, egrep&lt;/li&gt;
+&lt;li&gt;tar, gzip, bzip2&lt;/li&gt;
+&lt;li&gt;cut, awk, sed&lt;/li&gt;
+&lt;li&gt;more, less, head, tail&lt;/li&gt;
+&lt;li&gt;df, du, mount&lt;/li&gt;
+&lt;li&gt;watch&lt;/li&gt;
+&lt;li&gt;openssl&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Metodologias, culturas e técnicas
+&lt;ul&gt;
+&lt;li&gt;DevOps&lt;/li&gt;
+&lt;li&gt;SRE&lt;/li&gt;
+&lt;li&gt;Agile&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Virtualização
+&lt;ul&gt;
+&lt;li&gt;VMware vCenter&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Gerenciamento de Atividades
+&lt;ul&gt;
+&lt;li&gt;Microsoft ToDo&lt;/li&gt;
+&lt;li&gt;Bluesight (Ferramente de Trabalho)&lt;/li&gt;
+&lt;li&gt;Trello&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Blog
+&lt;ul&gt;
+&lt;li&gt;jekyll&lt;/li&gt;
+&lt;li&gt;netlify&lt;/li&gt;
+&lt;li&gt;Disqus&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Até o próximo review! :^D&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
