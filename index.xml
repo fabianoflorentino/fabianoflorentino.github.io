@@ -6,10 +6,23 @@
     <description>Recent content on Fabiano Florentino</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>pt-br</language>
-    <lastBuildDate>Sat, 09 May 2020 23:59:25 -0300</lastBuildDate>
+    <lastBuildDate>Sun, 10 May 2020 13:41:45 -0300</lastBuildDate>
     
 	<atom:link href="https://fabianoflorentino.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Formação</title>
+      <link>https://fabianoflorentino.github.io/about/formacao/</link>
+      <pubDate>Sun, 10 May 2020 13:41:45 -0300</pubDate>
+      
+      <guid>https://fabianoflorentino.github.io/about/formacao/</guid>
+      <description>&lt;h3 id=&#34;computer-forensics-and-digital-expertise&#34;&gt;&lt;strong&gt;Computer Forensics and Digital Expertise&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;IPOG - Instituto de Pós-Graduação e Graduação&lt;/strong&gt; &lt;strong&gt;[2015-2017]&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;TCC:&lt;/strong&gt; &lt;a href=&#34;./docs/analise_forense_em_rede_de_computadores.pdf&#34;&gt;&lt;strong&gt;Análise Forense em Rede de Computadores&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;hr&gt;
+</description>
+    </item>
     
     <item>
       <title>Experiências</title>
