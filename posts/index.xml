@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Fabiano Florentino</title>
-    <link>https://fabianoflorentino.codar.info/posts/</link>
+    <link>https://fabianoflorentino.github.io/posts/</link>
     <description>Recent content in Posts on Fabiano Florentino</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>pt-br</language>
     <lastBuildDate>Wed, 22 Apr 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://fabianoflorentino.codar.info/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://fabianoflorentino.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Meu Tool set de Ferramentas</title>
-      <link>https://fabianoflorentino.codar.info/posts/2020-04-22-tool-set/</link>
+      <link>https://fabianoflorentino.github.io/posts/2020-04-22-tool-set/</link>
       <pubDate>Wed, 22 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://fabianoflorentino.codar.info/posts/2020-04-22-tool-set/</guid>
+      <guid>https://fabianoflorentino.github.io/posts/2020-04-22-tool-set/</guid>
       <description>&lt;p&gt;&lt;img src=&#34;https://images6.alphacoders.com/359/359600.jpg&#34; alt=&#34;img&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Bom seguindo a turma que criou essa série de posts sobre a caixa de ferramentas usadas no nosso dia a dia
 vou segui a partir do &lt;strong&gt;&lt;a href=&#34;https://www.nanoshots.com.br/2020/04/minha-caixa-de-ferramentas-abril2020.html&#34;&gt;Mateus Fidelis&lt;/a&gt;&lt;/strong&gt;
@@ -326,10 +326,10 @@ que também veio do &lt;strong&gt;&lt;a href=&#34;https://igordcsouza.github.io/
     
     <item>
       <title>Entregando VM&#39;s no VMware vCenter/vSphere com o Jenkins</title>
-      <link>https://fabianoflorentino.codar.info/posts/2021-03-21-jenkins/</link>
+      <link>https://fabianoflorentino.github.io/posts/2021-03-21-jenkins/</link>
       <pubDate>Sat, 21 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://fabianoflorentino.codar.info/posts/2021-03-21-jenkins/</guid>
+      <guid>https://fabianoflorentino.github.io/posts/2021-03-21-jenkins/</guid>
       <description>&lt;p&gt;Olá pessoal, depois de muito tempo estou de volta!&lt;/p&gt;
 &lt;p&gt;No meu primeiro artigo, expliquei e demonstrei como criar máquinas no vCenter/vSphere
 usando terraform, e que tal entregar essas máquinas virtuais dentro de um pipeline como se
@@ -526,10 +526,10 @@ o nome do cargo, criar um fluxo (pipeline) de entrega de infraestrutura seria in
     
     <item>
       <title>Criando um ambiente de desenvolvimento para o Ansible</title>
-      <link>https://fabianoflorentino.codar.info/posts/2020-01-14-ansible_02/</link>
+      <link>https://fabianoflorentino.github.io/posts/2020-01-14-ansible_02/</link>
       <pubDate>Tue, 14 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://fabianoflorentino.codar.info/posts/2020-01-14-ansible_02/</guid>
+      <guid>https://fabianoflorentino.github.io/posts/2020-01-14-ansible_02/</guid>
       <description>&lt;p&gt;A alguns dias atrás nosso mestre &lt;a href=&#34;https://gomex.me&#34;&gt;@gomex&lt;/a&gt; abriu uma thread no twitter sobre como é
 estar desenvolvendo infraestrutura hoje em dia pelo time de Ops &lt;a href=&#34;https://twitter.com/gomex/status/1215774716138573824?s=21&#34;&gt;Link&lt;/a&gt; e como isso é libertador, e de fato, é uma sensação sem igual para um Sysadmin.&lt;/p&gt;
 &lt;p&gt;Como várias pessoas comentaram eu também não pude deixar de participar. :D,&lt;/p&gt;
@@ -971,10 +971,10 @@ Successfully tagged fabianoflorentino/ansible:latest
     
     <item>
       <title>HAProxy LoadBalancer em HA com Keepalived Automatizado</title>
-      <link>https://fabianoflorentino.codar.info/posts/2020-01-07-ansible_01/</link>
+      <link>https://fabianoflorentino.github.io/posts/2020-01-07-ansible_01/</link>
       <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://fabianoflorentino.codar.info/posts/2020-01-07-ansible_01/</guid>
+      <guid>https://fabianoflorentino.github.io/posts/2020-01-07-ansible_01/</guid>
       <description>&lt;p&gt;Toda a infraestrutura de TI hoje seja ela Cloud ou on-premise utiliza balanceadores de carga
 como a sua porta de entrada. Hoje acredito que todos os provedores de serviço de Cloud com salve
 exceções não fornecem esse tipo de serviço.&lt;/p&gt;
@@ -1361,10 +1361,10 @@ ansible-haproxy
     
     <item>
       <title>Automatizando a instalação do CentOS com Kickstart</title>
-      <link>https://fabianoflorentino.codar.info/posts/2019-12-27-automacao/</link>
+      <link>https://fabianoflorentino.github.io/posts/2019-12-27-automacao/</link>
       <pubDate>Fri, 27 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://fabianoflorentino.codar.info/posts/2019-12-27-automacao/</guid>
+      <guid>https://fabianoflorentino.github.io/posts/2019-12-27-automacao/</guid>
       <description>&lt;p&gt;No meu primeiro artigo demonstro como automatizar a criação de máquinas virtuais no VMware com terraform e no processo utilizo uma ISO CentOS automatizada com kickstart.&lt;/p&gt;
 &lt;p&gt;Mesmo automatizando a criação da máquina virtual ainda ficamos presos ao processo  de instalação do sistema operacional, então, precisamos criar um processo parcial ou totalmente automatizado para ganharmos a agilidade no processo de entrega.&lt;/p&gt;
 &lt;p&gt;Fazar a entrega totalmente automatizada do processo de criação da máquina virtual e instalação do sistema operacional.&lt;/p&gt;
@@ -1682,10 +1682,10 @@ fazendo um paralelo entre os dois métodos.&lt;/p&gt;
     
     <item>
       <title>Criando VM’s no VMware ESXi com Terraform</title>
-      <link>https://fabianoflorentino.codar.info/posts/2019-12-21-terraform/</link>
+      <link>https://fabianoflorentino.github.io/posts/2019-12-21-terraform/</link>
       <pubDate>Sat, 21 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://fabianoflorentino.codar.info/posts/2019-12-21-terraform/</guid>
+      <guid>https://fabianoflorentino.github.io/posts/2019-12-21-terraform/</guid>
       <description>&lt;p&gt;No Brasil ainda temos muitas empresas com o modelo tradicional de infraestrutura, com seus datacenters próprios ou no modelo de comodato em datacenters compartilhados, com isso é comum ver parques de servidores usando virtualizadores para aproveitar melhor os recursos disponíveis.&lt;br&gt;
 Muitos sysadmins ainda usam a forma tradicional de criar novas máquinas, utilizam o dashboard web seguindo o wizard e com isso tomando muito tempo para concluir esse processo.&lt;/p&gt;
 &lt;p&gt;Os virtualizadores mais modernos hoje em dia como o VMware ESXi disponibilizam API&amp;rsquo;s que podemos utilizar para automatizar o processo de criação de máquinas virtuais ou qualquer recurso disponível.

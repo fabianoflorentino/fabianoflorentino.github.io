@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ansible on Fabiano Florentino</title>
-    <link>https://fabianoflorentino.codar.info/categories/ansible/</link>
+    <link>https://fabianoflorentino.github.io/categories/ansible/</link>
     <description>Recent content in ansible on Fabiano Florentino</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>pt-br</language>
     <lastBuildDate>Tue, 14 Jan 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://fabianoflorentino.codar.info/categories/ansible/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://fabianoflorentino.github.io/categories/ansible/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Criando um ambiente de desenvolvimento para o Ansible</title>
-      <link>https://fabianoflorentino.codar.info/posts/2020-01-14-ansible_02/</link>
+      <link>https://fabianoflorentino.github.io/posts/2020-01-14-ansible_02/</link>
       <pubDate>Tue, 14 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://fabianoflorentino.codar.info/posts/2020-01-14-ansible_02/</guid>
+      <guid>https://fabianoflorentino.github.io/posts/2020-01-14-ansible_02/</guid>
       <description>&lt;p&gt;A alguns dias atrás nosso mestre &lt;a href=&#34;https://gomex.me&#34;&gt;@gomex&lt;/a&gt; abriu uma thread no twitter sobre como é
 estar desenvolvendo infraestrutura hoje em dia pelo time de Ops &lt;a href=&#34;https://twitter.com/gomex/status/1215774716138573824?s=21&#34;&gt;Link&lt;/a&gt; e como isso é libertador, e de fato, é uma sensação sem igual para um Sysadmin.&lt;/p&gt;
 &lt;p&gt;Como várias pessoas comentaram eu também não pude deixar de participar. :D,&lt;/p&gt;
@@ -458,10 +458,10 @@ Successfully tagged fabianoflorentino/ansible:latest
     
     <item>
       <title>HAProxy LoadBalancer em HA com Keepalived Automatizado</title>
-      <link>https://fabianoflorentino.codar.info/posts/2020-01-07-ansible_01/</link>
+      <link>https://fabianoflorentino.github.io/posts/2020-01-07-ansible_01/</link>
       <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://fabianoflorentino.codar.info/posts/2020-01-07-ansible_01/</guid>
+      <guid>https://fabianoflorentino.github.io/posts/2020-01-07-ansible_01/</guid>
       <description>&lt;p&gt;Toda a infraestrutura de TI hoje seja ela Cloud ou on-premise utiliza balanceadores de carga
 como a sua porta de entrada. Hoje acredito que todos os provedores de serviço de Cloud com salve
 exceções não fornecem esse tipo de serviço.&lt;/p&gt;

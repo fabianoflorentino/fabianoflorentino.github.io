@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Abouts on Fabiano Florentino</title>
-    <link>https://fabianoflorentino.codar.info/about/</link>
+    <link>https://fabianoflorentino.github.io/about/</link>
     <description>Recent content in Abouts on Fabiano Florentino</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>pt-br</language>
     <lastBuildDate>Sat, 09 May 2020 23:59:25 -0300</lastBuildDate>
     
-	<atom:link href="https://fabianoflorentino.codar.info/about/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://fabianoflorentino.github.io/about/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Experiências</title>
-      <link>https://fabianoflorentino.codar.info/about/experiencias/</link>
+      <link>https://fabianoflorentino.github.io/about/experiencias/</link>
       <pubDate>Sat, 09 May 2020 23:59:25 -0300</pubDate>
       
-      <guid>https://fabianoflorentino.codar.info/about/experiencias/</guid>
+      <guid>https://fabianoflorentino.github.io/about/experiencias/</guid>
       <description>&lt;p&gt;&lt;strong&gt;IBM - Atualmente&lt;/strong&gt;&lt;/p&gt;
 </description>
     </item>

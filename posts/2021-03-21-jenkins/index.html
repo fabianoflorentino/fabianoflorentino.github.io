@@ -23,20 +23,20 @@ Não é de hoje que tudo está se convergindo para Cloud Computing e de fato ess
 No meu primeiro artigo, expliquei e demonstrei como criar máquinas no vCenter/vSphere usando terraform, e que tal entregar essas máquinas virtuais dentro de um pipeline como se fosse um aplicativo?
 Não é de hoje que tudo está se convergindo para Cloud Computing e de fato esse parece ser o futuro. Mas ainda temos o meio do caminho, muitas empresas utilizam parte da sua infraestrutura em datacenters, migrando e ou utilizando esse dois mundo em uma abordagem de Cloud Hibrida que acaba fazendo parte do negócio." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://fabianoflorentino.codar.info/posts/2021-03-21-jenkins/" />
+<meta property="og:url" content="https://fabianoflorentino.github.io/posts/2021-03-21-jenkins/" />
 <meta property="article:published_time" content="2020-03-21T00:00:00+00:00" />
 <meta property="article:modified_time" content="2020-03-21T00:00:00+00:00" />
 
 
     
-      <base href="https://fabianoflorentino.codar.info/posts/2021-03-21-jenkins/">
+      <base href="https://fabianoflorentino.github.io/posts/2021-03-21-jenkins/">
     
     <title>
   Entregando VM&#39;s no VMware vCenter/vSphere com o Jenkins · Fabiano Florentino
 </title>
 
     
-      <link rel="canonical" href="https://fabianoflorentino.codar.info/posts/2021-03-21-jenkins/">
+      <link rel="canonical" href="https://fabianoflorentino.github.io/posts/2021-03-21-jenkins/">
     
 
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel="stylesheet">
@@ -46,7 +46,7 @@ Não é de hoje que tudo está se convergindo para Cloud Computing e de fato ess
     
       
       
-      <link rel="stylesheet" href="https://fabianoflorentino.codar.info/css/coder.min.a4f332213a21ce8eb521670c614470c58923aaaf385e2a73982c31dd7642decb.css" integrity="sha256-pPMyITohzo61IWcMYURwxYkjqq84XipzmCwx3XZC3ss=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://fabianoflorentino.github.io/css/coder.min.a4f332213a21ce8eb521670c614470c58923aaaf385e2a73982c31dd7642decb.css" integrity="sha256-pPMyITohzo61IWcMYURwxYkjqq84XipzmCwx3XZC3ss=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -54,13 +54,13 @@ Não é de hoje que tudo está se convergindo para Cloud Computing e de fato ess
     
 
     
-      <link rel="stylesheet" href="https://fabianoflorentino.codar.info/css/custom.css" />
+      <link rel="stylesheet" href="https://fabianoflorentino.github.io/css/custom.css" />
     
 
     
 
-    <link rel="icon" type="image/png" href="https://fabianoflorentino.codar.info/img/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="https://fabianoflorentino.codar.info/img/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="https://fabianoflorentino.github.io/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://fabianoflorentino.github.io/img/favicon-16x16.png" sizes="16x16">
 
     <meta name="generator" content="Hugo 0.70.0" />
   </head>
@@ -71,7 +71,7 @@ Não é de hoje que tudo está se convergindo para Cloud Computing e de fato ess
     <main class="wrapper">
       <nav class="navigation">
   <section class="container">
-    <a class="navigation-title" href="https://fabianoflorentino.codar.info/">
+    <a class="navigation-title" href="https://fabianoflorentino.github.io/">
       Fabiano Florentino
     </a>
     
@@ -81,11 +81,11 @@ Não é de hoje que tudo está se convergindo para Cloud Computing e de fato ess
       
         
           <li class="navigation-item">
-            <a class="navigation-link" href="https://fabianoflorentino.codar.info/posts/">Artigos</a>
+            <a class="navigation-link" href="https://fabianoflorentino.github.io/posts/">Artigos</a>
           </li>
         
           <li class="navigation-item">
-            <a class="navigation-link" href="https://fabianoflorentino.codar.info/about/">Sobre</a>
+            <a class="navigation-link" href="https://fabianoflorentino.github.io/about/">Sobre</a>
           </li>
         
       
@@ -119,23 +119,23 @@ Não é de hoje que tudo está se convergindo para Cloud Computing e de fato ess
           </div>
           <div class="categories">
   <i class="fas fa-folder"></i>
-    <a href="https://fabianoflorentino.codar.info/categories/automa%C3%A7%C3%A3o/">automação</a>
+    <a href="https://fabianoflorentino.github.io/categories/automa%C3%A7%C3%A3o/">automação</a>
       <span class="separator">•</span>
-    <a href="https://fabianoflorentino.codar.info/categories/jenkins/">jenkins</a>
+    <a href="https://fabianoflorentino.github.io/categories/jenkins/">jenkins</a>
       <span class="separator">•</span>
-    <a href="https://fabianoflorentino.codar.info/categories/terraform/">terraform</a>
+    <a href="https://fabianoflorentino.github.io/categories/terraform/">terraform</a>
       <span class="separator">•</span>
-    <a href="https://fabianoflorentino.codar.info/categories/container/">container</a></div>
+    <a href="https://fabianoflorentino.github.io/categories/container/">container</a></div>
 
           <div class="tags">
   <i class="fas fa-tag"></i>
-    <a href="https://fabianoflorentino.codar.info/tags/automa%C3%A7%C3%A3o/">automação</a>
+    <a href="https://fabianoflorentino.github.io/tags/automa%C3%A7%C3%A3o/">automação</a>
       <span class="separator">•</span>
-    <a href="https://fabianoflorentino.codar.info/tags/jenkins/">jenkins</a>
+    <a href="https://fabianoflorentino.github.io/tags/jenkins/">jenkins</a>
       <span class="separator">•</span>
-    <a href="https://fabianoflorentino.codar.info/tags/terraform/">terraform</a>
+    <a href="https://fabianoflorentino.github.io/tags/terraform/">terraform</a>
       <span class="separator">•</span>
-    <a href="https://fabianoflorentino.codar.info/tags/container/">container</a></div>
+    <a href="https://fabianoflorentino.github.io/tags/container/">container</a></div>
 
         </div>
       </header>

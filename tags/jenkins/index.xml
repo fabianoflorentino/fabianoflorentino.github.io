@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>jenkins on Fabiano Florentino</title>
-    <link>https://fabianoflorentino.codar.info/tags/jenkins/</link>
+    <link>https://fabianoflorentino.github.io/tags/jenkins/</link>
     <description>Recent content in jenkins on Fabiano Florentino</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>pt-br</language>
     <lastBuildDate>Sat, 21 Mar 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://fabianoflorentino.codar.info/tags/jenkins/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://fabianoflorentino.github.io/tags/jenkins/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Entregando VM&#39;s no VMware vCenter/vSphere com o Jenkins</title>
-      <link>https://fabianoflorentino.codar.info/posts/2021-03-21-jenkins/</link>
+      <link>https://fabianoflorentino.github.io/posts/2021-03-21-jenkins/</link>
       <pubDate>Sat, 21 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://fabianoflorentino.codar.info/posts/2021-03-21-jenkins/</guid>
+      <guid>https://fabianoflorentino.github.io/posts/2021-03-21-jenkins/</guid>
       <description>&lt;p&gt;Olá pessoal, depois de muito tempo estou de volta!&lt;/p&gt;
 &lt;p&gt;No meu primeiro artigo, expliquei e demonstrei como criar máquinas no vCenter/vSphere
 usando terraform, e que tal entregar essas máquinas virtuais dentro de um pipeline como se

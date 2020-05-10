@@ -23,20 +23,20 @@ Nesse artigo trago a configuração do HAProxy em HA com Keepalived automatizado
 Mas e na infraestrutura on-premise como implementamos isso?
 Nesse artigo trago a configuração do HAProxy em HA com Keepalived automatizado com ansible. Uma solução simples e bastante robusta dependendo da sua infraestrutura." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://fabianoflorentino.codar.info/posts/2020-01-07-ansible_01/" />
+<meta property="og:url" content="https://fabianoflorentino.github.io/posts/2020-01-07-ansible_01/" />
 <meta property="article:published_time" content="2020-01-07T00:00:00+00:00" />
 <meta property="article:modified_time" content="2020-01-07T00:00:00+00:00" />
 
 
     
-      <base href="https://fabianoflorentino.codar.info/posts/2020-01-07-ansible_01/">
+      <base href="https://fabianoflorentino.github.io/posts/2020-01-07-ansible_01/">
     
     <title>
   HAProxy LoadBalancer em HA com Keepalived Automatizado · Fabiano Florentino
 </title>
 
     
-      <link rel="canonical" href="https://fabianoflorentino.codar.info/posts/2020-01-07-ansible_01/">
+      <link rel="canonical" href="https://fabianoflorentino.github.io/posts/2020-01-07-ansible_01/">
     
 
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel="stylesheet">
@@ -46,7 +46,7 @@ Nesse artigo trago a configuração do HAProxy em HA com Keepalived automatizado
     
       
       
-      <link rel="stylesheet" href="https://fabianoflorentino.codar.info/css/coder.min.a4f332213a21ce8eb521670c614470c58923aaaf385e2a73982c31dd7642decb.css" integrity="sha256-pPMyITohzo61IWcMYURwxYkjqq84XipzmCwx3XZC3ss=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://fabianoflorentino.github.io/css/coder.min.a4f332213a21ce8eb521670c614470c58923aaaf385e2a73982c31dd7642decb.css" integrity="sha256-pPMyITohzo61IWcMYURwxYkjqq84XipzmCwx3XZC3ss=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -54,13 +54,13 @@ Nesse artigo trago a configuração do HAProxy em HA com Keepalived automatizado
     
 
     
-      <link rel="stylesheet" href="https://fabianoflorentino.codar.info/css/custom.css" />
+      <link rel="stylesheet" href="https://fabianoflorentino.github.io/css/custom.css" />
     
 
     
 
-    <link rel="icon" type="image/png" href="https://fabianoflorentino.codar.info/img/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="https://fabianoflorentino.codar.info/img/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="https://fabianoflorentino.github.io/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://fabianoflorentino.github.io/img/favicon-16x16.png" sizes="16x16">
 
     <meta name="generator" content="Hugo 0.70.0" />
   </head>
@@ -71,7 +71,7 @@ Nesse artigo trago a configuração do HAProxy em HA com Keepalived automatizado
     <main class="wrapper">
       <nav class="navigation">
   <section class="container">
-    <a class="navigation-title" href="https://fabianoflorentino.codar.info/">
+    <a class="navigation-title" href="https://fabianoflorentino.github.io/">
       Fabiano Florentino
     </a>
     
@@ -81,11 +81,11 @@ Nesse artigo trago a configuração do HAProxy em HA com Keepalived automatizado
       
         
           <li class="navigation-item">
-            <a class="navigation-link" href="https://fabianoflorentino.codar.info/posts/">Artigos</a>
+            <a class="navigation-link" href="https://fabianoflorentino.github.io/posts/">Artigos</a>
           </li>
         
           <li class="navigation-item">
-            <a class="navigation-link" href="https://fabianoflorentino.codar.info/about/">Sobre</a>
+            <a class="navigation-link" href="https://fabianoflorentino.github.io/about/">Sobre</a>
           </li>
         
       
@@ -119,15 +119,15 @@ Nesse artigo trago a configuração do HAProxy em HA com Keepalived automatizado
           </div>
           <div class="categories">
   <i class="fas fa-folder"></i>
-    <a href="https://fabianoflorentino.codar.info/categories/automa%C3%A7%C3%A3o/">automação</a>
+    <a href="https://fabianoflorentino.github.io/categories/automa%C3%A7%C3%A3o/">automação</a>
       <span class="separator">•</span>
-    <a href="https://fabianoflorentino.codar.info/categories/ansible/">ansible</a></div>
+    <a href="https://fabianoflorentino.github.io/categories/ansible/">ansible</a></div>
 
           <div class="tags">
   <i class="fas fa-tag"></i>
-    <a href="https://fabianoflorentino.codar.info/tags/automa%C3%A7%C3%A3o/">automação</a>
+    <a href="https://fabianoflorentino.github.io/tags/automa%C3%A7%C3%A3o/">automação</a>
       <span class="separator">•</span>
-    <a href="https://fabianoflorentino.codar.info/tags/ansible/">ansible</a></div>
+    <a href="https://fabianoflorentino.github.io/tags/ansible/">ansible</a></div>
 
         </div>
       </header>
