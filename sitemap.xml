@@ -3,12 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://fabianoflorentino.github.io/categories/</loc>
-    <lastmod>2020-04-22T00:00:00+00:00</lastmod>
+    <loc>https://fabianoflorentino.github.io/about/</loc>
+    <lastmod>2020-05-09T23:59:25-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://fabianoflorentino.github.io/about/experiencias/</loc>
+    <lastmod>2020-05-09T23:59:25-03:00</lastmod>
   </url>
   
   <url>
     <loc>https://fabianoflorentino.github.io/</loc>
+    <lastmod>2020-05-09T23:59:25-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://fabianoflorentino.github.io/categories/</loc>
     <lastmod>2020-04-22T00:00:00+00:00</lastmod>
   </url>
   
@@ -120,14 +130,6 @@
   <url>
     <loc>https://fabianoflorentino.github.io/posts/2019-12-21-terraform/</loc>
     <lastmod>2019-12-21T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://fabianoflorentino.github.io/about/</loc>
-  </url>
-  
-  <url>
-    <loc>https://fabianoflorentino.github.io/about/experiencias/</loc>
   </url>
   
 </urlset>
