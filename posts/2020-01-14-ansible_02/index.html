@@ -385,10 +385,9 @@ ansible
 <h3 id="11-hardeningconf"><strong>11-hardening.conf</strong></h3>
 </li>
 </ul>
-<p>{% highlight jinja %}
-{% raw %}</p>
-<h1 id="-ansible_managed-">{{ ansible_managed }}</h1>
-<p>ipv4.conf.all.forwarding = {{ hardening.ipv4_conf_all_forwarding}}
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="font-style:italic"># {{ ansible_managed }}</span>
+
+ipv4.conf.all.forwarding = {{ hardening.ipv4_conf_all_forwarding}}
 net.ipv4.conf.all.accept_source_route = {{ hardening.net_ipv4_conf_all_accept_source_route}}
 net.ipv4.conf.all.accept_redirects = {{ hardening.net_ipv4_conf_all_accept_redirects }}
 net.ipv4.conf.all.secure_redirects = {{ hardening.net_ipv4_conf_all_secure_redirects }}
@@ -397,67 +396,76 @@ net.ipv4.conf.all.rp_filter = {{ hardening.net_ipv4_conf_all_rp_filter }}
 net.ipv4.icmp_echo_ignore_all = {{ hardening.net_ipv4_icmp_echo_ignore_all }}
 net.ipv6.conf.all.disable_ipv6 = {{ hardening.net_ipv6_conf_all_disable_ipv6 }}
 net.ipv6.conf.default.disable_ipv6 = {{ hardening.net_ipv6_conf_default_disable_ipv6}}
-net.ipv6.conf.lo.disable_ipv6 = {{ hardening.net_ipv6_conf_lo_disable_ipv6 }}</p>
-<p>{% endraw %}
-{% endhighlight %}</p>
-<ul>
+net.ipv6.conf.lo.disable_ipv6 = {{ hardening.net_ipv6_conf_lo_disable_ipv6 }}
+</code></pre></div><ul>
 <li>
 <h3 id="ntpconf"><strong>ntp.conf</strong></h3>
 </li>
 </ul>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim roles/common/templates/ntp.conf.j2
-</code></pre></div><p>{% highlight jinja %}
-{% raw %}</p>
-<h1 id="heading"></h1>
-<h1 id="-ansible_managed--1">{{ ansible_managed }}</h1>
-<h1 id="heading-1"></h1>
-<h1 id="for-more-information-about-this-file-see-the-man-pages">For more information about this file, see the man pages</h1>
-<h1 id="ntpconf5-ntp_acc5-ntp_auth5-ntp_clock5-ntp_misc5-ntp_mon5">ntp.conf(5), ntp_acc(5), ntp_auth(5), ntp_clock(5), ntp_misc(5), ntp_mon(5).</h1>
-<p>driftfile /var/lib/ntp/drift</p>
-<h1 id="permit-time-synchronization-with-our-time-source-but-do-not">Permit time synchronization with our time source, but do not</h1>
-<h1 id="permit-the-source-to-query-or-modify-the-service-on-this-system">permit the source to query or modify the service on this system.</h1>
-<p>restrict default nomodify notrap nopeer noquery</p>
-<h1 id="permit-all-access-over-the-loopback-interface--this-could">Permit all access over the loopback interface.  This could</h1>
-<h1 id="be-tightened-as-well-but-to-do-so-would-effect-some-of">be tightened as well, but to do so would effect some of</h1>
-<h1 id="the-administrative-functions">the administrative functions.</h1>
-<p>restrict 127.0.0.1
-restrict ::1</p>
-<h1 id="hosts-on-local-network-are-less-restricted">Hosts on local network are less restricted.</h1>
-<p>#restrict 192.168.1.0 netmask 255.255.255.0 nomodify notrap</p>
-<h1 id="use-public-servers-from-the-poolntporg-project">Use public servers from the pool.ntp.org project.</h1>
-<h1 id="please-consider-joining-the-pool-httpwwwpoolntporgjoinhtml">Please consider joining the pool (<a href="http://www.pool.ntp.org/join.html)">http://www.pool.ntp.org/join.html)</a>.</h1>
-<p>{% for server in ntp_servers %}
+</code></pre></div><div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">#
+<span style="font-style:italic"># {{ ansible_managed }}</span>
+#
+<span style="font-style:italic"># For more information about this file, see the man pages</span>
+<span style="font-style:italic"># ntp.conf(5), ntp_acc(5), ntp_auth(5), ntp_clock(5), ntp_misc(5), ntp_mon(5).</span>
+
+driftfile /var/lib/ntp/drift
+
+<span style="font-style:italic"># Permit time synchronization with our time source, but do not</span>
+<span style="font-style:italic"># permit the source to query or modify the service on this system.</span>
+restrict default nomodify notrap nopeer noquery
+
+<span style="font-style:italic"># Permit all access over the loopback interface.  This could</span>
+<span style="font-style:italic"># be tightened as well, but to do so would effect some of</span>
+<span style="font-style:italic"># the administrative functions.</span>
+restrict 127.0.0.1
+restrict ::1
+
+<span style="font-style:italic"># Hosts on local network are less restricted.</span>
+<span style="font-style:italic">#restrict 192.168.1.0 netmask 255.255.255.0 nomodify notrap</span>
+
+<span style="font-style:italic"># Use public servers from the pool.ntp.org project.</span>
+<span style="font-style:italic"># Please consider joining the pool (http://www.pool.ntp.org/join.html).</span>
+{% <span style="font-weight:bold">for</span> server in ntp_servers %}
 {{ server }}
-{% endfor %}</p>
-<p>logfile /var/log/ntp.log</p>
-<p>#broadcast 192.168.1.255 autokey        # broadcast server
-#broadcastclient                        # broadcast client
-#broadcast 224.0.1.1 autokey            # multicast server
-#multicastclient 224.0.1.1              # multicast client
-#manycastserver 239.255.254.254         # manycast server
-#manycastclient 239.255.254.254 autokey # manycast client</p>
-<h1 id="enable-public-key-cryptography">Enable public key cryptography.</h1>
-<p>#crypto</p>
-<p>includefile /etc/ntp/crypto/pw</p>
-<h1 id="key-file-containing-the-keys-and-key-identifiers-used-when-operating">Key file containing the keys and key identifiers used when operating</h1>
-<h1 id="with-symmetric-key-cryptography">with symmetric key cryptography.</h1>
-<p>keys /etc/ntp/keys</p>
-<h1 id="specify-the-key-identifiers-which-are-trusted">Specify the key identifiers which are trusted.</h1>
-<p>#trustedkey 4 8 42</p>
-<h1 id="specify-the-key-identifier-to-use-with-the-ntpdc-utility">Specify the key identifier to use with the ntpdc utility.</h1>
-<p>#requestkey 8</p>
-<h1 id="specify-the-key-identifier-to-use-with-the-ntpq-utility">Specify the key identifier to use with the ntpq utility.</h1>
-<p>#controlkey 8</p>
-<h1 id="enable-writing-of-statistics-records">Enable writing of statistics records.</h1>
-<p>#statistics clockstats cryptostats loopstats peerstats</p>
-<h1 id="disable-the-monitoring-facility-to-prevent-amplification-attacks-using-ntpdc">Disable the monitoring facility to prevent amplification attacks using ntpdc</h1>
-<h1 id="monlist-command-when-default-restrict-does-not-include-the-noquery-flag-see">monlist command when default restrict does not include the noquery flag. See</h1>
-<h1 id="cve-2013-5211-for-more-details">CVE-2013-5211 for more details.</h1>
-<h1 id="note-monitoring-will-not-be-disabled-with-the-limited-restriction-flag">Note: Monitoring will not be disabled with the limited restriction flag.</h1>
-<p>disable monitor</p>
-<p>{% endraw %}
-{% endhighlight %}</p>
-<h3 id="handlers"><strong>handlers</strong></h3>
+{% endfor %}
+
+logfile /var/log/ntp.log
+
+<span style="font-style:italic">#broadcast 192.168.1.255 autokey        # broadcast server</span>
+<span style="font-style:italic">#broadcastclient                        # broadcast client</span>
+<span style="font-style:italic">#broadcast 224.0.1.1 autokey            # multicast server</span>
+<span style="font-style:italic">#multicastclient 224.0.1.1              # multicast client</span>
+<span style="font-style:italic">#manycastserver 239.255.254.254         # manycast server</span>
+<span style="font-style:italic">#manycastclient 239.255.254.254 autokey # manycast client</span>
+
+<span style="font-style:italic"># Enable public key cryptography.</span>
+<span style="font-style:italic">#crypto</span>
+
+includefile /etc/ntp/crypto/pw
+
+<span style="font-style:italic"># Key file containing the keys and key identifiers used when operating</span>
+<span style="font-style:italic"># with symmetric key cryptography.</span>
+keys /etc/ntp/keys
+
+<span style="font-style:italic"># Specify the key identifiers which are trusted.</span>
+<span style="font-style:italic">#trustedkey 4 8 42</span>
+
+<span style="font-style:italic"># Specify the key identifier to use with the ntpdc utility.</span>
+<span style="font-style:italic">#requestkey 8</span>
+
+<span style="font-style:italic"># Specify the key identifier to use with the ntpq utility.</span>
+<span style="font-style:italic">#controlkey 8</span>
+
+<span style="font-style:italic"># Enable writing of statistics records.</span>
+<span style="font-style:italic">#statistics clockstats cryptostats loopstats peerstats</span>
+
+<span style="font-style:italic"># Disable the monitoring facility to prevent amplification attacks using ntpdc</span>
+<span style="font-style:italic"># monlist command when default restrict does not include the noquery flag. See</span>
+<span style="font-style:italic"># CVE-2013-5211 for more details.</span>
+<span style="font-style:italic"># Note: Monitoring will not be disabled with the limited restriction flag.</span>
+disable monitor
+</code></pre></div><h3 id="handlers"><strong>handlers</strong></h3>
 <p>Tarefas configuradas para serem re-executadas caso tenha alguma alteração nas configurações das tasks.</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">├── roles
 │   └── common
