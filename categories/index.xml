@@ -2,75 +2,75 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Home</title>
-    <link>http://localhost/categories/</link>
+    <link>https://fabianoflorentino.github.io/categories/</link>
     <description>Recent content in Categories on Home</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Wed, 22 Apr 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://localhost/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://fabianoflorentino.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>sobre min</title>
-      <link>http://localhost/categories/sobre-min/</link>
+      <link>https://fabianoflorentino.github.io/categories/sobre-min/</link>
       <pubDate>Wed, 22 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost/categories/sobre-min/</guid>
+      <guid>https://fabianoflorentino.github.io/categories/sobre-min/</guid>
       <description></description>
     </item>
     
     <item>
       <title>automação</title>
-      <link>http://localhost/categories/automa%C3%A7%C3%A3o/</link>
+      <link>https://fabianoflorentino.github.io/categories/automa%C3%A7%C3%A3o/</link>
       <pubDate>Sat, 21 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost/categories/automa%C3%A7%C3%A3o/</guid>
+      <guid>https://fabianoflorentino.github.io/categories/automa%C3%A7%C3%A3o/</guid>
       <description></description>
     </item>
     
     <item>
       <title>container</title>
-      <link>http://localhost/categories/container/</link>
+      <link>https://fabianoflorentino.github.io/categories/container/</link>
       <pubDate>Sat, 21 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost/categories/container/</guid>
+      <guid>https://fabianoflorentino.github.io/categories/container/</guid>
       <description></description>
     </item>
     
     <item>
       <title>jenkins</title>
-      <link>http://localhost/categories/jenkins/</link>
+      <link>https://fabianoflorentino.github.io/categories/jenkins/</link>
       <pubDate>Sat, 21 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost/categories/jenkins/</guid>
+      <guid>https://fabianoflorentino.github.io/categories/jenkins/</guid>
       <description></description>
     </item>
     
     <item>
       <title>terraform</title>
-      <link>http://localhost/categories/terraform/</link>
+      <link>https://fabianoflorentino.github.io/categories/terraform/</link>
       <pubDate>Sat, 21 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost/categories/terraform/</guid>
+      <guid>https://fabianoflorentino.github.io/categories/terraform/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ansible</title>
-      <link>http://localhost/categories/ansible/</link>
+      <link>https://fabianoflorentino.github.io/categories/ansible/</link>
       <pubDate>Tue, 14 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost/categories/ansible/</guid>
+      <guid>https://fabianoflorentino.github.io/categories/ansible/</guid>
       <description></description>
     </item>
     
     <item>
       <title>desenvolvimento</title>
-      <link>http://localhost/categories/desenvolvimento/</link>
+      <link>https://fabianoflorentino.github.io/categories/desenvolvimento/</link>
       <pubDate>Tue, 14 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>http://localhost/categories/desenvolvimento/</guid>
+      <guid>https://fabianoflorentino.github.io/categories/desenvolvimento/</guid>
       <description></description>
     </item>
     

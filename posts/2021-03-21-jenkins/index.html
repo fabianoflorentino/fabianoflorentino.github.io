@@ -27,20 +27,20 @@ Não é de hoje que tudo está se convergindo para Cloud Computing e de fato ess
 No meu primeiro artigo, expliquei e demonstrei como criar máquinas no vCenter/vSphere usando terraform, e que tal entregar essas máquinas virtuais dentro de um pipeline como se fosse um aplicativo?
 Não é de hoje que tudo está se convergindo para Cloud Computing e de fato esse parece ser o futuro. Mas ainda temos o meio do caminho, muitas empresas utilizam parte da sua infraestrutura em datacenters, migrando e ou utilizando esse dois mundo em uma abordagem de Cloud Hibrida que acaba fazendo parte do negócio." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://localhost/posts/2021-03-21-jenkins/" />
+<meta property="og:url" content="https://fabianoflorentino.github.io/posts/2021-03-21-jenkins/" />
 <meta property="article:published_time" content="2020-03-21T00:00:00+00:00" />
 <meta property="article:modified_time" content="2020-03-21T00:00:00+00:00" />
 
 
     
-      <base href="http://localhost/posts/2021-03-21-jenkins/">
+      <base href="https://fabianoflorentino.github.io/posts/2021-03-21-jenkins/">
     
     <title>
   Entregando VM&#39;s no VMware vCenter/vSphere com o Jenkins · Home
 </title>
 
     
-      <link rel="canonical" href="http://localhost/posts/2021-03-21-jenkins/">
+      <link rel="canonical" href="https://fabianoflorentino.github.io/posts/2021-03-21-jenkins/">
     
 
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel="stylesheet">
@@ -50,7 +50,7 @@ Não é de hoje que tudo está se convergindo para Cloud Computing e de fato ess
     
       
       
-      <link rel="stylesheet" href="http://localhost/css/coder.min.3219ef62ae52679b7a9c19043171c3cd9f523628c2a65f3ef247ee18836bc90b.css" integrity="sha256-MhnvYq5SZ5t6nBkEMXHDzZ9SNijCpl8&#43;8kfuGINryQs=" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="https://fabianoflorentino.github.io/css/coder.min.3219ef62ae52679b7a9c19043171c3cd9f523628c2a65f3ef247ee18836bc90b.css" integrity="sha256-MhnvYq5SZ5t6nBkEMXHDzZ9SNijCpl8&#43;8kfuGINryQs=" crossorigin="anonymous" media="screen" />
     
 
     
@@ -59,7 +59,7 @@ Não é de hoje que tudo está se convergindo para Cloud Computing e de fato ess
       
         
         
-        <link rel="stylesheet" href="http://localhost/css/coder-dark.min.e78e80fc3a585a4d1c8fc7f58623b6ff852411e38431a9cd1792877ecaa160f6.css" integrity="sha256-546A/DpYWk0cj8f1hiO2/4UkEeOEManNF5KHfsqhYPY=" crossorigin="anonymous" media="screen" />
+        <link rel="stylesheet" href="https://fabianoflorentino.github.io/css/coder-dark.min.e78e80fc3a585a4d1c8fc7f58623b6ff852411e38431a9cd1792877ecaa160f6.css" integrity="sha256-546A/DpYWk0cj8f1hiO2/4UkEeOEManNF5KHfsqhYPY=" crossorigin="anonymous" media="screen" />
       
     
 
@@ -67,8 +67,8 @@ Não é de hoje que tudo está se convergindo para Cloud Computing e de fato ess
 
     
 
-    <link rel="icon" type="image/png" href="http://localhost/images/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="http://localhost/images/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="https://fabianoflorentino.github.io/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://fabianoflorentino.github.io/images/favicon-16x16.png" sizes="16x16">
 
     <meta name="generator" content="Hugo 0.71.1" />
   </head>
@@ -83,7 +83,7 @@ Não é de hoje que tudo está se convergindo para Cloud Computing e de fato ess
     <main class="wrapper">
       <nav class="navigation">
   <section class="container">
-    <a class="navigation-title" href="http://localhost/">
+    <a class="navigation-title" href="https://fabianoflorentino.github.io/">
       Home
     </a>
     
@@ -93,11 +93,11 @@ Não é de hoje que tudo está se convergindo para Cloud Computing e de fato ess
       
         
           <li class="navigation-item">
-            <a class="navigation-link" href="http://localhost/info/">Info</a>
+            <a class="navigation-link" href="https://fabianoflorentino.github.io/info/">Info</a>
           </li>
         
           <li class="navigation-item">
-            <a class="navigation-link" href="http://localhost/posts/">Blog</a>
+            <a class="navigation-link" href="https://fabianoflorentino.github.io/posts/">Blog</a>
           </li>
         
       
@@ -131,23 +131,23 @@ Não é de hoje que tudo está se convergindo para Cloud Computing e de fato ess
           </div>
           <div class="categories">
   <i class="fas fa-folder"></i>
-    <a href="http://localhost/categories/automa%C3%A7%C3%A3o/">automação</a>
+    <a href="https://fabianoflorentino.github.io/categories/automa%C3%A7%C3%A3o/">automação</a>
       <span class="separator">•</span>
-    <a href="http://localhost/categories/jenkins/">jenkins</a>
+    <a href="https://fabianoflorentino.github.io/categories/jenkins/">jenkins</a>
       <span class="separator">•</span>
-    <a href="http://localhost/categories/terraform/">terraform</a>
+    <a href="https://fabianoflorentino.github.io/categories/terraform/">terraform</a>
       <span class="separator">•</span>
-    <a href="http://localhost/categories/container/">container</a></div>
+    <a href="https://fabianoflorentino.github.io/categories/container/">container</a></div>
 
           <div class="tags">
   <i class="fas fa-tag"></i>
-    <a href="http://localhost/tags/automa%C3%A7%C3%A3o/">automação</a>
+    <a href="https://fabianoflorentino.github.io/tags/automa%C3%A7%C3%A3o/">automação</a>
       <span class="separator">•</span>
-    <a href="http://localhost/tags/jenkins/">jenkins</a>
+    <a href="https://fabianoflorentino.github.io/tags/jenkins/">jenkins</a>
       <span class="separator">•</span>
-    <a href="http://localhost/tags/terraform/">terraform</a>
+    <a href="https://fabianoflorentino.github.io/tags/terraform/">terraform</a>
       <span class="separator">•</span>
-    <a href="http://localhost/tags/container/">container</a></div>
+    <a href="https://fabianoflorentino.github.io/tags/container/">container</a></div>
 
         </div>
       </header>
@@ -366,7 +366,7 @@ o nome do cargo, criar um fluxo (pipeline) de entrega de infraestrutura seria in
             return;
         }
         var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "yourdiscussshortname" + '.disqus.com/embed.js';
+        s.src = '//' + "florentinocodar" + '.disqus.com/embed.js';
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
     })();
@@ -389,8 +389,6 @@ o nome do cargo, criar um fluxo (pipeline) de entrega de infraestrutura seria in
       
       
         
-        
-          
         
         
         
