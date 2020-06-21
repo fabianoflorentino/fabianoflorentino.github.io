@@ -1,6 +1,6 @@
 ---
-title: "Formacao"
-date: 2020-06-21T03:27:30Z
+title: "Formação"
+date: 2020-06-19T03:27:30Z
 draft: false
 ---
 
