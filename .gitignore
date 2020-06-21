@@ -1,1 +1,9 @@
-./src
+*.DS_Store*
+src/archetypes
+src/content/images
+src/data
+src/layouts
+src/resources
+src/static
+src/themes
+
