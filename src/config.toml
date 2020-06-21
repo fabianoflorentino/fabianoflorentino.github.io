@@ -1,4 +1,4 @@
-baseurl = "http://localhost"
+baseurl = "https://fabianoflorentino.github.io"
 title = "Home"
 
 theme = "hugo-coder"
@@ -13,7 +13,7 @@ pygmentsstyle = "b2"
 pygmentscodefences = true
 pygmentscodefencesguesssyntax = true
 
-disqusShortname = "yourdiscussshortname"
+disqusShortname = "florentinocodar"
 
 [params]
     author = "Fabiano S. Florentino"
@@ -29,7 +29,7 @@ disqusShortname = "yourdiscussshortname"
     hideFooter = false
     hideCredits = false
     hideCopyright = false
-    since = 2019
+    since = 2020
 
     # Git Commit in Footer, uncomment the line below to enable it.
     commit = "https://github.com/luizdepra/hugo-coder/tree/"
