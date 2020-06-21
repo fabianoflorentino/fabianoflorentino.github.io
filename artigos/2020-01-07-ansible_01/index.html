@@ -27,20 +27,20 @@ Nesse artigo trago a configuração do HAProxy em HA com Keepalived automatizado
 Mas e na infraestrutura on-premise como implementamos isso?
 Nesse artigo trago a configuração do HAProxy em HA com Keepalived automatizado com ansible. Uma solução simples e bastante robusta dependendo da sua infraestrutura." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://fabianoflorentino.github.io/posts/2020-01-07-ansible_01/" />
+<meta property="og:url" content="https://fabianoflorentino.github.io/artigos/2020-01-07-ansible_01/" />
 <meta property="article:published_time" content="2020-01-07T00:00:00+00:00" />
 <meta property="article:modified_time" content="2020-01-07T00:00:00+00:00" />
 
 
     
-      <base href="https://fabianoflorentino.github.io/posts/2020-01-07-ansible_01/">
+      <base href="https://fabianoflorentino.github.io/artigos/2020-01-07-ansible_01/">
     
     <title>
   HAProxy LoadBalancer em HA com Keepalived Automatizado · Home
 </title>
 
     
-      <link rel="canonical" href="https://fabianoflorentino.github.io/posts/2020-01-07-ansible_01/">
+      <link rel="canonical" href="https://fabianoflorentino.github.io/artigos/2020-01-07-ansible_01/">
     
 
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel="stylesheet">
@@ -97,7 +97,7 @@ Nesse artigo trago a configuração do HAProxy em HA com Keepalived automatizado
           </li>
         
           <li class="navigation-item">
-            <a class="navigation-link" href="https://fabianoflorentino.github.io/posts/">Artigos</a>
+            <a class="navigation-link" href="https://fabianoflorentino.github.io/artigos/">Artigos</a>
           </li>
         
       
@@ -110,43 +110,13 @@ Nesse artigo trago a configuração do HAProxy em HA com Keepalived automatizado
 
       <div class="content">
         
-  <section class="container post">
-    <article>
-      <header>
-        <div class="post-title">
-          <h1 class="title">HAProxy LoadBalancer em HA com Keepalived Automatizado</h1>
-        </div>
-        <div class="post-meta">
-          <div class="date">
-            <span class="posted-on">
-              <i class="fas fa-calendar"></i>
-              <time datetime='2020-01-07T00:00:00Z'>
-                January 7, 2020
-              </time>
-            </span>
-            <span class="reading-time">
-              <i class="fas fa-clock"></i>
-              6-minute read
-            </span>
-          </div>
-          <div class="categories">
-  <i class="fas fa-folder"></i>
-    <a href="https://fabianoflorentino.github.io/categories/automa%C3%A7%C3%A3o/">automação</a>
-      <span class="separator">•</span>
-    <a href="https://fabianoflorentino.github.io/categories/ansible/">ansible</a></div>
+  <section class="container page">
+  <article>
+    <header>
+      <h1>HAProxy LoadBalancer em HA com Keepalived Automatizado</h1>
+    </header>
 
-          <div class="tags">
-  <i class="fas fa-tag"></i>
-    <a href="https://fabianoflorentino.github.io/tags/automa%C3%A7%C3%A3o/">automação</a>
-      <span class="separator">•</span>
-    <a href="https://fabianoflorentino.github.io/tags/ansible/">ansible</a></div>
-
-        </div>
-      </header>
-
-      <div>
-        
-        <p>Toda a infraestrutura de TI hoje seja ela Cloud ou on-premise utiliza balanceadores de carga
+    <p>Toda a infraestrutura de TI hoje seja ela Cloud ou on-premise utiliza balanceadores de carga
 como a sua porta de entrada. Hoje acredito que todos os provedores de serviço de Cloud com salve
 exceções não fornecem esse tipo de serviço.</p>
 <p>Mas e na infraestrutura on-premise como implementamos isso?</p>
@@ -528,40 +498,10 @@ ansible-haproxy
 <p>Mesmo em uma infraestrutura on-premise é possível trabalhar com soluções simples e robustas. A principio parece trabalhoso codificar tudo isso, mas, quando você estiver trabalhando com dezenas ou até centenas de hosts o cenário é totalmente favorável.</p>
 <p><strong>Projeto:</strong> <a href="https://github.com/fabianoflorentino/ansible-haproxy">https://github.com/fabianoflorentino/ansible-haproxy</a></p>
 
-      </div>
+  </article>
+</section>
 
-
-      <footer>
-        
-
-
-        <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "florentinocodar" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-        
-        
-      </footer>
-    </article>
-
-    
-  </section>
+  
 
       </div>
 

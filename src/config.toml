@@ -89,11 +89,11 @@ disqusShortname = "florentinocodar"
         [languages.en.menu]
 
             [[languages.en.menu.main]]
-            name = "Info"
+            name = "Sobre"
             weight = 1
-            url = "info/"
+            url = "sobre/"
 
             [[languages.en.menu.main]]
-            name = "Blog"
+            name = "Artigos"
             weight = 2
             url = "posts/"
