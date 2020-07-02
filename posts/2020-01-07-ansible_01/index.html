@@ -286,50 +286,40 @@ ansible-haproxy
 <p>Nesse arquivo configuramos as tasks(tarefas) para o ansible fazer toda a sua mágica.
 A sintaxe do arquivo yaml é bem intuitiva visto que você está declarando toda a configuração.</p>
 <div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim roles/haproxy/tasks/main.yaml
-</code></pre></div><p>{% highlight yaml %}
-{% raw %}</p>
-<hr>
-<ul>
-<li>
-<p>name: &ldquo;Install Packages&rdquo;
-apt:
-name: &ldquo;{{ item }}&rdquo;
-state: present
-loop: &ldquo;{{ packages.to_install }}&rdquo;</p>
-</li>
-<li>
-<p>name: &ldquo;Configure New APP in HAProxy&rdquo;
-template:
-src: haproxy.cfg.j2
-dest: /etc/haproxy/haproxy.cfg
-owner: root
-group: root
-mode: 0644
-with_dict: &ldquo;{{ new_app }}&rdquo;
-notify: &ldquo;Apply new configuration for HAProxy&rdquo;</p>
-</li>
-<li>
-<p>name: &ldquo;Set up high availability with Keepalived&rdquo;
-template:
-src: keepalived.conf.j2
-dest: /etc/keepalived/keepalived.conf
-owner: root
-group: root
-mode: 0644
-notify: &ldquo;Apply new configuration for Keepalived&rdquo;</p>
-</li>
-<li>
-<p>name: &ldquo;Inicialize systemd services&rdquo;
-systemd:
-name: &ldquo;{{ item }}&rdquo;
-state: started
-enabled: yes
-loop: &ldquo;{{ services.to_enable }}&rdquo;</p>
-</li>
-</ul>
-<p>{% endraw %}
-{% endhighlight %}</p>
-<ul>
+</code></pre></div><div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">---
+
+- <span style="color:#fff;font-weight:bold">name</span>: <span style="color:#0ff;font-weight:bold">&#34;Install Packages&#34;</span>
+  <span style="color:#fff;font-weight:bold">apt</span>:
+    <span style="color:#fff;font-weight:bold">name</span>: <span style="color:#0ff;font-weight:bold">&#34;{{ item }}&#34;</span>
+    <span style="color:#fff;font-weight:bold">state</span>: present
+  <span style="color:#fff;font-weight:bold">loop</span>: <span style="color:#0ff;font-weight:bold">&#34;{{ packages.to_install }}&#34;</span>
+
+- <span style="color:#fff;font-weight:bold">name</span>: <span style="color:#0ff;font-weight:bold">&#34;Configure New APP in HAProxy&#34;</span>
+  <span style="color:#fff;font-weight:bold">template</span>:
+    <span style="color:#fff;font-weight:bold">src</span>: haproxy.cfg.j2
+    <span style="color:#fff;font-weight:bold">dest</span>: /etc/haproxy/haproxy.cfg
+    <span style="color:#fff;font-weight:bold">owner</span>: root
+    <span style="color:#fff;font-weight:bold">group</span>: root
+    <span style="color:#fff;font-weight:bold">mode</span>: <span style="color:#ff0;font-weight:bold">0644</span>
+  <span style="color:#fff;font-weight:bold">with_dict</span>: <span style="color:#0ff;font-weight:bold">&#34;{{ new_app }}&#34;</span>
+  <span style="color:#fff;font-weight:bold">notify</span>: <span style="color:#0ff;font-weight:bold">&#34;Apply new configuration for HAProxy&#34;</span>
+
+- <span style="color:#fff;font-weight:bold">name</span>: <span style="color:#0ff;font-weight:bold">&#34;Set up high availability with Keepalived&#34;</span>
+  <span style="color:#fff;font-weight:bold">template</span>:
+    <span style="color:#fff;font-weight:bold">src</span>: keepalived.conf.j2
+    <span style="color:#fff;font-weight:bold">dest</span>: /etc/keepalived/keepalived.conf
+    <span style="color:#fff;font-weight:bold">owner</span>: root
+    <span style="color:#fff;font-weight:bold">group</span>: root
+    <span style="color:#fff;font-weight:bold">mode</span>: <span style="color:#ff0;font-weight:bold">0644</span>
+  <span style="color:#fff;font-weight:bold">notify</span>: <span style="color:#0ff;font-weight:bold">&#34;Apply new configuration for Keepalived&#34;</span>
+
+- <span style="color:#fff;font-weight:bold">name</span>: <span style="color:#0ff;font-weight:bold">&#34;Inicialize systemd services&#34;</span>
+  <span style="color:#fff;font-weight:bold">systemd</span>:
+    <span style="color:#fff;font-weight:bold">name</span>: <span style="color:#0ff;font-weight:bold">&#34;{{ item }}&#34;</span>
+    <span style="color:#fff;font-weight:bold">state</span>: started
+    <span style="color:#fff;font-weight:bold">enabled</span>: yes
+  <span style="color:#fff;font-weight:bold">loop</span>: <span style="color:#0ff;font-weight:bold">&#34;{{ services.to_enable }}&#34;</span>
+</code></pre></div><ul>
 <li>
 <h3 id="handlers---mainyaml"><strong>handlers - main.yaml</strong></h3>
 </li>
@@ -362,121 +352,125 @@ em ambos os servidores.</p>
 </li>
 </ul>
 <div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim roles/haproxy/templates/haproxy.cfg.j2
-</code></pre></div><p>{% highlight jinja %}
-{% raw %}</p>
-<p>global
-ulimit-n 100042
-maxconn     4000
-daemon</p>
-<h1 id="turn-on-stats-unix-socket">turn on stats unix socket</h1>
-<p>stats socket /var/lib/haproxy/stats mode 0600 level admin</p>
-<h3 id="defaults">Defaults</h3>
-<p>defaults
-log global
-{% if haproxy_mode == &ldquo;layer_7&rdquo; %}
-mode http
-{% endif %}
-option dontlognull
-option http-server-close
-option redispatch
-retries 3
-timeout http-request 10s
-timeout queue 1m
-timeout connect 10s
-timeout client 1m
-timeout server 1m
-timeout http-keep-alive 10s
-timeout check 10s
-maxconn 3000</p>
-<h3 id="stats">Stats</h3>
-<p>listen  stats
-bind *:9000
-stats enable
-stats realm Haproxy\ Statistics
-stats uri /haproxy_stats
-stats auth admin:password
-stats refresh 30
-stats show-node
-mode http</p>
-<p>{% if haproxy_mode == &ldquo;layer_7&rdquo; %}
+</code></pre></div><div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jinja" data-lang="jinja">global
+  ulimit-n 100042
+  maxconn     4000
+  daemon
+
+  # turn on stats unix socket
+  stats socket /var/lib/haproxy/stats mode 0600 level admin
+
+### Defaults
+defaults
+  log global
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">if</span> haproxy_mode == <span style="color:#0ff;font-weight:bold">&#34;layer_7&#34;</span> <span style="color:#0f0;font-weight:bold">%}</span>
+  mode http
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endif</span> <span style="color:#0f0;font-weight:bold">%}</span>
+  option dontlognull
+  option http-server-close
+  option redispatch
+  retries 3
+  timeout http-request 10s
+  timeout queue 1m
+  timeout connect 10s
+  timeout client 1m
+  timeout server 1m
+  timeout http-keep-alive 10s
+  timeout check 10s
+  maxconn 3000
+
+### Stats
+listen  stats
+        bind *:9000
+        stats enable
+        stats realm Haproxy\ Statistics
+        stats uri /haproxy_stats
+        stats auth admin:password
+        stats refresh 30
+        stats show-node
+        mode http
+
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">if</span> haproxy_mode == <span style="color:#0ff;font-weight:bold">&#34;layer_7&#34;</span> <span style="color:#0f0;font-weight:bold">%}</span>
 frontend app
-log /dev/log local0 debug
-bind *:80
-reqadd X-Forwarded-Proto:\ http</p>
-<h1 id="heading"></h1>
-<h1 id="acl">ACL</h1>
-<p>{% for acl, app in new_app.items() %}
-acl {{ acl }} hdr(host) -i {{ acl }}.{{ my_domain }}
-{% endfor %}</p>
-<p>{% for acl, app in new_app.items() %}
-use_backend app-{{ app.name }} if {{ acl }}
-{% endfor %}</p>
-<p>{% for acl, app in new_app.items() %}
-backend app-{{ app.name }}
-balance {{ balance_algorithm }}
-mode    http
-option httpchk HEAD /
-{% for host_name, ip_addr in app.backend.items() %}
-server {{ host_name }} {{ ip_addr }}:{{ app.port_back }} check
-{% endfor %}</p>
-<p>{% endfor %}
-{% endif %}</p>
-<p>{% if haproxy_mode == &ldquo;layer_4&rdquo; %}
-{% for acl, app in new_app.items() %}</p>
-<h1 id="heading-1"></h1>
-<h3 id="app--appname-">app-{{ app.name }}</h3>
-<p>frontend app-{{ app.name }}
-log /dev/log local0 debug
-bind *:{{ app.port_front }}
-default_backend app-{{ app.name }}</p>
-<p>backend app-{{ app.name }}
-balance {{ balance_algorithm }}
-mode    tcp
-{% for host_name, ip_addr in app.backend.items() %}
-server {{ host_name }} {{ ip_addr }}:{{ app.port_back }} check
-{% endfor %}</p>
-<p>{% endfor %}
-{% endif %}</p>
-<p>{% endraw %}
-{% endhighlight %}</p>
-<ul>
+  log /dev/log local0 debug
+  bind *:80
+  reqadd X-Forwarded-Proto:\ http
+
+#
+# ACL
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">for</span> acl, app <span style="color:#fff;font-weight:bold">in</span> new_app.items() <span style="color:#0f0;font-weight:bold">%}</span>
+acl <span style="color:#0f0;font-weight:bold">{{</span> acl <span style="color:#0f0;font-weight:bold">}}</span> hdr(host) -i <span style="color:#0f0;font-weight:bold">{{</span> acl <span style="color:#0f0;font-weight:bold">}}</span>.<span style="color:#0f0;font-weight:bold">{{</span> my_domain <span style="color:#0f0;font-weight:bold">}}</span>
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endfor</span> <span style="color:#0f0;font-weight:bold">%}</span>
+
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">for</span> acl, app <span style="color:#fff;font-weight:bold">in</span> new_app.items() <span style="color:#0f0;font-weight:bold">%}</span>
+use_backend app-<span style="color:#0f0;font-weight:bold">{{</span> app.name <span style="color:#0f0;font-weight:bold">}}</span> if <span style="color:#0f0;font-weight:bold">{{</span> acl <span style="color:#0f0;font-weight:bold">}}</span>
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endfor</span> <span style="color:#0f0;font-weight:bold">%}</span>
+
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">for</span> acl, app <span style="color:#fff;font-weight:bold">in</span> new_app.items() <span style="color:#0f0;font-weight:bold">%}</span>
+backend app-<span style="color:#0f0;font-weight:bold">{{</span> app.name <span style="color:#0f0;font-weight:bold">}}</span>
+  balance <span style="color:#0f0;font-weight:bold">{{</span> balance_algorithm <span style="color:#0f0;font-weight:bold">}}</span>
+  mode    http
+  option httpchk HEAD /
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">for</span> host_name, ip_addr <span style="color:#fff;font-weight:bold">in</span> app.backend.items() <span style="color:#0f0;font-weight:bold">%}</span>
+    server <span style="color:#0f0;font-weight:bold">{{</span> host_name <span style="color:#0f0;font-weight:bold">}}</span> <span style="color:#0f0;font-weight:bold">{{</span> ip_addr <span style="color:#0f0;font-weight:bold">}}</span>:<span style="color:#0f0;font-weight:bold">{{</span> app.port_back <span style="color:#0f0;font-weight:bold">}}</span> check
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endfor</span> <span style="color:#0f0;font-weight:bold">%}</span>
+
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endfor</span> <span style="color:#0f0;font-weight:bold">%}</span>
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endif</span> <span style="color:#0f0;font-weight:bold">%}</span>
+
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">if</span> haproxy_mode == <span style="color:#0ff;font-weight:bold">&#34;layer_4&#34;</span> <span style="color:#0f0;font-weight:bold">%}</span>
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">for</span> acl, app <span style="color:#fff;font-weight:bold">in</span> new_app.items() <span style="color:#0f0;font-weight:bold">%}</span>
+#
+### app-<span style="color:#0f0;font-weight:bold">{{</span> app.name <span style="color:#0f0;font-weight:bold">}}</span>
+frontend app-<span style="color:#0f0;font-weight:bold">{{</span> app.name <span style="color:#0f0;font-weight:bold">}}</span>
+  log /dev/log local0 debug
+  bind *:<span style="color:#0f0;font-weight:bold">{{</span> app.port_front <span style="color:#0f0;font-weight:bold">}}</span>
+  default_backend app-<span style="color:#0f0;font-weight:bold">{{</span> app.name <span style="color:#0f0;font-weight:bold">}}</span>
+
+backend app-<span style="color:#0f0;font-weight:bold">{{</span> app.name <span style="color:#0f0;font-weight:bold">}}</span>
+  balance <span style="color:#0f0;font-weight:bold">{{</span> balance_algorithm <span style="color:#0f0;font-weight:bold">}}</span>
+  mode    tcp
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">for</span> host_name, ip_addr <span style="color:#fff;font-weight:bold">in</span> app.backend.items() <span style="color:#0f0;font-weight:bold">%}</span>
+    server <span style="color:#0f0;font-weight:bold">{{</span> host_name <span style="color:#0f0;font-weight:bold">}}</span> <span style="color:#0f0;font-weight:bold">{{</span> ip_addr <span style="color:#0f0;font-weight:bold">}}</span>:<span style="color:#0f0;font-weight:bold">{{</span> app.port_back <span style="color:#0f0;font-weight:bold">}}</span> check
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endfor</span> <span style="color:#0f0;font-weight:bold">%}</span>
+
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endfor</span> <span style="color:#0f0;font-weight:bold">%}</span>
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endif</span> <span style="color:#0f0;font-weight:bold">%}</span>
+</code></pre></div><ul>
 <li>
 <h3 id="keepalivedconfj2"><strong>keepalived.conf.j2</strong></h3>
 </li>
 </ul>
 <div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim roles/haproxy/templates/keepalived.conf.j2
-</code></pre></div><p>{% highlight jinja %}
-{% raw %}</p>
-<p>vrrp_script chk_haproxy {
-script &ldquo;/usr/bin/killall -0 haproxy&rdquo;  # check the haproxy process
-interval 2 # every 2 seconds
-weight 2 # add 2 points if OK
-}</p>
-<p>vrrp_instance VI_1 {
-interface ens32 # interface to monitor
-{% if inventory_hostname == haproxy_master %}
-state MASTER # MASTER on ha1, BACKUP on ha2
-{% else %}
-state BACKUP # MASTER on ha1, BACKUP on ha2
-{% endif -%}
-virtual_router_id 51
-{% if inventory_hostname == haproxy_master %}
-priority 101 # 101 on ha1, 100 on ha2
-{% else %}
-priority 100 # 101 on ha1, 100 on ha2
-{% endif -%}
-advert_int 1
-unicast_src_ip {{ ansible_host }}
-virtual_ipaddress {
-{{ virtual_ipaddress }} # virtual ip address
+</code></pre></div><div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jinja" data-lang="jinja">vrrp_script chk_haproxy {
+  script &#34;/usr/bin/killall -0 haproxy&#34;  # check the haproxy process
+  interval 2 # every 2 seconds
+  weight 2 # add 2 points if OK
 }
-track_script {
-chk_haproxy
+
+vrrp_instance VI_1 {
+  interface ens32 # interface to monitor
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">if</span> inventory_hostname == haproxy_master <span style="color:#0f0;font-weight:bold">%}</span>
+  state MASTER # MASTER on ha1, BACKUP on ha2
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">else</span> <span style="color:#0f0;font-weight:bold">%}</span>
+  state BACKUP # MASTER on ha1, BACKUP on ha2
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endif</span> -<span style="color:#0f0;font-weight:bold">%}</span>
+  virtual_router_id 51
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">if</span> inventory_hostname == haproxy_master <span style="color:#0f0;font-weight:bold">%}</span>
+  priority 101 # 101 on ha1, 100 on ha2
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">else</span> <span style="color:#0f0;font-weight:bold">%}</span>
+  priority 100 # 101 on ha1, 100 on ha2
+<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endif</span> -<span style="color:#0f0;font-weight:bold">%}</span>
+  advert_int 1
+  unicast_src_ip <span style="color:#0f0;font-weight:bold">{{</span> ansible_host <span style="color:#0f0;font-weight:bold">}}</span>
+  virtual_ipaddress {
+    <span style="color:#0f0;font-weight:bold">{{</span> virtual_ipaddress <span style="color:#0f0;font-weight:bold">}}</span> # virtual ip address
+  }
+  track_script {
+    chk_haproxy
+  }
 }
-}</p>
-<p>{% endraw %}
-{% endhighlight %}</p>
-<ul>
+</code></pre></div><ul>
 <li>
 <h3 id="playbook---haproxyyaml"><strong>playbook - haproxy.yaml</strong></h3>
 </li>
