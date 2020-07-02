@@ -352,7 +352,7 @@ em ambos os servidores.</p>
 </li>
 </ul>
 <div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">vim roles/haproxy/templates/haproxy.cfg.j2
-</code></pre></div><div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-jinja" data-lang="jinja">global
+</code></pre></div><div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">global
   ulimit-n 100042
   maxconn     4000
   daemon
@@ -363,9 +363,9 @@ em ambos os servidores.</p>
 ### Defaults
 defaults
   log global
-<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">if</span> haproxy_mode == <span style="color:#0ff;font-weight:bold">&#34;layer_7&#34;</span> <span style="color:#0f0;font-weight:bold">%}</span>
+{% if haproxy_mode == &#34;layer_7&#34; %}
   mode http
-<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endif</span> <span style="color:#0f0;font-weight:bold">%}</span>
+{% endif %}
   option dontlognull
   option http-server-close
   option redispatch
@@ -390,7 +390,7 @@ listen  stats
         stats show-node
         mode http
 
-<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">if</span> haproxy_mode == <span style="color:#0ff;font-weight:bold">&#34;layer_7&#34;</span> <span style="color:#0f0;font-weight:bold">%}</span>
+{% if haproxy_mode == &#34;layer_7&#34; %}
 frontend app
   log /dev/log local0 debug
   bind *:80
@@ -398,44 +398,44 @@ frontend app
 
 #
 # ACL
-<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">for</span> acl, app <span style="color:#fff;font-weight:bold">in</span> new_app.items() <span style="color:#0f0;font-weight:bold">%}</span>
-acl <span style="color:#0f0;font-weight:bold">{{</span> acl <span style="color:#0f0;font-weight:bold">}}</span> hdr(host) -i <span style="color:#0f0;font-weight:bold">{{</span> acl <span style="color:#0f0;font-weight:bold">}}</span>.<span style="color:#0f0;font-weight:bold">{{</span> my_domain <span style="color:#0f0;font-weight:bold">}}</span>
-<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endfor</span> <span style="color:#0f0;font-weight:bold">%}</span>
+{% for acl, app in new_app.items() %}
+acl {{ acl }} hdr(host) -i {{ acl }}.{{ my_domain }}
+{% endfor %}
 
-<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">for</span> acl, app <span style="color:#fff;font-weight:bold">in</span> new_app.items() <span style="color:#0f0;font-weight:bold">%}</span>
-use_backend app-<span style="color:#0f0;font-weight:bold">{{</span> app.name <span style="color:#0f0;font-weight:bold">}}</span> if <span style="color:#0f0;font-weight:bold">{{</span> acl <span style="color:#0f0;font-weight:bold">}}</span>
-<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endfor</span> <span style="color:#0f0;font-weight:bold">%}</span>
+{% for acl, app in new_app.items() %}
+use_backend app-{{ app.name }} if {{ acl }}
+{% endfor %}
 
-<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">for</span> acl, app <span style="color:#fff;font-weight:bold">in</span> new_app.items() <span style="color:#0f0;font-weight:bold">%}</span>
-backend app-<span style="color:#0f0;font-weight:bold">{{</span> app.name <span style="color:#0f0;font-weight:bold">}}</span>
-  balance <span style="color:#0f0;font-weight:bold">{{</span> balance_algorithm <span style="color:#0f0;font-weight:bold">}}</span>
+{% for acl, app in new_app.items() %}
+backend app-{{ app.name }}
+  balance {{ balance_algorithm }}
   mode    http
   option httpchk HEAD /
-<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">for</span> host_name, ip_addr <span style="color:#fff;font-weight:bold">in</span> app.backend.items() <span style="color:#0f0;font-weight:bold">%}</span>
-    server <span style="color:#0f0;font-weight:bold">{{</span> host_name <span style="color:#0f0;font-weight:bold">}}</span> <span style="color:#0f0;font-weight:bold">{{</span> ip_addr <span style="color:#0f0;font-weight:bold">}}</span>:<span style="color:#0f0;font-weight:bold">{{</span> app.port_back <span style="color:#0f0;font-weight:bold">}}</span> check
-<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endfor</span> <span style="color:#0f0;font-weight:bold">%}</span>
+{% for host_name, ip_addr in app.backend.items() %}
+    server {{ host_name }} {{ ip_addr }}:{{ app.port_back }} check
+{% endfor %}
 
-<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endfor</span> <span style="color:#0f0;font-weight:bold">%}</span>
-<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endif</span> <span style="color:#0f0;font-weight:bold">%}</span>
+{% endfor %}
+{% endif %}
 
-<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">if</span> haproxy_mode == <span style="color:#0ff;font-weight:bold">&#34;layer_4&#34;</span> <span style="color:#0f0;font-weight:bold">%}</span>
-<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">for</span> acl, app <span style="color:#fff;font-weight:bold">in</span> new_app.items() <span style="color:#0f0;font-weight:bold">%}</span>
+{% if haproxy_mode == &#34;layer_4&#34; %}
+{% for acl, app in new_app.items() %}
 #
-### app-<span style="color:#0f0;font-weight:bold">{{</span> app.name <span style="color:#0f0;font-weight:bold">}}</span>
-frontend app-<span style="color:#0f0;font-weight:bold">{{</span> app.name <span style="color:#0f0;font-weight:bold">}}</span>
+### app-{{ app.name }}
+frontend app-{{ app.name }}
   log /dev/log local0 debug
-  bind *:<span style="color:#0f0;font-weight:bold">{{</span> app.port_front <span style="color:#0f0;font-weight:bold">}}</span>
-  default_backend app-<span style="color:#0f0;font-weight:bold">{{</span> app.name <span style="color:#0f0;font-weight:bold">}}</span>
+  bind *:{{ app.port_front }}
+  default_backend app-{{ app.name }}
 
-backend app-<span style="color:#0f0;font-weight:bold">{{</span> app.name <span style="color:#0f0;font-weight:bold">}}</span>
-  balance <span style="color:#0f0;font-weight:bold">{{</span> balance_algorithm <span style="color:#0f0;font-weight:bold">}}</span>
+backend app-{{ app.name }}
+  balance {{ balance_algorithm }}
   mode    tcp
-<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">for</span> host_name, ip_addr <span style="color:#fff;font-weight:bold">in</span> app.backend.items() <span style="color:#0f0;font-weight:bold">%}</span>
-    server <span style="color:#0f0;font-weight:bold">{{</span> host_name <span style="color:#0f0;font-weight:bold">}}</span> <span style="color:#0f0;font-weight:bold">{{</span> ip_addr <span style="color:#0f0;font-weight:bold">}}</span>:<span style="color:#0f0;font-weight:bold">{{</span> app.port_back <span style="color:#0f0;font-weight:bold">}}</span> check
-<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endfor</span> <span style="color:#0f0;font-weight:bold">%}</span>
+{% for host_name, ip_addr in app.backend.items() %}
+    server {{ host_name }} {{ ip_addr }}:{{ app.port_back }} check
+{% endfor %}
 
-<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endfor</span> <span style="color:#0f0;font-weight:bold">%}</span>
-<span style="color:#0f0;font-weight:bold">{%</span> <span style="color:#fff;font-weight:bold">endif</span> <span style="color:#0f0;font-weight:bold">%}</span>
+{% endfor %}
+{% endif %}
 </code></pre></div><ul>
 <li>
 <h3 id="keepalivedconfj2"><strong>keepalived.conf.j2</strong></h3>
