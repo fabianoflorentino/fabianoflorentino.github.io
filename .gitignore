@@ -6,4 +6,4 @@ src/layouts
 src/resources
 src/static
 src/themes
-
+log/server.log
