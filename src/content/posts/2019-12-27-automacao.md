@@ -110,7 +110,6 @@ Para esse exemplo vamos usar os seguintes pacotes.
 * vim
 * open-vm-tools
   * **Esse pacote é necessário se você estiver usando o VMware como virtualizador padrão.**
-    * **OBS:** É preciso do pacote [libicu-50.2-3.el7.x86_64.rpm](http://mirror.centos.org/centos/7/os/x86_64/Packages/libicu-50.2-3.el7.x86_64.rpm)
 
 ```shell
 mkdir -p /root/custom_packages
