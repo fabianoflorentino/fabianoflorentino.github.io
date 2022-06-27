@@ -7,3 +7,4 @@ src/resources
 src/static
 src/themes
 log/server.log
+src/.hugo_build.lock
