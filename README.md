@@ -23,5 +23,8 @@ Entrar no diretório ./src/ e execute o container.
 ```
 
 ```shell
-docker run -d --name hugo -p 1313:1313 -v ${PWD}/src:/site -v ${PWD}/log:/var/log -w /site fabianoflorentino/hugo:latest
+docker run -d --name hugo -p 1313:1313 \
+  -v ${PWD}/src:/site \
+  -v ${PWD}/log:/var/log \
+  -w /site fabianoflorentino/hugo:latest
 ```
