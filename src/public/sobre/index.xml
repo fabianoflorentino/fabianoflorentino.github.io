@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sobres on Home</title>
+    <link>https://fabianoflorentino.github.io/sobre/</link>
+    <description>Recent content in Sobres on Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 20 Jun 2020 22:02:59 -0300</lastBuildDate><atom:link href="https://fabianoflorentino.github.io/sobre/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Experiências</title>
+      <link>https://fabianoflorentino.github.io/sobre/exp/</link>
+      <pubDate>Sat, 20 Jun 2020 22:02:59 -0300</pubDate>
+      
+      <guid>https://fabianoflorentino.github.io/sobre/exp/</guid>
+      <description>Site Reliability Engineer IBM - Tempo integral
+Atualmente
+Função especializada na prestação de serviços de execução aos clientes em componentes de hardware e software. As atividades incluem a operação e manutenção de sistemas operacionais em várias plataformas, aplicativos de middleware, várias tecnologias de banco de dados, soluções de alta disponibilidade e balanceamento de carga. Estão incluídas responsabilidades como, operação e manutenção de sistemas operacionais e suporte a plataformas, administração de banco de dados, planejamento de capacidade, gerenciamento de desempenho, conformidade de segurança, também fornecendo suporte para ferramentas de gerenciamento de sistemas que monitoram o status operacional do ambiente.</description>
+    </item>
+    
+    <item>
+      <title>Formação</title>
+      <link>https://fabianoflorentino.github.io/sobre/formacao/</link>
+      <pubDate>Fri, 19 Jun 2020 03:27:30 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.github.io/sobre/formacao/</guid>
+      <description>IPOG - Instituto de Pós-Graduação e Graduação Computer Forensics and Digital Expertise
+2015-2017
+Análise Forense em Rede de Computadores
+Faculdade de Tecnologia SENAI de Desenvolvimento Gerencial Computer Network Security
+2013-2015
+Certificado ICP-Brasil
+Faculdade de Tecnologia SENAI de Desenvolvimento Gerencial Computer Network Technologist
+2008 - 2011
+Implementação De Segurança Em Redes Sem Fio Utilizando Freeradius Com Os Protocolos Radius E 802.1X</description>
+    </item>
+    
+    <item>
+      <title>Cursos e Certificados</title>
+      <link>https://fabianoflorentino.github.io/sobre/certificados/</link>
+      <pubDate>Thu, 18 Jun 2020 15:16:35 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.github.io/sobre/certificados/</guid>
+      <description>Accredible Wallet: https://www.credential.net/profile/fabianoflorentino/wallet Credly: https://credly.com/profile/fabianoflorentino  2021 Careers   
+Professional Carrer  
+Courses   
+2020      
+2019</description>
+    </item>
+    
+  </channel>
+</rss>

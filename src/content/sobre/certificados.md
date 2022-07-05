@@ -19,6 +19,7 @@ draft: false
 
 [![<>](../../images/opencts_certified.png)](https://www.credly.com/badges/fde0c79a-bffe-4924-a254-b8f8f399c72d)
 [![<>](../../images/tech_spec_experienced.png)](https://www.credly.com/badges/c9d81a56-17fb-4590-ba58-6ae9533103d0)
+
 ### **Courses**
 
 [![<>](../../images/nomad.png)](https://www.credential.net/b237edd4-b295-4333-b203-754fc4dd2860)

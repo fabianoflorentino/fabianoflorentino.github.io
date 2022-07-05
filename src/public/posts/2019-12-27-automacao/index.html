@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+
+    <meta name="author" content="Fabiano S. Florentino">
+    <meta name="description" content="No meu primeiro artigo demonstro como automatizar a criação de máquinas virtuais no VMware com terraform e no processo utilizo uma ISO CentOS automatizada com kickstart.
+Mesmo automatizando a criação da máquina virtual ainda ficamos presos ao processo de instalação do sistema operacional, então, precisamos criar um processo parcial ou totalmente automatizado para ganharmos a agilidade no processo de entrega.
+Fazar a entrega totalmente automatizada do processo de criação da máquina virtual e instalação do sistema operacional.">
+    <meta name="keywords" content="blog,developer,personal">
+
+    
+      <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+    
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Automatizando a instalação do CentOS com Kickstart"/>
+<meta name="twitter:description" content="No meu primeiro artigo demonstro como automatizar a criação de máquinas virtuais no VMware com terraform e no processo utilizo uma ISO CentOS automatizada com kickstart.
+Mesmo automatizando a criação da máquina virtual ainda ficamos presos ao processo de instalação do sistema operacional, então, precisamos criar um processo parcial ou totalmente automatizado para ganharmos a agilidade no processo de entrega.
+Fazar a entrega totalmente automatizada do processo de criação da máquina virtual e instalação do sistema operacional."/>
+
+    <meta property="og:title" content="Automatizando a instalação do CentOS com Kickstart" />
+<meta property="og:description" content="No meu primeiro artigo demonstro como automatizar a criação de máquinas virtuais no VMware com terraform e no processo utilizo uma ISO CentOS automatizada com kickstart.
+Mesmo automatizando a criação da máquina virtual ainda ficamos presos ao processo de instalação do sistema operacional, então, precisamos criar um processo parcial ou totalmente automatizado para ganharmos a agilidade no processo de entrega.
+Fazar a entrega totalmente automatizada do processo de criação da máquina virtual e instalação do sistema operacional." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://fabianoflorentino.github.io/posts/2019-12-27-automacao/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-12-27T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-12-27T00:00:00+00:00" />
+
+
+
+    
+      <base href="https://fabianoflorentino.github.io/posts/2019-12-27-automacao/">
+    
+    <title>
+  Automatizando a instalação do CentOS com Kickstart · Home
+</title>
+
+    
+      <link rel="canonical" href="https://fabianoflorentino.github.io/posts/2019-12-27-automacao/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="https://fabianoflorentino.github.io/css/coder.min.3219ef62ae52679b7a9c19043171c3cd9f523628c2a65f3ef247ee18836bc90b.css" integrity="sha256-MhnvYq5SZ5t6nBkEMXHDzZ9SNijCpl8&#43;8kfuGINryQs=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="https://fabianoflorentino.github.io/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://fabianoflorentino.github.io/images/favicon-16x16.png" sizes="16x16">
+
+    <meta name="generator" content="Hugo 0.99.1" />
+  </head>
+
+  
+  
+  <body class="colorscheme-light"
+        onload=" twemoji.parse(document.body); "
+  >
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://fabianoflorentino.github.io/">
+      Home
+    </a>
+    
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://fabianoflorentino.github.io/sobre/">Sobre</a>
+          </li>
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="https://fabianoflorentino.github.io/posts/">Artigos</a>
+          </li>
+        
+      
+      
+    </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Automatizando a instalação do CentOS com Kickstart</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fas fa-calendar"></i>
+              <time datetime='2019-12-27T00:00:00Z'>
+                December 27, 2019
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fas fa-clock"></i>
+              7-minute read
+            </span>
+          </div>
+          <div class="categories">
+  <i class="fas fa-folder"></i>
+    <a href="https://fabianoflorentino.github.io/categories/automa%C3%A7%C3%A3o/">automação</a></div>
+
+          <div class="tags">
+  <i class="fas fa-tag"></i>
+    <a href="https://fabianoflorentino.github.io/tags/automa%C3%A7%C3%A3o/">automação</a></div>
+
+        </div>
+      </header>
+
+      <div>
+        
+        <p>No meu primeiro artigo demonstro como automatizar a criação de máquinas virtuais no VMware com terraform e no processo utilizo uma ISO CentOS automatizada com kickstart.</p>
+<p>Mesmo automatizando a criação da máquina virtual ainda ficamos presos ao processo  de instalação do sistema operacional, então, precisamos criar um processo parcial ou totalmente automatizado para ganharmos a agilidade no processo de entrega.</p>
+<p>Fazar a entrega totalmente automatizada do processo de criação da máquina virtual e instalação do sistema operacional.</p>
+<h3 id="requisitos"><strong>Requisitos</strong></h3>
+<p><strong>OBS:</strong> Para esse exemplo vou utilizar a imagem do CentOS 7.</p>
+<ul>
+<li>Uma máquina virtual com o CentOS já instalado.</li>
+<li>ISO: <a href="http://ftp.unicamp.br/pub/centos/7.7.1908/isos/x86_64/CentOS-7-x86_64-Minimal-1908.iso">CentOS 7</a></li>
+</ul>
+<h2 id="pacotes"><strong>Pacotes</strong></h2>
+<p>Já no host/vm vamos instalar os pacotes necessários para criar a ISO.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>yum install -y rsync createrepo genisoimage system-config-kickstart
+</span></span></code></pre></div><h2 id="diretórios"><strong>Diretórios</strong></h2>
+<p>Precisamos criar uma estrutura de diretórios para colocar os arquivos da ISO.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>mkdir -p build_iso/isolinux/{images,ks,LiveOS,Packages,postinstall}
+</span></span></code></pre></div><ul>
+<li><strong>isolinux:</strong> diretório central com o conteúdo da iso.</li>
+<li><strong>images:</strong> diretório com a imagem efiboot.img para inicializar a iso.</li>
+<li><strong>ks:</strong> diretório do arquivo ks.cfg, arquivo que iremos customizar para automatizar a instalação.</li>
+<li><strong>LiveOS:</strong> diretório com a imagem squashfs.img para filesystem temporário da iso.</li>
+<li><strong>Packages:</strong> diretório com os pacotes que serão instalados durante o processo de deploy do SO e
+também os pacotes adicionais.</li>
+<li><strong>postinstall:</strong> diretório para incluir tudo que você precisa que seja feito depois da instalação do SO.</li>
+</ul>
+<h2 id="iso-centos"><strong>ISO CentOS</strong></h2>
+<p>Download da image iso do CentOS.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>wget http://ftp.unicamp.br/pub/centos/7.7.1908/isos/x86_64/CentOS-7-x86_64-Minimal-1908.iso
+</span></span></code></pre></div><p>Precisamos montar a ISO para termos acesso aos arquivos.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>mkdir -p /mnt/iso
+</span></span><span style="display:flex;"><span>mount -o loop CentOS-7-x86_64-Minimal-1908.iso /mnt/iso
+</span></span></code></pre></div><p><img src="../../images/img8.png" alt="&lt;&gt;"></p>
+<h2 id="copiando-arquivos"><strong>Copiando Arquivos</strong></h2>
+<p>Preciamos copiar os arquivos para criar a iso corretamente.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>rsync -av /mnt/iso/.discinfo /root/build_iso/isolinux/
+</span></span><span style="display:flex;"><span>rsync -av /mnt/iso/isolinux/ /root/build_iso/isolinux/
+</span></span><span style="display:flex;"><span>rsync -av /mnt/iso/images/ /root/build_iso/isolinux/images/
+</span></span><span style="display:flex;"><span>rsync -av /mnt/iso/Packages/ /root/build_iso/isolinux/Packages/
+</span></span><span style="display:flex;"><span>rsync -av /mnt/iso/LiveOS/ /root/build_iso/isolinux/LiveOS/
+</span></span></code></pre></div><p><img src="../../images/img9.png" alt="&lt;&gt;"></p>
+<p>Para o processo de instalação identificar quais os pacotes serão instalados, precisamos copiar o arquivo <strong>comps.xml</strong>. Esse arquivo está compactado dentro do diretório <strong>/mnt/isolinux/repodata</strong>.</p>
+<p><img src="../../images/img10.png" alt="&lt;&gt;"></p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cp /mnt/iso/repodata/4af1fba0c1d6175b7e3c862b4bddfef93fffb84c37f7d5f18cfbff08abc47f8a-c7-x86_64-comps.xml.gz /root/build_iso/comps.xml.gz
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#fff;font-weight:bold">cd</span> /root/build_iso/
+</span></span><span style="display:flex;"><span>gunzip comps.xml.gz
+</span></span></code></pre></div><p><img src="../../images/img11.png" alt="&lt;&gt;"></p>
+<h2 id="pacotes-adicionais"><strong>Pacotes Adicionais</strong></h2>
+<p>Seguindo a idéia de automação, podemos adicionar pacotes na ISO para que sejam
+instalados durante o processo de instalação do SO.
+Para isso vamos fazer criar um diretório e fazer o download dos pacotes necessários.
+Para esse exemplo vamos usar os seguintes pacotes.</p>
+<ul>
+<li>epel-release</li>
+<li>net-tools</li>
+<li>bind-utils</li>
+<li>nfs-utils</li>
+<li>yum-utils</li>
+<li>libxml2-python</li>
+<li>nc</li>
+<li>nmap</li>
+<li>wget</li>
+<li>rsync</li>
+<li>curl</li>
+<li>tree</li>
+<li>tmux</li>
+<li>htop</li>
+<li>vim</li>
+<li>open-vm-tools
+<ul>
+<li><strong>Esse pacote é necessário se você estiver usando o VMware como virtualizador padrão.</strong></li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>mkdir -p /root/custom_packages
+</span></span><span style="display:flex;"><span><span style="color:#fff;font-weight:bold">cd</span> /root/custom_packages
+</span></span><span style="display:flex;"><span>yum install --downloadonly --downloaddir=. &lt;NOME DO PACOTE&gt;
+</span></span></code></pre></div><p><img src="../../images/img12.png" alt="&lt;&gt;"></p>
+<p>Precisamos sincronizar esses novos <strong>rpms</strong> com o diretório Packages.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>rsync -av /root/custom_packages/ /root/build_iso/isolinux/Packages/
+</span></span></code></pre></div><p><img src="../../images/img13.png" alt="&lt;&gt;"></p>
+<h2 id="sincronizar-o-repositório-de-pacotes"><strong>Sincronizar o repositório de pacotes</strong></h2>
+<p>Lembra do arquivo comps.xml, é ele que vamos sincronizar agora para criar a lista
+atualizada de pacotes que serão instalados no processo de instalação do SO.</p>
+<p>Dentro do diretório <strong>/root/build_iso/isolinux</strong> execute o processo abaixo.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#fff;font-weight:bold">cd</span> /root/build_iso/isolinux
+</span></span><span style="display:flex;"><span>createrepo -g ../comps.xml .
+</span></span></code></pre></div><p><img src="../../images/img14.png" alt="&lt;&gt;"></p>
+<h2 id="kickstart"><strong>Kickstart</strong></h2>
+<p>Até o momento estavamos preparando tudo até chegar aqui. Nesse arquivo que determinamos
+como a instalação do sistema operacional vai acontecer.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>vim /root/build_iso/isolinux/ks/ks.cfg
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#007f7f"># version=DEVEL</span>
+</span></span><span style="display:flex;"><span><span style="color:#007f7f"># System authorization information</span>
+</span></span><span style="display:flex;"><span>auth --enableshadow --passalgo=sha512
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#007f7f"># Use CDROM installation media</span>
+</span></span><span style="display:flex;"><span>cdrom
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#007f7f"># Use graphical install</span>
+</span></span><span style="display:flex;"><span>install
+</span></span><span style="display:flex;"><span>text
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#007f7f"># Run the Setup Agent on first boot</span>
+</span></span><span style="display:flex;"><span>firstboot --enable
+</span></span><span style="display:flex;"><span>ignoredisk --only-use=sda
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#007f7f"># Keyboard layouts</span>
+</span></span><span style="display:flex;"><span>keyboard --vckeymap=us-alt-intl --xlayouts=<span style="color:#0ff;font-weight:bold">&#39;us (alt-intl)&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#007f7f"># System language</span>
+</span></span><span style="display:flex;"><span>lang en_US.UTF-8
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#007f7f"># Network information</span>
+</span></span><span style="display:flex;"><span>network --onboot=yes --bootproto=dhcp --device=eth0 --noipv6 --activate --hostname=centos
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#007f7f"># Root password</span>
+</span></span><span style="display:flex;"><span><span style="color:#007f7f"># O valor que está encriptado é o mesmo valor que está no arquivo /etc/shadow, veja na imagem abaixo.</span>
+</span></span><span style="display:flex;"><span>rootpw --iscrypted &lt;SHADOW PASSWORD&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#007f7f"># System services</span>
+</span></span><span style="display:flex;"><span>services --disabled=<span style="color:#0ff;font-weight:bold">&#34;chronyd&#34;</span>
+</span></span><span style="display:flex;"><span>services --enabled=<span style="color:#0ff;font-weight:bold">&#34;NetworkManager&#34;</span>
+</span></span><span style="display:flex;"><span>services --enabled=<span style="color:#0ff;font-weight:bold">&#34;network&#34;</span>
+</span></span><span style="display:flex;"><span>services --enabled=<span style="color:#0ff;font-weight:bold">&#34;vmtoolsd&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>selinux --disabled
+</span></span><span style="display:flex;"><span>firewall --disabled
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#007f7f"># System timezone</span>
+</span></span><span style="display:flex;"><span>timezone America/Sao_Paulo --isUtc --nontp
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#007f7f"># Custom User</span>
+</span></span><span style="display:flex;"><span><span style="color:#007f7f"># O valor que está encriptado é o mesmo valor que está no arquivo /etc/shadow, veja na imagem abaixo.</span>
+</span></span><span style="display:flex;"><span>user --groups=wheel --name=automation --password=&lt;SHADOW PASSWORD&gt; --iscrypted --gecos=<span style="color:#0ff;font-weight:bold">&#34;automation&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#007f7f"># System bootloader configuration</span>
+</span></span><span style="display:flex;"><span>bootloader --append=<span style="color:#0ff;font-weight:bold">&#34; crashkernel=auto net.ifnames=0 biosdevname=0&#34;</span> --location=mbr --boot-drive=sda
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#007f7f"># Partition clearing information</span>
+</span></span><span style="display:flex;"><span>clearpart --all
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#007f7f"># Disk partitioning information</span>
+</span></span><span style="display:flex;"><span>part pv.296 --fstype=<span style="color:#0ff;font-weight:bold">&#34;lvmpv&#34;</span> --ondisk=sda --size=<span style="color:#ff0;font-weight:bold">47107</span>
+</span></span><span style="display:flex;"><span>part /boot --fstype=<span style="color:#0ff;font-weight:bold">&#34;xfs&#34;</span> --ondisk=sda --size=<span style="color:#ff0;font-weight:bold">512</span> --label=boot
+</span></span><span style="display:flex;"><span>volgroup centos --pesize=<span style="color:#ff0;font-weight:bold">4096</span> pv.296
+</span></span><span style="display:flex;"><span>logvol /var  --fstype=<span style="color:#0ff;font-weight:bold">&#34;xfs&#34;</span> --size=<span style="color:#ff0;font-weight:bold">10240</span> --label=<span style="color:#0ff;font-weight:bold">&#34;var&#34;</span> --name=var --vgname=centos
+</span></span><span style="display:flex;"><span>logvol /opt  --fstype=<span style="color:#0ff;font-weight:bold">&#34;xfs&#34;</span> --size=<span style="color:#ff0;font-weight:bold">5120</span> --name=opt --vgname=centos
+</span></span><span style="display:flex;"><span>logvol /home  --fstype=<span style="color:#0ff;font-weight:bold">&#34;xfs&#34;</span> --size=<span style="color:#ff0;font-weight:bold">10240</span> --label=<span style="color:#0ff;font-weight:bold">&#34;home&#34;</span> --name=home --vgname=centos
+</span></span><span style="display:flex;"><span>logvol /  --fstype=<span style="color:#0ff;font-weight:bold">&#34;xfs&#34;</span> --size=<span style="color:#ff0;font-weight:bold">10240</span> --label=<span style="color:#0ff;font-weight:bold">&#34;root&#34;</span> --name=root --vgname=centos
+</span></span><span style="display:flex;"><span>logvol /var/log  --fstype=<span style="color:#0ff;font-weight:bold">&#34;xfs&#34;</span> --size=<span style="color:#ff0;font-weight:bold">5120</span> --label=<span style="color:#0ff;font-weight:bold">&#34;var_log&#34;</span> --name=var_log --vgname=centos
+</span></span><span style="display:flex;"><span>logvol /tools  --fstype=<span style="color:#0ff;font-weight:bold">&#34;xfs&#34;</span> --size=<span style="color:#ff0;font-weight:bold">5120</span> --name=tools --vgname=centos
+</span></span><span style="display:flex;"><span>logvol swap  --fstype=<span style="color:#0ff;font-weight:bold">&#34;swap&#34;</span> --size=<span style="color:#ff0;font-weight:bold">1024</span> --name=swap --vgname=centos
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>reboot
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>%packages
+</span></span><span style="display:flex;"><span>@^minimal
+</span></span><span style="display:flex;"><span>@core
+</span></span><span style="display:flex;"><span>kexec-tools
+</span></span><span style="display:flex;"><span>epel-release
+</span></span><span style="display:flex;"><span>net-tools
+</span></span><span style="display:flex;"><span>bind-utils
+</span></span><span style="display:flex;"><span>nfs-utils
+</span></span><span style="display:flex;"><span>yum-utils
+</span></span><span style="display:flex;"><span>libxml2-python
+</span></span><span style="display:flex;"><span>nc
+</span></span><span style="display:flex;"><span>nmap
+</span></span><span style="display:flex;"><span>wget
+</span></span><span style="display:flex;"><span>rsync
+</span></span><span style="display:flex;"><span>curl
+</span></span><span style="display:flex;"><span>tree
+</span></span><span style="display:flex;"><span>tmux
+</span></span><span style="display:flex;"><span>htop
+</span></span><span style="display:flex;"><span>vim
+</span></span><span style="display:flex;"><span>open-vm-tools
+</span></span><span style="display:flex;"><span>%end
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>%addon com_redhat_kdump --enable --reserve-mb=<span style="color:#0ff;font-weight:bold">&#39;auto&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>%end
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>%post --log=/root/ks-post.log
+</span></span><span style="display:flex;"><span>systemctl restart network
+</span></span><span style="display:flex;"><span>dhclient
+</span></span><span style="display:flex;"><span>yum -y update
+</span></span><span style="display:flex;"><span>%end
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>%anaconda
+</span></span><span style="display:flex;"><span>pwpolicy root --minlen=<span style="color:#ff0;font-weight:bold">6</span> --minquality=<span style="color:#ff0;font-weight:bold">1</span> --notstrict --nochanges --notempty
+</span></span><span style="display:flex;"><span>pwpolicy user --minlen=<span style="color:#ff0;font-weight:bold">6</span> --minquality=<span style="color:#ff0;font-weight:bold">1</span> --notstrict --nochanges --emptyok
+</span></span><span style="display:flex;"><span>pwpolicy luks --minlen=<span style="color:#ff0;font-weight:bold">6</span> --minquality=<span style="color:#ff0;font-weight:bold">1</span> --notstrict --nochanges --notempty
+</span></span><span style="display:flex;"><span>%end
+</span></span></code></pre></div><p><img src="../../images/img15.png" alt="&lt;&gt;"></p>
+<p><strong>OBS:</strong> Acho que não preciso avisar que isso é um arquivo privado e que você precisa
+ter muito cuidado com ele hehehe, aqui estamos em um ambiente controlado, muita
+cautela ao manipular essas strings ok? :^D</p>
+<h3 id="pontos-de-destaque"><strong>Pontos de destaque</strong></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#007f7f"># Use graphical install</span>
+</span></span><span style="display:flex;"><span>install
+</span></span><span style="display:flex;"><span>text
+</span></span></code></pre></div><ul>
+<li>Determina como será inicializado o wizard da ISO, no caso, no modo texto.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#007f7f"># Keyboard layouts</span>
+</span></span><span style="display:flex;"><span>keyboard --vckeymap=us-alt-intl --xlayouts=<span style="color:#0ff;font-weight:bold">&#39;us (alt-intl)&#39;</span>
+</span></span></code></pre></div><ul>
+<li>Layout do teclado que será configurado por padrão no SO.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#007f7f"># Network information</span>
+</span></span><span style="display:flex;"><span>network  --bootproto=dhcp --device=ens32 --noipv6 --activate
+</span></span><span style="display:flex;"><span>network  --hostname=centos
+</span></span></code></pre></div><ul>
+<li>Configuração inicial da interface de rede.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#007f7f"># System services</span>
+</span></span><span style="display:flex;"><span>services --disabled=<span style="color:#0ff;font-weight:bold">&#34;chronyd&#34;</span>
+</span></span><span style="display:flex;"><span>services --disabled=<span style="color:#0ff;font-weight:bold">&#34;NetworkManager&#34;</span>
+</span></span><span style="display:flex;"><span>services --enabled=<span style="color:#0ff;font-weight:bold">&#34;network&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>selinux --disabled
+</span></span><span style="display:flex;"><span>firewall --disabled
+</span></span></code></pre></div><ul>
+<li>Serviços que serão inicializados ou parados na inicialização do SO.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#007f7f"># System bootloader configuration</span>
+</span></span><span style="display:flex;"><span>bootloader --append=<span style="color:#0ff;font-weight:bold">&#34; crashkernel=auto net.ifnames=0 biosdevname=0&#34;</span> --location=mbr --boot-drive=sda
+</span></span></code></pre></div><ul>
+<li>Aqui com os parametros <strong>net.ifnames=0</strong> e <strong>biosdevname=0</strong> &ldquo;forçamos&rdquo; que a interface de rede
+fique com o nome <strong>eth0</strong></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#007f7f"># Partition clearing information</span>
+</span></span><span style="display:flex;"><span>clearpart --none --initlabel
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#007f7f"># Disk partitioning information</span>
+</span></span><span style="display:flex;"><span>part pv.296 --fstype=<span style="color:#0ff;font-weight:bold">&#34;lvmpv&#34;</span> --ondisk=sda --size=<span style="color:#ff0;font-weight:bold">47107</span>
+</span></span><span style="display:flex;"><span>part /boot --fstype=<span style="color:#0ff;font-weight:bold">&#34;xfs&#34;</span> --ondisk=sda --size=<span style="color:#ff0;font-weight:bold">512</span> --label=boot
+</span></span><span style="display:flex;"><span>volgroup centos --pesize=<span style="color:#ff0;font-weight:bold">4096</span> pv.296
+</span></span><span style="display:flex;"><span>logvol /var  --fstype=<span style="color:#0ff;font-weight:bold">&#34;xfs&#34;</span> --size=<span style="color:#ff0;font-weight:bold">10240</span> --label=<span style="color:#0ff;font-weight:bold">&#34;var&#34;</span> --name=var --vgname=centos
+</span></span><span style="display:flex;"><span>logvol /opt  --fstype=<span style="color:#0ff;font-weight:bold">&#34;xfs&#34;</span> --size=<span style="color:#ff0;font-weight:bold">5120</span> --name=opt --vgname=centos
+</span></span><span style="display:flex;"><span>logvol /home  --fstype=<span style="color:#0ff;font-weight:bold">&#34;xfs&#34;</span> --size=<span style="color:#ff0;font-weight:bold">10240</span> --label=<span style="color:#0ff;font-weight:bold">&#34;home&#34;</span> --name=home --vgname=centos
+</span></span><span style="display:flex;"><span>logvol /  --fstype=<span style="color:#0ff;font-weight:bold">&#34;xfs&#34;</span> --size=<span style="color:#ff0;font-weight:bold">10240</span> --label=<span style="color:#0ff;font-weight:bold">&#34;root&#34;</span> --name=root --vgname=centos
+</span></span><span style="display:flex;"><span>logvol /var/log  --fstype=<span style="color:#0ff;font-weight:bold">&#34;xfs&#34;</span> --size=<span style="color:#ff0;font-weight:bold">5120</span> --label=<span style="color:#0ff;font-weight:bold">&#34;var_log&#34;</span> --name=var_log --vgname=centos
+</span></span><span style="display:flex;"><span>logvol /tools  --fstype=<span style="color:#0ff;font-weight:bold">&#34;xfs&#34;</span> --size=<span style="color:#ff0;font-weight:bold">5120</span> --name=tools --vgname=centos
+</span></span><span style="display:flex;"><span>logvol swap  --fstype=<span style="color:#0ff;font-weight:bold">&#34;swap&#34;</span> --size=<span style="color:#ff0;font-weight:bold">1024</span> --name=swap --vgname=centos
+</span></span></code></pre></div><ul>
+<li>Aqui determinamos como será partifionado o HD/SSD da máquina.
+A atenção aqui é que o HD/SSD usado na instalação não pode ser menor que o
+determinado aqui. Nesse exemplo o tamanho minimo do HD/SSD é de 50GB.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>%packages --ignoremissing
+</span></span><span style="display:flex;"><span>@^minimal
+</span></span><span style="display:flex;"><span>@core
+</span></span><span style="display:flex;"><span>kexec-tools
+</span></span><span style="display:flex;"><span>epel-release
+</span></span><span style="display:flex;"><span>net-tools
+</span></span><span style="display:flex;"><span>bind-utils
+</span></span><span style="display:flex;"><span>nfs-utils
+</span></span><span style="display:flex;"><span>yum-utils
+</span></span><span style="display:flex;"><span>libxml2-python
+</span></span><span style="display:flex;"><span>nc
+</span></span><span style="display:flex;"><span>nmap
+</span></span><span style="display:flex;"><span>wget
+</span></span><span style="display:flex;"><span>rsync
+</span></span><span style="display:flex;"><span>curl
+</span></span><span style="display:flex;"><span>tree
+</span></span><span style="display:flex;"><span>tmux
+</span></span><span style="display:flex;"><span>htop
+</span></span><span style="display:flex;"><span>vim
+</span></span><span style="display:flex;"><span>open-vm-tools
+</span></span><span style="display:flex;"><span>%end
+</span></span></code></pre></div><ul>
+<li>Pacotes que adicionais que serão instalados junto com o SO.</li>
+</ul>
+<h2 id="ksvalidator"><strong>ksvalidator</strong></h2>
+<p>Depois de configurado o arquivo <strong>ks.cfg</strong> temos como validar se a sintaxe do arquivo está certa.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>ksvalidator build_iso/isolinux/ks/ks.cfg
+</span></span></code></pre></div><p>Caso não apareça nenhuma mensagem o arquivo está validado.</p>
+<p><img src="../../images/img16.png" alt="&lt;&gt;"></p>
+<h2 id="inicialização"><strong>Inicialização</strong></h2>
+<p>Precisamos configurar a inicialização da iso apontando para o arquivo <strong>ks.cfg</strong> que configuramos.
+No arquivo <strong>build_iso/isolinux/isolinux.cfg</strong> por volta da linha 61 preciamos criar a entrada para o arquivo <strong>ks.cfg</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>vim build_iso/isolinux/isolinux.cfg
+</span></span></code></pre></div><p>na opção <strong>timeout</strong> determinamos quanto tempo a tela inicial de instalação irá aguardar antes de inicar com a opção padrão.</p>
+<p>Em nosso processo vamos colocar 1 para inicializar imediatamente após boot pela ISO.
+Por volta da linha 61 configure a entrada apontando para o arquivo <strong>ks.cfg</strong></p>
+<p><strong>De:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>label linux
+</span></span><span style="display:flex;"><span>  menu label ^Install CentOS <span style="color:#ff0;font-weight:bold">7</span>
+</span></span><span style="display:flex;"><span>  kernel vmlinuz
+</span></span><span style="display:flex;"><span>  append initrd=initrd.img inst.stage2=hd:LABEL=CentOS<span style="color:#0ff;font-weight:bold">\x</span>207<span style="color:#0ff;font-weight:bold">\x</span>20x86_64 quiet
+</span></span></code></pre></div><p><strong>Para:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>label linux
+</span></span><span style="display:flex;"><span>  menu label ^Install CentOS <span style="color:#ff0;font-weight:bold">7</span>
+</span></span><span style="display:flex;"><span>  menu default
+</span></span><span style="display:flex;"><span>  kernel vmlinuz
+</span></span><span style="display:flex;"><span>  kernel vmlinuz biosdevname=<span style="color:#ff0;font-weight:bold">0</span>
+</span></span><span style="display:flex;"><span>  append initrd=initrd.img ks=cdrom:/ks/ks.cfg
+</span></span></code></pre></div><h2 id="criando-a-iso-customizada"><strong>Criando a ISO Customizada</strong></h2>
+<p>Dentro da pasta <strong>/root/build_iso</strong> execute.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>mkisofs -o centos7-custom-img-disk50gb-v0.0.1.iso -b isolinux.bin -c boot.cat -no-emul-boot -V <span style="color:#0ff;font-weight:bold">&#39;CentOS 7 x86_64&#39;</span> -boot-load-size <span style="color:#ff0;font-weight:bold">4</span> -boot-info-table -R -J -v -T isolinux/
+</span></span></code></pre></div><p>Se todo processo ocorreu como o esperado, será gerado a nossa ISO cutomizada.</p>
+<p><img src="../../images/img17.png" alt="&lt;&gt;"></p>
+<h2 id="demo"><strong>Demo</strong></h2>
+<p><a href="https://youtu.be/sGVBLqubTWI" title="Automation Install CentOS"><img src="https://img.youtube.com/vi/sGVBLqubTWI/0.jpg" alt="&lt;"></a></p>
+<h2 id="conclusão"><strong>Conclusão</strong></h2>
+<p>Seguindo a linha do artigo anterior sobre automaçao em infraestrutura tradicional.
+Aqui também tempos uma maneira de muitas, de automatizar a instalação de uma SO. Junto
+com o artigo anterior temos uma entrega totalmente automatizada de máquina virtual
+mais sistema operacional.
+Uma outra ferramenta que pode ser usada é o <strong><a href="https://www.packer.io/">Packer</a></strong> da Hashicorp, futuramente escrevo
+fazendo um paralelo entre os dois métodos.</p>
+<p>&ldquo;Ah! quase ia esquecendo, fazer uma menção muito relevante aqui para o <a href="https://www.linkedin.com/in/glaucovilas/">Glauco Vilas</a> pois o artigo está baseado no material que ele escreveu internamentte aqui para a nossa equipe, vlw <a href="https://www.linkedin.com/in/glaucovilas/">Glauco Vilas</a>!!!&rdquo;</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "florentinocodar" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+      
+        
+        
+          
+        
+        
+        
+      
+      
+        
+        
+      
+      
+        
+      
+    </section>
+  </footer>
+
+    </main>
+
+    
+
+    
+
+    <script>
+(function(f, a, t, h, o, m){
+	a[h]=a[h]||function(){
+		(a[h].q=a[h].q||[]).push(arguments)
+	};
+	o=f.createElement('script'),
+	m=f.getElementsByTagName('script')[0];
+	o.async=1; o.src=t; o.id='fathom-script';
+	m.parentNode.insertBefore(o,m)
+})(document, window, '//analytics.example.com/tracker.js', 'fathom');
+fathom('set', 'siteId', 'ABCDE');
+fathom('trackPageview');
+</script>
+
+
+  </body>
+
+</html>

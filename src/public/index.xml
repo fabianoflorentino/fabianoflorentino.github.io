@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Home</title>
+    <link>https://fabianoflorentino.github.io/</link>
+    <description>Recent content on Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 20 Jun 2020 22:02:59 -0300</lastBuildDate><atom:link href="https://fabianoflorentino.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Experiências</title>
+      <link>https://fabianoflorentino.github.io/sobre/exp/</link>
+      <pubDate>Sat, 20 Jun 2020 22:02:59 -0300</pubDate>
+      
+      <guid>https://fabianoflorentino.github.io/sobre/exp/</guid>
+      <description>Site Reliability Engineer IBM - Tempo integral
+Atualmente
+Função especializada na prestação de serviços de execução aos clientes em componentes de hardware e software. As atividades incluem a operação e manutenção de sistemas operacionais em várias plataformas, aplicativos de middleware, várias tecnologias de banco de dados, soluções de alta disponibilidade e balanceamento de carga. Estão incluídas responsabilidades como, operação e manutenção de sistemas operacionais e suporte a plataformas, administração de banco de dados, planejamento de capacidade, gerenciamento de desempenho, conformidade de segurança, também fornecendo suporte para ferramentas de gerenciamento de sistemas que monitoram o status operacional do ambiente.</description>
+    </item>
+    
+    <item>
+      <title>Formação</title>
+      <link>https://fabianoflorentino.github.io/sobre/formacao/</link>
+      <pubDate>Fri, 19 Jun 2020 03:27:30 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.github.io/sobre/formacao/</guid>
+      <description>IPOG - Instituto de Pós-Graduação e Graduação Computer Forensics and Digital Expertise
+2015-2017
+Análise Forense em Rede de Computadores
+Faculdade de Tecnologia SENAI de Desenvolvimento Gerencial Computer Network Security
+2013-2015
+Certificado ICP-Brasil
+Faculdade de Tecnologia SENAI de Desenvolvimento Gerencial Computer Network Technologist
+2008 - 2011
+Implementação De Segurança Em Redes Sem Fio Utilizando Freeradius Com Os Protocolos Radius E 802.1X</description>
+    </item>
+    
+    <item>
+      <title>Cursos e Certificados</title>
+      <link>https://fabianoflorentino.github.io/sobre/certificados/</link>
+      <pubDate>Thu, 18 Jun 2020 15:16:35 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.github.io/sobre/certificados/</guid>
+      <description>Accredible Wallet: https://www.credential.net/profile/fabianoflorentino/wallet Credly: https://credly.com/profile/fabianoflorentino  2021 Careers   
+Professional Carrer  
+Courses   
+2020      
+2019</description>
+    </item>
+    
+    <item>
+      <title>Meu Tool set de Ferramentas</title>
+      <link>https://fabianoflorentino.github.io/posts/2020-04-22-tool-set/</link>
+      <pubDate>Wed, 22 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.github.io/posts/2020-04-22-tool-set/</guid>
+      <description>Bom seguindo a turma que criou essa série de posts sobre a caixa de ferramentas usadas no nosso dia a dia vou segui a partir do Mateus Fidelis que também veio do Igor Souza e também do Guto Carvalho
+Meu setup é único não distingui de pessoal/trabalho então bora lá!
+Notebook  macOS Catalina 10.15.14  Browsers  Google Chrome  Cisco Webex Extension Grammarly for Chrome   Microsoft Edge  Cisco Webex Extension   Firefox (Sem Extensões) Safari (Sem Extensões)   Terminal  iTerm2  Bash Zsh  Oh My Zsh  Plugins  Git Docker Ruby Python zsh-autosuggestions zsh-syntax-highlighting   Theme  hyperzsh       SSH Git Vim  syntax on     Powershell   Gerenciador de pacotes  Homebrew   Editores  VSCode  Docker YAML Terraform Ansible Gitlens Powershell Beautify Bookmarks Git History Go Jinja Markdownlint Material Icon Theme Pyright Python Docstring Formatter SQLite   TexEdit   IM  Slack Telegram Whatsapp   Vídeo Conferência  Cisco Webex Zoom   Redes Sociais  Twitter   Chaveiro de senhas  MacPass fork by Keepass2 1Password   Conexão Remota  SSH Microsoft Remote Desktop   VPN  Cisco Anny Connection Proxifier   Cloud Storage  Box Onedrive Google Drive   Virtualizadores  VMware Fusion   Automação  Ansible Terraform   Containers  Docker Docker Compose   Office  Office 365 Grammarly   API  Postman      Hardware  MacBook Pro (15-inch, 2019)  Processor 2,3 GHz 8-Core Intel Core i9 Memory 16 GB 2400 MHz DDR4 500 GB Flash Storage Graphics Radeon Pro 560X 4 GB / Intel UHD Graphics 630 1536 MB   Monitor DELL P2719H Display Monitor de som EDIFIER R1010BT Mouse Pad Gamer Mapa Mundo Mundi Speed Grande 70x35cm Magic Mouse / Magic Keyboard Bluetooth  6x Pilhas Recarregavies Sony Cyber Energy c/ Carregador 2 e 4 Slots   Xiaomi Mi 9T 64GB  Bateria Pineng 10000mAh   Rede  Desktop Network 200Mbits Xiaomi Mi Router 4 Gigabit Dual Band 2.</description>
+    </item>
+    
+    <item>
+      <title>Entregando VM&#39;s no VMware vCenter/vSphere com o Jenkins</title>
+      <link>https://fabianoflorentino.github.io/posts/2021-03-21-jenkins/</link>
+      <pubDate>Sat, 21 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.github.io/posts/2021-03-21-jenkins/</guid>
+      <description>Olá pessoal, depois de muito tempo estou de volta!
+No meu primeiro artigo, expliquei e demonstrei como criar máquinas no vCenter/vSphere usando terraform, e que tal entregar essas máquinas virtuais dentro de um pipeline como se fosse um aplicativo?
+Não é de hoje que tudo está se convergindo para Cloud Computing e de fato esse parece ser o futuro. Mas ainda temos o meio do caminho, muitas empresas utilizam parte da sua infraestrutura em datacenters, migrando e ou utilizando esse dois mundo em uma abordagem de Cloud Hibrida que acaba fazendo parte do negócio.</description>
+    </item>
+    
+    <item>
+      <title>Criando um ambiente de desenvolvimento para o Ansible</title>
+      <link>https://fabianoflorentino.github.io/posts/2020-01-14-ansible_02/</link>
+      <pubDate>Tue, 14 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.github.io/posts/2020-01-14-ansible_02/</guid>
+      <description>A alguns dias atrás nosso mestre @gomex abriu uma thread no twitter sobre como é estar desenvolvendo infraestrutura hoje em dia pelo time de Ops Link e como isso é libertador, e de fato, é uma sensação sem igual para um Sysadmin.
+Como várias pessoas comentaram eu também não pude deixar de participar. :D,
+Na ocasião por coincidência estava desenvolvendo uma imagem de container docker para o ansible!
+Mas por quê?</description>
+    </item>
+    
+    <item>
+      <title>HAProxy LoadBalancer em HA com Keepalived Automatizado</title>
+      <link>https://fabianoflorentino.github.io/posts/2020-01-07-ansible_01/</link>
+      <pubDate>Tue, 07 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.github.io/posts/2020-01-07-ansible_01/</guid>
+      <description>Toda a infraestrutura de TI hoje seja ela Cloud ou on-premise utiliza balanceadores de carga como a sua porta de entrada. Hoje acredito que todos os provedores de serviço de Cloud com salve exceções não fornecem esse tipo de serviço.
+Mas e na infraestrutura on-premise como implementamos isso?
+Nesse artigo trago a configuração do HAProxy em HA com Keepalived automatizado com ansible. Uma solução simples e bastante robusta dependendo da sua infraestrutura.</description>
+    </item>
+    
+    <item>
+      <title>Automatizando a instalação do CentOS com Kickstart</title>
+      <link>https://fabianoflorentino.github.io/posts/2019-12-27-automacao/</link>
+      <pubDate>Fri, 27 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.github.io/posts/2019-12-27-automacao/</guid>
+      <description>No meu primeiro artigo demonstro como automatizar a criação de máquinas virtuais no VMware com terraform e no processo utilizo uma ISO CentOS automatizada com kickstart.
+Mesmo automatizando a criação da máquina virtual ainda ficamos presos ao processo de instalação do sistema operacional, então, precisamos criar um processo parcial ou totalmente automatizado para ganharmos a agilidade no processo de entrega.
+Fazar a entrega totalmente automatizada do processo de criação da máquina virtual e instalação do sistema operacional.</description>
+    </item>
+    
+    <item>
+      <title>Criando VM’s no VMware ESXi com Terraform</title>
+      <link>https://fabianoflorentino.github.io/posts/2019-12-21-terraform/</link>
+      <pubDate>Sat, 21 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.github.io/posts/2019-12-21-terraform/</guid>
+      <description>No Brasil ainda temos muitas empresas com o modelo tradicional de infraestrutura, com seus datacenters próprios ou no modelo de comodato em datacenters compartilhados, com isso é comum ver parques de servidores usando virtualizadores para aproveitar melhor os recursos disponíveis.
+Muitos sysadmins ainda usam a forma tradicional de criar novas máquinas, utilizam o dashboard web seguindo o wizard e com isso tomando muito tempo para concluir esse processo.
+Os virtualizadores mais modernos hoje em dia como o VMware ESXi disponibilizam API&amp;rsquo;s que podemos utilizar para automatizar o processo de criação de máquinas virtuais ou qualquer recurso disponível.</description>
+    </item>
+    
+  </channel>
+</rss>

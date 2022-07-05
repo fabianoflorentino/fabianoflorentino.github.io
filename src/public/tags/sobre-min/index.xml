@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>sobre min on Home</title>
+    <link>https://fabianoflorentino.github.io/tags/sobre-min/</link>
+    <description>Recent content in sobre min on Home</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 22 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://fabianoflorentino.github.io/tags/sobre-min/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Meu Tool set de Ferramentas</title>
+      <link>https://fabianoflorentino.github.io/posts/2020-04-22-tool-set/</link>
+      <pubDate>Wed, 22 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://fabianoflorentino.github.io/posts/2020-04-22-tool-set/</guid>
+      <description>Bom seguindo a turma que criou essa série de posts sobre a caixa de ferramentas usadas no nosso dia a dia vou segui a partir do Mateus Fidelis que também veio do Igor Souza e também do Guto Carvalho
+Meu setup é único não distingui de pessoal/trabalho então bora lá!
+Notebook  macOS Catalina 10.15.14  Browsers  Google Chrome  Cisco Webex Extension Grammarly for Chrome   Microsoft Edge  Cisco Webex Extension   Firefox (Sem Extensões) Safari (Sem Extensões)   Terminal  iTerm2  Bash Zsh  Oh My Zsh  Plugins  Git Docker Ruby Python zsh-autosuggestions zsh-syntax-highlighting   Theme  hyperzsh       SSH Git Vim  syntax on     Powershell   Gerenciador de pacotes  Homebrew   Editores  VSCode  Docker YAML Terraform Ansible Gitlens Powershell Beautify Bookmarks Git History Go Jinja Markdownlint Material Icon Theme Pyright Python Docstring Formatter SQLite   TexEdit   IM  Slack Telegram Whatsapp   Vídeo Conferência  Cisco Webex Zoom   Redes Sociais  Twitter   Chaveiro de senhas  MacPass fork by Keepass2 1Password   Conexão Remota  SSH Microsoft Remote Desktop   VPN  Cisco Anny Connection Proxifier   Cloud Storage  Box Onedrive Google Drive   Virtualizadores  VMware Fusion   Automação  Ansible Terraform   Containers  Docker Docker Compose   Office  Office 365 Grammarly   API  Postman      Hardware  MacBook Pro (15-inch, 2019)  Processor 2,3 GHz 8-Core Intel Core i9 Memory 16 GB 2400 MHz DDR4 500 GB Flash Storage Graphics Radeon Pro 560X 4 GB / Intel UHD Graphics 630 1536 MB   Monitor DELL P2719H Display Monitor de som EDIFIER R1010BT Mouse Pad Gamer Mapa Mundo Mundi Speed Grande 70x35cm Magic Mouse / Magic Keyboard Bluetooth  6x Pilhas Recarregavies Sony Cyber Energy c/ Carregador 2 e 4 Slots   Xiaomi Mi 9T 64GB  Bateria Pineng 10000mAh   Rede  Desktop Network 200Mbits Xiaomi Mi Router 4 Gigabit Dual Band 2.</description>
+    </item>
+    
+  </channel>
+</rss>
