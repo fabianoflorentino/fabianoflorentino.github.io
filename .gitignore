@@ -1,5 +1,4 @@
 *.DS_Store*
-*.icloud*
 src/archetypes
 src/content/images
 src/data
