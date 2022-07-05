@@ -1,6 +1,6 @@
 ---
 title: "Cursos e Certificados"
-date: 2020-06-18T15:16:35Z
+date: 2022-07-05T15:16:35Z
 draft: false
 ---
 
